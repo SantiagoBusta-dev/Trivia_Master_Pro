@@ -1,4 +1,3 @@
-// Base de datos de preguntas organizadas por categorías
 const questionBank = {
     ciencia: [
         { q: "¿Cuál es el planeta más cercano al Sol?", options: ["Venus", "Mercurio", "Marte", "Júpiter"], correct: 1 },
@@ -19,7 +18,7 @@ const questionBank = {
         { q: "¿Cómo se llama el hobbit protagonista de El Señor de los Anillos?", options: ["Frodo Bolsón", "Sam Gamygi", "Bilbo Bolsón", "Aragorn"], correct: 0 },
         { q: "¿Qué película ganó más premios Óscar en la historia?", options: ["Titanic", "Ben-Hur", "El Señor de los Anillos: El retorno del rey", "Las tres empatan"], correct: 3 },
         { q: "¿En qué año se estrenó la primera película de Star Wars?", options: ["1975", "1977", "1980", "1983"], correct: 1 },
-        { q: "¿Quién interpretó a Jack Dawson en Titanic?", options: ["Brad Pitt", "Tom Cruise", "Leonardo DiCaprio", "Johnny Deps"], correct: 2 }
+        { q: "¿Quién interpretó a Jack Dawson en Titanic?", options: ["Brad Pitt", "Tom Cruise", "Leonardo DiCaprio", "Johnny Depp"], correct: 2 }
     ],
     deportes: [
         { q: "¿Cada cuántos años se celebran los Juegos Olímpicos?", options: ["2 años", "3 años", "4 años", "5 años"], correct: 2 },
@@ -37,7 +36,6 @@ const questionBank = {
     ]
 };
 
-// Estado del juego
 let coins = 100;
 let currentLevel = 1;
 let unlockedLevels = 1;
@@ -46,12 +44,9 @@ let currentIndex = 0;
 let score = 0;
 let gameMode = ''; 
 let selectedCategory = '';
-
-// Control de tiempo para anuncios (Cooldown de 45 segundos)
 let canWatchAd = true;
 let adTimerInterval = null;
 
-// Elementos del DOM
 const coinCountSpan = document.getElementById('coin-count');
 const screens = document.querySelectorAll('.screen');
 
@@ -148,13 +143,13 @@ function loadQuestion() {
         const btn = document.createElement('button');
         btn.className = 'answer-btn';
         btn.textContent = opt;
-        btn.style.visibility = 'visible'; // Asegurar visibilidad limpia
+        btn.style.display = 'block'; // Asegurar visibilidad completa
         btn.onclick = () => checkAnswer(index, btn);
         answersContainer.appendChild(btn);
     });
 }
 
-// COMODÍN 1: 50:50 (Elimina 2 respuestas incorrectas por 15 monedas)
+// Función 50:50 mejorada
 function useFiftyFifty() {
     if (coins < 15) {
         alert("❌ No tienes suficientes monedas (Necesitas 15 🪙).");
@@ -164,33 +159,32 @@ function useFiftyFifty() {
     const qData = currentQuestions[currentIndex];
     const allButtons = document.querySelectorAll('.answer-btn');
     
-    // Validar que queden opciones incorrectas visibles
-    let incorrectIndices = [];
+    let incorrectButtons = [];
     allButtons.forEach((b, idx) => {
-        if (idx !== qData.correct && b.style.visibility !== 'hidden') {
-            incorrectIndices.push(idx);
+        if (idx !== qData.correct && b.style.display !== 'none') {
+            incorrectButtons.push(b);
         }
     });
 
-    if (incorrectIndices.length === 0) {
+    if (incorrectButtons.length === 0) {
         alert("⚠️ Ya no hay más opciones para ocultar.");
         return;
     }
 
     updateCoins(-15);
     
-    // Ocultar hasta 2 incorrectas de las disponibles
+    // Ocultar hasta 2 incorrectas
+    incorrectButtons = shuffleArray(incorrectButtons);
     let hiddenCount = 0;
-    incorrectIndices = shuffleArray(incorrectIndices);
-    allButtons.forEach((btn, index) => {
-        if (index !== qData.correct && incorrectIndices.includes(index) && hiddenCount < 2) {
-            btn.style.visibility = 'hidden';
+    incorrectButtons.forEach(btn => {
+        if (hiddenCount < 2) {
+            btn.style.display = 'none';
             hiddenCount++;
         }
     });
 }
 
-// COMODÍN 2: Saltar pregunta (Cuesta 20 monedas)
+// Función Saltar Pregunta
 function useSkipQuestion() {
     if (coins < 20) {
         alert("❌ No tienes suficientes monedas (Necesitas 20 🪙).");
@@ -247,7 +241,6 @@ function endGame() {
     }
 }
 
-// Sistema de Anuncios con Cooldown de 45 segundos
 function watchAd() {
     if (!canWatchAd) return;
 
