@@ -118,12 +118,23 @@ function loadQuestion() {
 
 function checkAnswer(idx, btn) {
     const q = currentQuestions[currentIndex];
-    document.querySelectorAll('.answer-btn').forEach(b => b.disabled = true);
-    if (idx === q.correct) { btn.classList.add('correct'); score++; }
-    else { btn.classList.add('wrong'); document.querySelectorAll('.answer-btn'][q.correct].classList.add('correct'); }
-    setTimeout(() => { currentIndex++; loadQuestion(); }, 1000);
+    const allButtons = document.querySelectorAll('.answer-btn');
+    
+    allButtons.forEach(b => b.disabled = true);
+    
+    if (idx === q.correct) { 
+        btn.classList.add('correct'); 
+        score++; 
+    } else { 
+        btn.classList.add('wrong'); 
+        allButtons[q.correct].classList.add('correct'); 
+    }
+    
+    setTimeout(() => { 
+        currentIndex++; 
+        loadQuestion(); 
+    }, 1000);
 }
-
 function endGame() {
     showScreen('result-screen');
     let earned = score * 5;
