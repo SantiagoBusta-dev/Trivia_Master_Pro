@@ -13,14 +13,14 @@ const avatarsList = [
 ];
 
 const petsList = [
-    { id: 0, name: "Gatito Naranja", price: 0, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="55" rx="25" ry="20" fill="#fb923c"/><polygon points="30,40 20,20 40,30" fill="#fb923c"/><polygon points="70,40 80,20 60,30" fill="#fb923c"/><circle cx="40" cy="50" r="3" fill="#000"/><circle cx="60" cy="50" r="3" fill="#000"/></svg>` },
-    { id: 1, name: "Gatito Negrito", price: 150, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="55" rx="25" ry="20" fill="#334155"/><polygon points="30,40 20,20 40,30" fill="#334155"/><polygon points="70,40 80,20 60,30" fill="#334155"/><circle cx="40" cy="50" r="3" fill="#38bdf8"/><circle cx="60" cy="50" r="3" fill="#38bdf8"/></svg>` },
-    { id: 2, name: "Perrito Fiel", price: 200, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="55" rx="28" ry="20" fill="#d97706"/><ellipse cx="30" cy="50" rx="8" ry="15" fill="#b45309"/><ellipse cx="70" cy="50" rx="8" ry="15" fill="#b45309"/><circle cx="40" cy="50" r="3" fill="#000"/><circle cx="60" cy="50" r="3" fill="#000"/></svg>` },
-    { id: 3, name: "Conejito Saltarín", price: 250, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="60" rx="22" ry="18" fill="#e2e8f0"/><ellipse cx="42" cy="30" rx="5" ry="18" fill="#cbd5e1"/><ellipse cx="58" cy="30" rx="5" ry="18" fill="#cbd5e1"/><circle cx="42" cy="55" r="2" fill="#000"/><circle cx="58" cy="55" r="2" fill="#000"/></svg>` },
-    { id: 4, name: "Osito Tierno", price: 300, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="55" r="25" fill="#a16207"/><circle cx="30" cy="35" r="8" fill="#a16207"/><circle cx="70" cy="35" r="8" fill="#a16207"/><circle cx="42" cy="50" r="3" fill="#000"/><circle cx="58" cy="50" r="3" fill="#000"/></svg>` },
-    { id: 5, name: "Zorrito Astuto", price: 350, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><polygon points="50,35 30,65 70,65" fill="#f97316"/><polygon points="30,35 20,15 45,30" fill="#f97316"/><polygon points="70,35 80,15 55,30" fill="#f97316"/><circle cx="42" cy="50" r="3" fill="#fff"/><circle cx="58" cy="50" r="3" fill="#fff"/></svg>` },
-    { id: 6, name: "Panda Amigable", price: 400, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="55" r="25" fill="#f8fafc"/><circle cx="32" cy="35" r="9" fill="#0f172a"/><circle cx="68" cy="35" r="9" fill="#0f172a"/><circle cx="40" cy="52" r="5" fill="#0f172a"/><circle cx="60" cy="52" r="5" fill="#0f172a"/></svg>` },
-    { id: 7, name: "Búho Sabio", price: 500, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="55" rx="22" ry="25" fill="#64748b"/><circle cx="38" cy="45" r="8" fill="#fef08a"/><circle cx="62" cy="45" r="8" fill="#fef08a"/><circle cx="38" cy="45" r="3" fill="#000"/><circle cx="62" cy="45" r="3" fill="#000"/></svg>` }
+    { id: 0, name: "Gatito Naranja", price: 0, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="20" ry="25" fill="#fb923c"/><circle cx="50" cy="38" r="18" fill="#fb923c"/><polygon points="37,25 30,10 44,22" fill="#fb923c"/><polygon points="63,25 70,10 56,22" fill="#fb923c"/><circle cx="43" cy="36" r="2.5" fill="#000"/><circle cx="57" cy="36" r="2.5" fill="#000"/><path d="M 35 75 Q 50 90 65 75" fill="none" stroke="#fb923c" stroke-width="6" stroke-linecap="round"/><ellipse cx="38" cy="58" rx="5" ry="8" fill="#fdba74" class="anim-paw"/></svg>` },
+    { id: 1, name: "Gatito Negrito", price: 150, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="20" ry="25" fill="#334155"/><circle cx="50" cy="38" r="18" fill="#334155"/><polygon points="37,25 30,10 44,22" fill="#334155"/><polygon points="63,25 70,10 56,22" fill="#334155"/><circle cx="43" cy="36" r="2.5" fill="#38bdf8"/><circle cx="57" cy="36" r="2.5" fill="#38bdf8"/><path d="M 35 75 Q 50 90 65 75" fill="none" stroke="#334155" stroke-width="6" stroke-linecap="round"/><ellipse cx="38" cy="58" rx="5" ry="8" fill="#64748b" class="anim-paw"/></svg>` },
+    { id: 2, name: "Perrito Fiel", price: 200, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="22" ry="25" fill="#d97706"/><ellipse cx="50" cy="40" rx="19" ry="17" fill="#d97706"/><ellipse cx="34" cy="40" rx="6" ry="12" fill="#b45309"/><ellipse cx="66" cy="40" rx="6" ry="12" fill="#b45309"/><circle cx="42" cy="38" r="2.5" fill="#000"/><circle cx="58" cy="38" r="2.5" fill="#000"/><path d="M 68 75 Q 85 65 80 50" fill="none" stroke="#d97706" stroke-width="5" stroke-linecap="round" class="anim-tail"/></svg>` },
+    { id: 3, name: "Conejito Saltarín", price: 250, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="68" rx="18" ry="22" fill="#e2e8f0"/><circle cx="50" cy="45" r="15" fill="#e2e8f0"/><ellipse cx="44" cy="22" rx="4" ry="15" fill="#cbd5e1"/><ellipse cx="56" cy="22" rx="4" ry="15" fill="#cbd5e1"/><circle cx="43" cy="43" r="2" fill="#000"/><circle cx="57" cy="43" r="2" fill="#000"/></svg>` },
+    { id: 4, name: "Osito Tierno", price: 300, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="22" ry="25" fill="#a16207"/><circle cx="50" cy="40" r="18" fill="#a16207"/><circle cx="35" cy="26" r="6" fill="#a16207"/><circle cx="65" cy="26" r="6" fill="#a16207"/><circle cx="42" cy="38" r="2.5" fill="#000"/><circle cx="58" cy="38" r="2.5" fill="#000"/></svg>` },
+    { id: 5, name: "Zorrito Astuto", price: 350, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><polygon points="50,45 32,78 68,78" fill="#f97316"/><polygon points="50,30 32,55 68,55" fill="#f97316"/><polygon points="32,38 20,18 42,32" fill="#f97316"/><polygon points="68,38 80,18 58,32" fill="#f97316"/><circle cx="42" cy="45" r="2.5" fill="#fff"/><circle cx="58" cy="45" r="2.5" fill="#fff"/></svg>` },
+    { id: 6, name: "Panda Amigable", price: 400, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="22" ry="25" fill="#f8fafc"/><circle cx="50" cy="40" r="18" fill="#f8fafc"/><circle cx="36" cy="38" r="7" fill="#0f172a"/><circle cx="64" cy="38" r="7" fill="#0f172a"/><circle cx="43" cy="38" r="2.5" fill="#0f172a"/><circle cx="57" cy="38" r="2.5" fill="#0f172a"/></svg>` },
+    { id: 7, name: "Búho Sabio", price: 500, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="60" rx="20" ry="25" fill="#64748b"/><circle cx="38" cy="48" r="7" fill="#fef08a"/><circle cx="62" cy="48" r="7" fill="#fef08a"/><circle cx="38" cy="48" r="2.5" fill="#000"/><circle cx="62" cy="48" r="2.5" fill="#000"/></svg>` }
 ];
 
 // --- 2. SISTEMA DE COOLDOWN PARA MONEDAS / ANUNCIOS (1 HORA) ---
@@ -180,13 +180,13 @@ function renderShop() {
     if (!shopContainer) return;
 
     shopContainer.innerHTML = `
-        <div style="margin-bottom: 20px;">
-            <h3>Avatares</h3>
-            <div id="shop-avatars-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"></div>
+        <div style="margin-bottom: 16px;">
+            <div class="shop-category-title">Avatares</div>
+            <div id="shop-avatars-grid" class="shop-items"></div>
         </div>
         <div>
-            <h3>Mascotas</h3>
-            <div id="shop-pets-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"></div>
+            <div class="shop-category-title">Mascotas</div>
+            <div id="shop-pets-grid" class="shop-items"></div>
         </div>
     `;
 
@@ -194,11 +194,11 @@ function renderShop() {
     avatarsList.forEach(av => {
         const owned = gameState.ownedAvatars && gameState.ownedAvatars.includes(av.id);
         const card = document.createElement('div');
-        card.style.cssText = "background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; text-align: center;";
+        card.className = 'shop-item-card';
         card.innerHTML = `
-            <div style="width: 50px; height: 50px; margin: 0 auto;">${av.svg}</div>
-            <p style="font-size: 14px; margin: 5px 0;">${av.name}</p>
-            <button class="btn ${owned ? 'secondary-btn' : 'primary-btn'}" style="font-size: 12px; padding: 5px 10px;">
+            <div class="shop-item-visual">${av.svg}</div>
+            <p style="font-size: 13px; margin: 4px 0; font-weight: 600;">${av.name}</p>
+            <button class="btn ${owned ? 'secondary-btn' : 'primary-btn'}">
                 ${owned ? 'Comprado' : `🪙 ${av.price}`}
             </button>
         `;
@@ -225,11 +225,11 @@ function renderShop() {
         const owned = gameState.ownedPets && gameState.ownedPets.includes(pet.id);
         const isCurrent = activePetId === pet.id;
         const card = document.createElement('div');
-        card.style.cssText = "background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; text-align: center;";
+        card.className = 'shop-item-card';
         card.innerHTML = `
-            <div style="width: 50px; height: 50px; margin: 0 auto;">${pet.svg}</div>
-            <p style="font-size: 14px; margin: 5px 0;">${pet.name}</p>
-            <button class="btn ${isCurrent ? 'secondary-btn' : 'primary-btn'}" style="font-size: 12px; padding: 5px 10px;">
+            <div class="shop-item-visual">${pet.svg}</div>
+            <p style="font-size: 13px; margin: 4px 0; font-weight: 600;">${pet.name}</p>
+            <button class="btn ${isCurrent ? 'secondary-btn' : 'primary-btn'}">
                 ${isCurrent ? 'Activa' : (owned ? 'Seleccionar' : `🪙 ${pet.price}`)}
             </button>
         `;
