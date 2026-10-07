@@ -35,22 +35,31 @@ body {
     padding-bottom: 10px;
 }
 
-.profile-badge {
+.profile-circle {
+    width: 40px;
+    height: 40px;
     background: #1e293b;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-weight: 600;
-    border: 1px solid #475569;
-    font-size: 0.9rem;
+    border: 2px solid #38bdf8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s;
 }
+.profile-circle:hover { transform: scale(1.05); }
 
 .coins-badge {
     background: #1e293b;
-    padding: 5px 12px;
+    padding: 6px 14px;
     border-radius: 20px;
     font-weight: 600;
     border: 1px solid #475569;
+    cursor: pointer;
+    transition: background 0.2s;
 }
+.coins-badge:hover { background: #334155; }
 
 .screen {
     display: none;
@@ -65,12 +74,12 @@ body {
 h2 {
     font-size: 1.4rem;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .subtitle {
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #94a3b8;
     margin-top: -10px;
 }
@@ -83,9 +92,9 @@ h2 {
 
 .levels-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    max-height: 300px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    max-height: 320px;
     overflow-y: auto;
 }
 
@@ -99,50 +108,34 @@ h2 {
     transition: transform 0.1s, background 0.2s;
     text-align: center;
 }
+.btn:active { transform: scale(0.97); }
 
-.btn:active {
-    transform: scale(0.97);
-}
-
-.primary-btn {
-    background: #38bdf8;
-    color: #0f172a;
-}
+.primary-btn { background: #38bdf8; color: #0f172a; }
 .primary-btn:hover { background: #0ea5e9; }
 
-.secondary-btn {
-    background: #334155;
-    color: #fff;
-}
+.secondary-btn { background: #334155; color: #fff; }
 .secondary-btn:hover { background: #475569; }
 
-.shop-btn {
-    background: #10b981;
-    color: white;
-}
+.event-btn { background: #f59e0b; color: #0f172a; }
+.event-btn:hover { background: #d97706; }
+
+.shop-btn { background: #10b981; color: white; }
 .shop-btn:hover { background: #059669; }
+
+.leaderboard-btn { background: #8b5cf6; color: white; }
+.leaderboard-btn:hover { background: #7c3aed; }
 
 .level-btn {
     background: #1e293b;
     border: 1px solid #475569;
     color: white;
-    padding: 15px;
-    border-radius: 10px;
+    padding: 12px;
+    border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
 }
-
-.level-btn.locked {
-    background: #090d16;
-    color: #475569;
-    border-color: #1e293b;
-    cursor: not-allowed;
-}
-
-.level-btn:not(.locked):hover {
-    background: #38bdf8;
-    color: #0f172a;
-}
+.level-btn.locked { background: #090d16; color: #475569; border-color: #1e293b; cursor: not-allowed; }
+.level-btn:not(.locked):hover { background: #38bdf8; color: #0f172a; }
 
 .btn-back {
     background: transparent;
@@ -208,30 +201,55 @@ h2 {
     font-size: 0.95rem;
 }
 .answer-btn:hover { background: #334155; }
-
 .answer-btn.correct { background: #22c55e !important; border-color: #16a34a; }
 .answer-btn.wrong { background: #ef4444 !important; border-color: #dc2626; }
 
-.result-stats, .shop-section {
+.profile-form {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.profile-form input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #475569;
+    background: #0f172a;
+    color: white;
+    font-size: 1rem;
+}
+
+.reward-section, .event-card, .shop-item-card {
     background: #1e293b;
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 12px;
     text-align: center;
+    border: 1px solid #334155;
 }
+.reward-btn { background: #10b981; color: white; width: 100%; padding: 10px; margin-top: 8px; }
+.reward-btn:hover { background: #059669; }
 
-.reward-section {
+.ad-timer-text { font-size: 0.85rem; color: #94a3b8; font-weight: 600; display: block; margin-top: 8px; }
+
+.leaderboard-list {
     background: #1e293b;
-    padding: 12px;
-    border-radius: 10px;
-    text-align: center;
-    border: 1px dashed #38bdf8;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 250px;
+    overflow-y: auto;
 }
-
-.reward-btn {
-    background: #10b981;
-    color: white;
-    width: 100%;
-    padding: 8px;
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: #0f172a;
+    border-radius: 6px;
+    font-size: 0.9rem;
 }
 
 .ad-banner {
