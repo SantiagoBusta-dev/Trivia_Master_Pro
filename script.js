@@ -1,4 +1,3 @@
-// Estado del juego con persistencia completa en localStorage
 let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     username: "Invitado",
     coins: 100,
@@ -10,7 +9,6 @@ let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     highScore: 0
 };
 
-// Tienda de Avatares
 const shopAvatars = [
     { id: "🤖", name: "Robot Base", price: 0 },
     { id: "😎", name: "Gafas Cool", price: 40 },
@@ -19,7 +17,6 @@ const shopAvatars = [
     { id: "👑", name: "Rey Legendario", price: 200 }
 ];
 
-// Tienda de Mascotas
 const shopPets = [
     { id: "🐱", name: "Gatito", price: 0 },
     { id: "🐶", name: "Perrito", price: 50 },
@@ -27,7 +24,6 @@ const shopPets = [
     { id: "🐉", name: "Dragón", price: 250 }
 ];
 
-// Niveles Fijos
 const fixedLevels = {
     1: [
         { q: "¿Cuál es el planeta más cercano al Sol?", options: ["Venus", "Mercurio", "Marte", "Júpiter"], correct: 1 },
@@ -52,7 +48,6 @@ const fixedLevels = {
     ]
 };
 
-// Generar niveles automáticos adicionales
 for (let i = 4; i <= 10; i++) {
     fixedLevels[i] = [
         { q: `Pregunta 1 del Nivel ${i}: ¿Cuánto es 5 + ${i}?`, options: [`${4+i}`, `${5+i}`, `${6+i}`, `${7+i}`], correct: 1 },
@@ -125,7 +120,6 @@ function renderCategories() {
 }
 
 function renderShop() {
-    // Renderizar Avatares
     const avatarContainer = document.getElementById('avatar-shop-container');
     avatarContainer.innerHTML = '';
     shopAvatars.forEach(av => {
@@ -145,7 +139,6 @@ function renderShop() {
         avatarContainer.appendChild(card);
     });
 
-    // Renderizar Mascotas
     const petContainer = document.getElementById('pet-shop-container');
     petContainer.innerHTML = '';
     shopPets.forEach(pet => {
@@ -347,14 +340,12 @@ function endGame() {
         document.getElementById('result-message').textContent = `¡Buen trabajo!`;
     }
 
-    // Actualizar récord personal / tabla real
     if (gameState.coins > gameState.highScore) {
         gameState.highScore = gameState.coins;
     }
     saveAndSyncState();
 }
 
-// Botón para volver directo al mapa de niveles al terminar un reto
 function returnToLevels() {
     renderLevels();
     showScreen('levels-screen');
