@@ -26,7 +26,7 @@ const petsList = [
 // --- 2. SISTEMA DE COOLDOWN PARA MONEDAS / ANUNCIOS (1 HORA) ---
 function checkCoinCooldown() {
     const lastClaim = localStorage.getItem('last_coin_claim');
-    const cooldownTime = 60 * 60 * 1000; // 1 hora en milisegundos
+    const cooldownTime = 60 * 60 * 1000;
     const now = new Date().getTime();
 
     if (lastClaim && (now - lastClaim < cooldownTime)) {
@@ -43,12 +43,9 @@ function claimBonusCoins() {
         return false;
     }
 
-    // Guardar el tiempo actual
     localStorage.setItem('last_coin_claim', new Date().getTime());
-    
-    // Sumar monedas (asumiendo que manejas una variable de monedas guardada)
     let currentCoins = parseInt(localStorage.getItem('user_coins') || '0');
-    currentCoins += 50; // Recompensa de ejemplo
+    currentCoins += 50;
     localStorage.setItem('user_coins', currentCoins);
     
     alert("¡Has reclamado 50 monedas con éxito!");
@@ -60,7 +57,6 @@ function renderStaticPet(containerId) {
     const targetContainer = document.getElementById(containerId);
     if (!targetContainer) return;
 
-    // Obtener la mascota seleccionada del usuario o la por defecto
     const activePetId = localStorage.getItem('active_pet_id') || 0;
     const currentPet = petsList[activePetId] || petsList[0];
 
@@ -71,7 +67,6 @@ function renderStaticPet(containerId) {
         </div>
     `;
 
-    // Interacción al hacer clic en la mascota
     const petElement = document.getElementById('footer-pet');
     const speechElement = document.getElementById('pet-speech');
     
@@ -91,7 +86,9 @@ function renderStaticPet(containerId) {
 let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     username: "Invitado",
     coins: 100,
-    unlockedLevels: 1
+    unlockedLevels: 1,
+    ownedAvatars: [0],
+    ownedPets: [0]
 };
 
 const fixedLevels = {
@@ -132,6 +129,10 @@ function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(screenId);
     if(target) target.classList.add('active');
+    
+    if (screenId === 'shop-screen') {
+        renderShop();
+    }
 }
 
 function updateCoins(amount) {
@@ -142,7 +143,8 @@ function updateCoins(amount) {
 function interactWithPet() {
     const phrases = ["¡Miau! A ganar 🐾", "¡Qué buena partida! ✨", "¡Dale con todo! 🚀"];
     const random = phrases[Math.floor(Math.random() * phrases.length)];
-    document.getElementById('pet-speech').textContent = random;
+    const speechEl = document.getElementById('pet-speech');
+    if(speechEl) speechEl.textContent = random;
 }
 
 function renderLevels() {
@@ -170,6 +172,90 @@ function renderCategories() {
         btn.onclick = () => startCategoryQuiz(cats[key]);
         grid.appendChild(btn);
     }
+}
+
+// --- 4. RENDERIZAR TIENDA DE AVATARES Y MASCOTAS ---
+function renderShop() {
+    const shopContainer = document.getElementById('shop-container') || document.getElementById('shop-items');
+    if (!shopContainer) return;
+
+    shopContainer.innerHTML = `
+        <div style="margin-bottom: 20px;">
+            <h3>Avatares</h3>
+            <div id="shop-avatars-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"></div>
+        </div>
+        <div>
+            <h3>Mascotas</h3>
+            <div id="shop-pets-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"></div>
+        </div>
+    `;
+
+    const avatarsGrid = document.getElementById('shop-avatars-grid');
+    avatarsList.forEach(av => {
+        const owned = gameState.ownedAvatars && gameState.ownedAvatars.includes(av.id);
+        const card = document.createElement('div');
+        card.style.cssText = "background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; text-align: center;";
+        card.innerHTML = `
+            <div style="width: 50px; height: 50px; margin: 0 auto;">${av.svg}</div>
+            <p style="font-size: 14px; margin: 5px 0;">${av.name}</p>
+            <button class="btn ${owned ? 'secondary-btn' : 'primary-btn'}" style="font-size: 12px; padding: 5px 10px;">
+                ${owned ? 'Comprado' : `🪙 ${av.price}`}
+            </button>
+        `;
+        card.querySelector('button').onclick = () => {
+            if (!owned) {
+                if (gameState.coins >= av.price) {
+                    gameState.coins -= av.price;
+                    if(!gameState.ownedAvatars) gameState.ownedAvatars = [0];
+                    gameState.ownedAvatars.push(av.id);
+                    saveAndSyncState();
+                    renderShop();
+                    alert(`¡Has comprado el avatar ${av.name}!`);
+                } else {
+                    alert("No tienes suficientes monedas.");
+                }
+            }
+        };
+        avatarsGrid.appendChild(card);
+    });
+
+    const petsGrid = document.getElementById('shop-pets-grid');
+    const activePetId = parseInt(localStorage.getItem('active_pet_id') || '0');
+    petsList.forEach(pet => {
+        const owned = gameState.ownedPets && gameState.ownedPets.includes(pet.id);
+        const isCurrent = activePetId === pet.id;
+        const card = document.createElement('div');
+        card.style.cssText = "background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; text-align: center;";
+        card.innerHTML = `
+            <div style="width: 50px; height: 50px; margin: 0 auto;">${pet.svg}</div>
+            <p style="font-size: 14px; margin: 5px 0;">${pet.name}</p>
+            <button class="btn ${isCurrent ? 'secondary-btn' : 'primary-btn'}" style="font-size: 12px; padding: 5px 10px;">
+                ${isCurrent ? 'Activa' : (owned ? 'Seleccionar' : `🪙 ${pet.price}`)}
+            </button>
+        `;
+        card.querySelector('button').onclick = () => {
+            if (isCurrent) return;
+            if (owned) {
+                localStorage.setItem('active_pet_id', pet.id);
+                renderStaticPet('footer-container');
+                renderShop();
+            } else {
+                if (gameState.coins >= pet.price) {
+                    gameState.coins -= pet.price;
+                    if(!gameState.ownedPets) gameState.ownedPets = [0];
+                    gameState.ownedPets.push(pet.id);
+                    localStorage.setItem('active_pet_id', pet.id);
+                    saveAndSyncState();
+                    renderStaticPet('footer-container');
+                    renderShop();
+                    alert(`¡Has adoptado a ${pet.name}!`);
+                } else {
+                    alert("No tienes suficientes monedas.");
+                }
+            }
+        };
+        petsGrid.appendChild(card);
+    });
 }
 
 function startLevel(num) {
@@ -225,6 +311,7 @@ function checkAnswer(idx, btn) {
         loadQuestion(); 
     }, 1000);
 }
+
 function endGame() {
     showScreen('result-screen');
     let earned = score * 5;
