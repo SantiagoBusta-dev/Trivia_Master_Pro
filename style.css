@@ -107,12 +107,6 @@ h2 {
     color: #38bdf8;
 }
 
-.subtitle {
-    font-size: 0.75rem;
-    color: #9ca3af;
-    margin-top: -6px;
-}
-
 .menu-buttons, .categories-grid {
     display: flex;
     flex-direction: column;
@@ -127,29 +121,61 @@ h2 {
     max-height: 220px;
 }
 
+/* --- TIENDA MEJORADA --- */
 .shop-scroll-area {
     overflow-y: auto;
-    max-height: 260px;
+    max-height: 420px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 14px;
     padding-right: 4px;
 }
 
-.shop-subtitle {
-    font-size: 0.85rem;
+.shop-category-title {
+    font-size: 0.95rem;
     color: #38bdf8;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #374151;
+    padding-bottom: 4px;
+}
+
+.shop-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.shop-item-card {
+    background: #1f2937;
+    padding: 10px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #374151;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.shop-item-visual {
+    width: 60px;
+    height: 70px;
+    margin: 0 auto 4px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn {
-    padding: 10px;
+    padding: 8px 10px;
     border: none;
-    border-radius: 10px;
-    font-size: 0.9rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
     text-align: center;
     transition: transform 0.1s;
+    width: 100%;
 }
 .btn:active { transform: scale(0.97); }
 
@@ -201,22 +227,6 @@ h2 {
     font-size: 0.9rem;
 }
 
-.lifelines-container {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-}
-
-.btn-lifeline {
-    background: #374151;
-    border: 1px solid #4b5563;
-    color: #38bdf8;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 0.7rem;
-    cursor: pointer;
-}
-
 .answers-grid {
     display: flex;
     flex-direction: column;
@@ -236,7 +246,7 @@ h2 {
 .answer-btn.correct { background: #22c55e !important; }
 .answer-btn.wrong { background: #ef4444 !important; }
 
-.profile-form, .reward-section, .event-card, .shop-item-card, .leaderboard-list {
+.profile-form, .event-card, .leaderboard-list {
     background: #1f2937;
     padding: 10px;
     border-radius: 10px;
@@ -244,39 +254,6 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 6px;
-}
-
-.full-body-showcase {
-    width: 70px;
-    height: 90px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.shop-items {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
-}
-
-.shop-item-card {
-    background: #111827;
-    padding: 8px;
-    border-radius: 8px;
-    text-align: center;
-    border: 1px solid #374151;
-    font-size: 0.75rem;
-}
-
-.shop-item-visual {
-    width: 50px;
-    height: 60px;
-    margin: 0 auto 2px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .profile-form input {
@@ -298,11 +275,24 @@ h2 {
     font-size: 0.8rem;
 }
 
-/* --- MASCOTA ESTÁTICA AL PIE DE PÁGINA --- */
+/* --- ANIMACIONES Y MASCOTAS DE CUERPO COMPLETO --- */
+@keyframes tailWag {
+    0%, 100% { transform: rotate(0deg); transform-origin: 65% 70%; }
+    50% { transform: rotate(20deg); transform-origin: 65% 70%; }
+}
+
+@keyframes pawClean {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(-15deg); transform-origin: 35% 65%; }
+}
+
 @keyframes petBreath {
     0%, 100% { transform: translateY(0) scale(1); }
     50% { transform: translateY(-3px) scale(1.02); }
 }
+
+.anim-tail { animation: tailWag 0.8s ease-in-out infinite; }
+.anim-paw { animation: pawClean 1.2s ease-in-out infinite; }
 
 .pet-container {
     display: inline-flex;
@@ -310,9 +300,9 @@ h2 {
     gap: 12px;
     background: #1e293b;
     border: 2px solid #334155;
-    padding: 8px 16px;
+    padding: 6px 14px;
     border-radius: 12px;
-    margin: 15px auto;
+    margin: 5px auto;
     animation: petBreath 3s ease-in-out infinite;
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
@@ -325,7 +315,7 @@ h2 {
 }
 
 .pet-visual-box {
-    width: 45px;
+    width: 40px;
     height: 45px;
     display: flex;
     align-items: center;
@@ -333,7 +323,7 @@ h2 {
 }
 
 .pet-bubble {
-    font-size: 14px;
+    font-size: 13px;
     color: #f8fafc;
     font-weight: 500;
 }
