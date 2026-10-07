@@ -8,23 +8,19 @@ let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     ownedPets: ["cat"]
 };
 
-// Avatares de cuerpo completo vectoriales con brazos, piernas y ropa personalizable
+// Avatares vectoriales de cuerpo completo
 const shopOutfits = [
     { 
         id: "casual", 
         name: "Ropa Casual", 
         price: 0,
         svg: `<svg viewBox="0 0 100 120" width="45" height="65">
-            <!-- Cabeza -->
             <circle cx="50" cy="22" r="14" fill="#ffccbc"/>
             <circle cx="45" cy="20" r="2" fill="#000"/><circle cx="55" cy="20" r="2" fill="#000"/>
             <path d="M 46 27 Q 50 31 54 27" stroke="#c2410c" stroke-width="1.5" fill="none"/>
-            <!-- Torso / Remera -->
             <rect x="38" y="38" width="24" height="30" rx="4" fill="#38bdf8"/>
-            <!-- Brazos con extremidades -->
             <line x1="38" y1="42" x2="25" y2="55" stroke="#ffccbc" stroke-width="4" stroke-linecap="round"/>
             <line x1="62" y1="42" x2="75" y2="55" stroke="#ffccbc" stroke-width="4" stroke-linecap="round"/>
-            <!-- Piernas -->
             <line x1="44" y1="68" x2="42" y2="95" stroke="#1e293b" stroke-width="5" stroke-linecap="round"/>
             <line x1="56" y1="68" x2="58" y2="95" stroke="#1e293b" stroke-width="5" stroke-linecap="round"/>
         </svg>`
@@ -34,24 +30,20 @@ const shopOutfits = [
         name: "Superhéroe", 
         price: 50,
         svg: `<svg viewBox="0 0 100 120" width="45" height="65">
-            <!-- Cabeza y antifaz -->
             <circle cx="50" cy="22" r="14" fill="#ffccbc"/>
             <path d="M 40 18 L 60 18 L 58 24 L 42 24 Z" fill="#1e293b"/>
             <circle cx="45" cy="21" r="1.5" fill="#fff"/><circle cx="55" cy="21" r="1.5" fill="#fff"/>
             <path d="M 46 27 Q 50 30 54 27" stroke="#c2410c" stroke-width="1.5" fill="none"/>
-            <!-- Torso con capa y traje -->
             <path d="M 35 36 L 50 32 L 65 36 L 62 70 L 38 70 Z" fill="#ef4444"/>
-            <!-- Brazos -->
             <line x1="38" y1="42" x2="25" y2="55" stroke="#ffccbc" stroke-width="4" stroke-linecap="round"/>
             <line x1="62" y1="42" x2="75" y2="55" stroke="#ffccbc" stroke-width="4" stroke-linecap="round"/>
-            <!-- Piernas -->
             <line x1="44" y1="70" x2="42" y2="95" stroke="#374151" stroke-width="5" stroke-linecap="round"/>
             <line x1="56" y1="70" x2="58" y2="95" stroke="#374151" stroke-width="5" stroke-linecap="round"/>
         </svg>`
     }
 ];
 
-// Mascotas reales con diseño vectorial (cuerpo, orejas, patitas)
+// Mascotas vectoriales reales
 const shopPets = [
     { 
         id: "cat", 
