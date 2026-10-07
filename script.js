@@ -2,48 +2,93 @@ let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     username: "Invitado",
     coins: 100,
     unlockedLevels: 1,
-    currentOutfit: "batman",
-    ownedOutfits: ["batman"],
+    currentOutfit: "casual",
+    ownedOutfits: ["casual"],
     currentPet: "cat",
     ownedPets: ["cat"]
 };
 
+// Avatares de cuerpo completo vectoriales con brazos, piernas y ropa personalizable
 const shopOutfits = [
     { 
-        id: "batman", 
-        name: "Héroe Nocturno", 
+        id: "casual", 
+        name: "Ropa Casual", 
         price: 0,
-        svg: `<svg viewBox="0 0 100 100" width="30" height="30"><circle cx="50" cy="55" r="26" fill="#ffccbc"/><path d="M 28 45 L 34 14 L 47 34 L 53 34 L 66 14 L 72 45 Z" fill="#1e293b"/><circle cx="41" cy="46" r="4" fill="#fff"/><circle cx="59" cy="46" r="4" fill="#fff"/><circle cx="41" cy="46" r="1.5" fill="#000"/><circle cx="59" cy="46" r="1.5" fill="#000"/><path d="M 45 56 Q 50 62 55 56" stroke="#c2410c" stroke-width="2.5" fill="none"/></svg>`
+        svg: `<svg viewBox="0 0 100 120" width="45" height="65">
+            <!-- Cabeza -->
+            <circle cx="50" cy="22" r="14" fill="#ffccbc"/>
+            <circle cx="45" cy="20" r="2" fill="#000"/><circle cx="55" cy="20" r="2" fill="#000"/>
+            <path d="M 46 27 Q 50 31 54 27" stroke="#c2410c" stroke-width="1.5" fill="none"/>
+            <!-- Torso / Remera -->
+            <rect x="38" y="38" width="24" height="30" rx="4" fill="#38bdf8"/>
+            <!-- Brazos con extremidades -->
+            <line x1="38" y1="42" x2="25" y2="55" stroke="#ffccbc" stroke-width="4" stroke-linecap="round"/>
+            <line x1="62" y1="42" x2="75" y2="55" stroke="#ffccbc" stroke-width="4" stroke-linecap="round"/>
+            <!-- Piernas -->
+            <line x1="44" y1="68" x2="42" y2="95" stroke="#1e293b" stroke-width="5" stroke-linecap="round"/>
+            <line x1="56" y1="68" x2="58" y2="95" stroke="#1e293b" stroke-width="5" stroke-linecap="round"/>
+        </svg>`
     },
     { 
-        id: "dino", 
-        name: "Disfraz Dino", 
-        price: 40,
-        svg: `<svg viewBox="0 0 100 100" width="30" height="30"><circle cx="50" cy="55" r="26" fill="#ffccbc"/><path d="M 26 42 Q 50 10 74 42 L 70 58 L 30 58 Z" fill="#22c55e"/><polygon points="42,20 46,10 50,20" fill="#86efac"/><polygon points="50,20 54,10 58,20" fill="#86efac"/><circle cx="41" cy="46" r="4" fill="#fff"/><circle cx="59" cy="46" r="4" fill="#fff"/><circle cx="41" cy="46" r="1.5" fill="#000"/><circle cx="59" cy="46" r="1.5" fill="#000"/><path d="M 45 56 Q 50 62 55 56" stroke="#15803d" stroke-width="2.5" fill="none"/></svg>`
+        id: "hero", 
+        name: "Superhéroe", 
+        price: 50,
+        svg: `<svg viewBox="0 0 100 120" width="45" height="65">
+            <!-- Cabeza y antifaz -->
+            <circle cx="50" cy="22" r="14" fill="#ffccbc"/>
+            <path d="M 40 18 L 60 18 L 58 24 L 42 24 Z" fill="#1e293b"/>
+            <circle cx="45" cy="21" r="1.5" fill="#fff"/><circle cx="55" cy="21" r="1.5" fill="#fff"/>
+            <path d="M 46 27 Q 50 30 54 27" stroke="#c2410c" stroke-width="1.5" fill="none"/>
+            <!-- Torso con capa y traje -->
+            <path d="M 35 36 L 50 32 L 65 36 L 62 70 L 38 70 Z" fill="#ef4444"/>
+            <!-- Brazos -->
+            <line x1="38" y1="42" x2="25" y2="55" stroke="#ffccbc" stroke-width="4" stroke-linecap="round"/>
+            <line x1="62" y1="42" x2="75" y2="55" stroke="#ffccbc" stroke-width="4" stroke-linecap="round"/>
+            <!-- Piernas -->
+            <line x1="44" y1="70" x2="42" y2="95" stroke="#374151" stroke-width="5" stroke-linecap="round"/>
+            <line x1="56" y1="70" x2="58" y2="95" stroke="#374151" stroke-width="5" stroke-linecap="round"/>
+        </svg>`
     }
 ];
 
+// Mascotas reales con diseño vectorial (cuerpo, orejas, patitas)
 const shopPets = [
     { 
         id: "cat", 
-        name: "Gatito Naranja", 
+        name: "Gatito Copión", 
         price: 0,
-        svg: `<svg viewBox="0 0 100 100" width="32" height="32"><circle cx="50" cy="55" r="28" fill="#fb923c"/><polygon points="28,36 33,12 46,30" fill="#fb923c"/><polygon points="72,36 67,12 54,30" fill="#fb923c"/><circle cx="40" cy="50" r="5" fill="#fff"/><circle cx="60" cy="50" r="5" fill="#fff"/><circle cx="40" cy="50" r="2.5" fill="#000"/><circle cx="60" cy="50" r="2.5" fill="#000"/><polygon points="50,57 47,54 53,54" fill="#c2410c"/><path d="M 45 62 Q 50 68 55 62" stroke="#c2410c" stroke-width="2.5" fill="none"/></svg>`
+        svg: `<svg viewBox="0 0 100 100" width="38" height="38">
+            <circle cx="50" cy="55" r="24" fill="#fb923c"/>
+            <polygon points="32,38 36,16 46,32" fill="#fb923c"/>
+            <polygon points="68,38 64,16 54,32" fill="#fb923c"/>
+            <circle cx="41" cy="50" r="3.5" fill="#fff"/><circle cx="59" cy="50" r="3.5" fill="#fff"/>
+            <circle cx="41" cy="50" r="1.5" fill="#000"/><circle cx="59" cy="50" r="1.5" fill="#000"/>
+            <polygon points="50,56 47,53 53,53" fill="#c2410c"/>
+            <path d="M 46 62 Q 50 67 54 62" stroke="#c2410c" stroke-width="2" fill="none"/>
+        </svg>`
     },
     { 
         id: "bunny", 
-        name: "Conepín", 
-        price: 50,
-        svg: `<svg viewBox="0 0 100 100" width="32" height="32"><ellipse cx="40" cy="20" rx="6" ry="16" fill="#e5e7eb"/><ellipse cx="60" cy="20" rx="6" ry="16" fill="#e5e7eb"/><circle cx="50" cy="60" r="28" fill="#e5e7eb"/><circle cx="40" cy="55" r="5" fill="#fff"/><circle cx="60" cy="55" r="5" fill="#fff"/><circle cx="40" cy="55" r="2.5" fill="#000"/><circle cx="60" cy="55" r="2.5" fill="#000"/><polygon points="50,63 48,60 52,60" fill="#ec4899"/><path d="M 45 68 Q 50 73 55 68" stroke="#9ca3af" stroke-width="2.5" fill="none"/></svg>`
+        name: "Conejito Saltarín", 
+        price: 40,
+        svg: `<svg viewBox="0 0 100 100" width="38" height="38">
+            <ellipse cx="40" cy="20" rx="5" ry="14" fill="#e5e7eb"/>
+            <ellipse cx="60" cy="20" rx="5" ry="14" fill="#e5e7eb"/>
+            <circle cx="50" cy="58" r="24" fill="#e5e7eb"/>
+            <circle cx="41" cy="54" r="3.5" fill="#fff"/><circle cx="59" cy="54" r="3.5" fill="#fff"/>
+            <circle cx="41" cy="54" r="1.5" fill="#000"/><circle cx="59" cy="54" r="1.5" fill="#000"/>
+            <polygon points="50,60 48,58 52,58" fill="#ec4899"/>
+            <path d="M 46 65 Q 50 69 54 65" stroke="#9ca3af" stroke-width="2" fill="none"/>
+        </svg>`
     }
 ];
 
 const petPhrases = [
-    "¡Hola! Tócame para hablar 🐾",
+    "¡Hola! Tócame para charlar 🐾",
     "¡Miau! ¿Qué nivel jugamos hoy?",
-    "¡Excelente elección de avatar! ✨",
+    "¡Qué facha tiene ese traje! ✨",
     "¡A ganar monedas hoy! 🪙",
-    "¡Listo para responder! 💛"
+    "¡Vamos con todo! 💛"
 ];
 
 const fixedLevels = {
@@ -85,6 +130,8 @@ function saveAndSyncState() {
 
     const outfitObj = shopOutfits.find(o => o.id === gameState.currentOutfit) || shopOutfits[0];
     document.getElementById('header-avatar-svg').innerHTML = outfitObj.svg;
+    const profileFull = document.getElementById('profile-avatar-full');
+    if (profileFull) profileFull.innerHTML = outfitObj.svg;
 
     const petObj = shopPets.find(p => p.id === gameState.currentPet) || shopPets[0];
     document.getElementById('companion-pet-svg').innerHTML = petObj.svg;
@@ -250,7 +297,7 @@ function checkAnswer(idx, btn) {
     const q = currentQuestions[currentIndex];
     document.querySelectorAll('.answer-btn').forEach(b => b.disabled = true);
     if (idx === q.correct) { btn.classList.add('correct'); score++; }
-    else { btn.classList.add('wrong'); document.querySelectorAll('.answer-btn')[q.correct].classList.add('correct'); }
+    else { btn.classList.add('wrong'); document.querySelectorAll('.answer-btn'][q.correct].classList.add('correct'); }
     setTimeout(() => { currentIndex++; loadQuestion(); }, 1000);
 }
 
