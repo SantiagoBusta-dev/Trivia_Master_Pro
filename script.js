@@ -2,29 +2,117 @@ let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     username: "Invitado",
     coins: 100,
     unlockedLevels: 1,
-    bodyType: "🧍‍♂️",
-    currentOutfit: "👕",
-    ownedOutfits: ["👕"],
-    currentPet: "🐱",
-    ownedPets: ["🐱"],
+    currentOutfit: "batman",
+    ownedOutfits: ["batman"],
+    currentPet: "cat",
+    ownedPets: ["cat"],
     highScore: 0
 };
 
-// Tienda de Ropa / Vestimenta para el cuerpo
+// Definición de avatares estilo Cartoon / Chibi con disfraces divertidos
 const shopOutfits = [
-    { id: "👕", name: "Camiseta Básica", price: 0 },
-    { id: "🧥", name: "Abrigo Elegante", price: 40 },
-    { id: "🦺", name: "Chaleco Pro", price: 70 },
-    { id: "🦸‍♂️", name: "Capa de Héroe", price: 120 },
-    { id: "👑", name: "Armadura Real", price: 200 }
+    { 
+        id: "batman", 
+        name: "Héroe Nocturno", 
+        price: 0,
+        svg: `<svg viewBox="0 0 100 100" width="40" height="40">
+                <circle cx="50" cy="55" r="24" fill="#ffccbc"/>
+                <!-- Capucha / Antifaz tipo Batman -->
+                <path d="M 30 45 L 35 15 L 48 35 L 52 35 L 65 15 L 70 45 Z" fill="#263238"/>
+                <circle cx="42" cy="46" r="4" fill="#fff"/>
+                <circle cx="58" cy="46" r="4" fill="#fff"/>
+                <circle cx="42" cy="46" r="1.5" fill="#000"/>
+                <circle cx="58" cy="46" r="1.5" fill="#000"/>
+                <path d="M 45 55 Q 50 60 55 55" stroke="#d84315" stroke-width="2" fill="none"/>
+              </svg>`
+    },
+    { 
+        id: "dino", 
+        name: "Disfraz de Dino", 
+        price: 40,
+        svg: `<svg viewBox="0 0 100 100" width="40" height="40">
+                <circle cx="50" cy="55" r="24" fill="#ffccbc"/>
+                <!-- Capucha de Dinosaurio Verde -->
+                <path d="M 26 40 Q 50 10 74 40 L 70 55 L 30 55 Z" fill="#4caf50"/>
+                <polygon points="40,22 45,12 50,22" fill="#81c784"/>
+                <polygon points="50,22 55,12 60,22" fill="#81c784"/>
+                <circle cx="42" cy="46" r="4" fill="#fff"/>
+                <circle cx="58" cy="46" r="4" fill="#fff"/>
+                <circle cx="42" cy="46" r="1.5" fill="#000"/>
+                <circle cx="58" cy="46" r="1.5" fill="#000"/>
+                <path d="M 46 56 Q 50 61 54 56" stroke="#2e7d32" stroke-width="2" fill="none"/>
+              </svg>`
+    },
+    { 
+        id: "shark", 
+        name: "Disfraz de Tiburón", 
+        price: 80,
+        svg: `<svg viewBox="0 0 100 100" width="40" height="40">
+                <circle cx="50" cy="55" r="24" fill="#ffccbc"/>
+                <!-- Capucha de Tiburón Azul -->
+                <path d="M 25 45 Q 50 12 75 45 L 70 58 L 30 58 Z" fill="#03a9f4"/>
+                <polygon points="50,15 62,28 50,28" fill="#0288d1"/>
+                <circle cx="42" cy="46" r="4" fill="#fff"/>
+                <circle cx="58" cy="46" r="4" fill="#fff"/>
+                <circle cx="42" cy="46" r="1.5" fill="#000"/>
+                <circle cx="58" cy="46" r="1.5" fill="#000"/>
+                <path d="M 46 56 Q 50 61 54 56" stroke="#01579b" stroke-width="2" fill="none"/>
+              </svg>`
+    },
+    { 
+        id: "bear", 
+        name: "Disfraz de Osito", 
+        price: 120,
+        svg: `<svg viewBox="0 0 100 100" width="40" height="40">
+                <circle cx="50" cy="55" r="24" fill="#ffccbc"/>
+                <!-- Capucha de Oso -->
+                <circle cx="32" cy="28" r="10" fill="#8d6e63"/>
+                <circle cx="68" cy="28" r="10" fill="#8d6e63"/>
+                <path d="M 28 48 Q 50 15 72 48 L 70 58 L 30 58 Z" fill="#8d6e63"/>
+                <circle cx="42" cy="46" r="4" fill="#fff"/>
+                <circle cx="58" cy="46" r="4" fill="#fff"/>
+                <circle cx="42" cy="46" r="1.5" fill="#000"/>
+                <circle cx="58" cy="46" r="1.5" fill="#000"/>
+                <circle cx="50" cy="54" r="4" fill="#efebe9"/>
+                <path d="M 46 58 Q 50 63 54 58" stroke="#4e342e" stroke-width="2" fill="none"/>
+              </svg>`
+    }
 ];
 
-// Tienda de Mascotas Exploradoras
+// Definición de Mascotas Cartoon
 const shopPets = [
-    { id: "🐱", name: "Gatito", price: 0 },
-    { id: "🐶", name: "Perrito", price: 50 },
-    { id: "👻", name: "Fantasmita", price: 100 },
-    { id: "🐉", name: "Dragón", price: 250 }
+    { 
+        id: "cat", 
+        name: "Gatito Naranja", 
+        price: 0,
+        svg: `<svg viewBox="0 0 100 100" width="50" height="50">
+                <circle cx="50" cy="55" r="26" fill="#ffa726"/>
+                <polygon points="30,35 34,15 46,30" fill="#ffa726"/>
+                <polygon points="70,35 66,15 54,30" fill="#ffa726"/>
+                <circle cx="41" cy="50" r="5" fill="#fff"/>
+                <circle cx="41" cy="50" r="2.5" fill="#000"/>
+                <circle cx="59" cy="50" r="5" fill="#fff"/>
+                <circle cx="59" cy="50" r="2.5" fill="#000"/>
+                <polygon points="50,57 47,54 53,54" fill="#d84315"/>
+                <path d="M 45 61 Q 50 66 55 61" stroke="#d84315" stroke-width="2" fill="none"/>
+              </svg>`
+    },
+    { 
+        id: "bunny", 
+        name: "Conepín", 
+        price: 50,
+        svg: `<svg viewBox="0 0 100 100" width="50" height="50">
+                <ellipse cx="40" cy="22" rx="6" ry="16" fill="#e0e0e0"/>
+                <ellipse cx="60" cy="22" rx="6" ry="16" fill="#e0e0e0"/>
+                <circle cx="50" cy="60" r="26" fill="#e0e0e0"/>
+                <circle cx="41" cy="55" r="5" fill="#fff"/>
+                <circle cx="41" cy="55" r="2.5" fill="#000"/>
+                <circle cx="59" cy="55" r="5" fill="#fff"/>
+                <circle cx="59" cy="55" r="2.5" fill="#000"/>
+                <polygon points="50,62 48,60 52,60" fill="#e91e63"/>
+                <path d="M 46 66 Q 50 70 54 66" stroke="#9e9e9e" stroke-width="2" fill="none"/>
+              </svg>`
+    }
 ];
 
 const fixedLevels = {
@@ -79,10 +167,15 @@ window.onload = function() {
 function saveAndSyncState() {
     localStorage.setItem('triviaMasterState', JSON.stringify(gameState));
     document.getElementById('coin-count').textContent = gameState.coins;
-    document.getElementById('header-body').textContent = gameState.bodyType;
-    document.getElementById('header-outfit').textContent = gameState.currentOutfit;
-    document.getElementById('wandering-pet').textContent = gameState.currentPet;
     document.getElementById('welcome-msg').textContent = `¡Hola, ${gameState.username}!`;
+
+    // Renderizar Avatar actual en cabecera
+    const currentOutfitObj = shopOutfits.find(o => o.id === gameState.currentOutfit) || shopOutfits[0];
+    document.getElementById('header-avatar-svg').innerHTML = currentOutfitObj.svg;
+
+    // Renderizar Mascota actual flotando por pantalla
+    const currentPetObj = shopPets.find(p => p.id === gameState.currentPet) || shopPets[0];
+    document.getElementById('wandering-pet').innerHTML = currentPetObj.svg;
 }
 
 function showScreen(screenId) {
@@ -133,7 +226,7 @@ function renderShop() {
         const card = document.createElement('div');
         card.className = 'shop-item-card';
         card.innerHTML = `
-            <span style="font-size: 2rem;">${item.id}</span>
+            <div class="shop-item-visual">${item.svg}</div>
             <h4>${item.name}</h4>
             <p>${item.price === 0 ? 'Gratis' : item.price + ' 🪙'}</p>
             <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" onclick="selectOrBuyOutfit('${item.id}', ${item.price})">
@@ -152,7 +245,7 @@ function renderShop() {
         const card = document.createElement('div');
         card.className = 'shop-item-card';
         card.innerHTML = `
-            <span style="font-size: 2rem;">${pet.id}</span>
+            <div class="shop-item-visual">${pet.svg}</div>
             <h4>${pet.name}</h4>
             <p>${pet.price === 0 ? 'Gratis' : pet.price + ' 🪙'}</p>
             <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" onclick="selectOrBuyPet('${pet.id}', ${pet.price})">
@@ -390,6 +483,6 @@ function openLeaderboard() {
     list.innerHTML = `
         <div class="leaderboard-item"><span>1. 👑 MasterPro</span><span>🪙 850</span></div>
         <div class="leaderboard-item"><span>2. 🧙‍♂️ SabioTrivia</span><span>🪙 520</span></div>
-        <div class="leaderboard-item"><span>3. ${gameState.bodyType}${gameState.currentOutfit} ${gameState.username} (Tú)</span><span>🪙 ${gameState.coins}</span></div>
+        <div class="leaderboard-item"><span>3. 🦸‍♂️ ${gameState.username} (Tú)</span><span>🪙 ${gameState.coins}</span></div>
     `;
 }
