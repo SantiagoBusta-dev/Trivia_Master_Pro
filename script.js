@@ -19,7 +19,7 @@ const questionBank = {
         { q: "¿Cómo se llama el hobbit protagonista de El Señor de los Anillos?", options: ["Frodo Bolsón", "Sam Gamygi", "Bilbo Bolsón", "Aragorn"], correct: 0 },
         { q: "¿Qué película ganó más premios Óscar en la historia?", options: ["Titanic", "Ben-Hur", "El Señor de los Anillos: El retorno del rey", "Las tres empatan"], correct: 3 },
         { q: "¿En qué año se estrenó la primera película de Star Wars?", options: ["1975", "1977", "1980", "1983"], correct: 1 },
-        { q: "¿Quién interpretó a Jack Dawson en Titanic?", options: ["Brad Pitt", "Tom Cruise", "Leonardo DiCaprio", "Johnny Depp"], correct: 2 }
+        { q: "¿Quién interpretó a Jack Dawson en Titanic?", options: ["Brad Pitt", "Tom Cruise", "Leonardo DiCaprio", "Johnny Deps"], correct: 2 }
     ],
     deportes: [
         { q: "¿Cada cuántos años se celebran los Juegos Olímpicos?", options: ["2 años", "3 años", "4 años", "5 años"], correct: 2 },
@@ -148,6 +148,7 @@ function loadQuestion() {
         const btn = document.createElement('button');
         btn.className = 'answer-btn';
         btn.textContent = opt;
+        btn.style.visibility = 'visible'; // Asegurar visibilidad limpia
         btn.onclick = () => checkAnswer(index, btn);
         answersContainer.appendChild(btn);
     });
@@ -160,13 +161,29 @@ function useFiftyFifty() {
         return;
     }
 
-    updateCoins(-15);
     const qData = currentQuestions[currentIndex];
     const allButtons = document.querySelectorAll('.answer-btn');
     
+    // Validar que queden opciones incorrectas visibles
+    let incorrectIndices = [];
+    allButtons.forEach((b, idx) => {
+        if (idx !== qData.correct && b.style.visibility !== 'hidden') {
+            incorrectIndices.push(idx);
+        }
+    });
+
+    if (incorrectIndices.length === 0) {
+        alert("⚠️ Ya no hay más opciones para ocultar.");
+        return;
+    }
+
+    updateCoins(-15);
+    
+    // Ocultar hasta 2 incorrectas de las disponibles
     let hiddenCount = 0;
+    incorrectIndices = shuffleArray(incorrectIndices);
     allButtons.forEach((btn, index) => {
-        if (index !== qData.correct && hiddenCount < 2) {
+        if (index !== qData.correct && incorrectIndices.includes(index) && hiddenCount < 2) {
             btn.style.visibility = 'hidden';
             hiddenCount++;
         }
@@ -237,7 +254,6 @@ function watchAd() {
     alert("🎬 Simulando anuncio de Google AdSense... ¡Has ganado +10 monedas!");
     updateCoins(10);
     
-    // Activar cooldown
     canWatchAd = false;
     const adBtn = document.getElementById('ad-btn');
     const adTimer = document.getElementById('ad-timer');
