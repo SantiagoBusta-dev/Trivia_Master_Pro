@@ -58,14 +58,10 @@
                 <p id="question-text">Cargando pregunta...</p>
             </div>
 
-            <!-- BOTONES DE AYUDA / COMODINES (USAN MONEDAS) -->
+            <!-- BOTONES DE AYUDA / COMODINES -->
             <div class="lifelines-container">
-                <button class="btn-lifeline" onclick="useFiftyFifty()" title="Elimina 2 respuestas incorrectas">
-                    🗑️ 50:50 (-15 🪙)
-                </button>
-                <button class="btn-lifeline" onclick="useSkipQuestion()" title="Salta la pregunta actual">
-                    ⏭️ Saltar (-20 🪙)
-                </button>
+                <button id="btn-fifty" class="btn-lifeline" type="button" onclick="useFiftyFifty()">🗑️ 50:50 (-15 🪙)</button>
+                <button id="btn-skip" class="btn-lifeline" type="button" onclick="useSkipQuestion()">⏭️ Saltar (-20 🪙)</button>
             </div>
 
             <div id="answers-container" class="answers-grid">
@@ -82,18 +78,18 @@
                 <p>Monedas ganadas: <span id="earned-coins">🪙 +0</span></p>
             </div>
             
-            <!-- SECCIÓN DE ANUNCIO RECOMPENSADO CON COOLDOWN -->
+            <!-- SECCIÓN DE ANUNCIO RECOMPENSADO -->
             <div class="reward-section">
                 <p>¿Necesitas más monedas?</p>
-                <button id="ad-btn" class="btn reward-btn" onclick="watchAd()">🎬 Ver Anuncio (+10 🪙)</button>
-                <span id="ad-timer" class="ad-timer-text" style="display: none;">Disponible en: <span id="countdown">60</span>s</span>
+                <button id="ad-btn" class="btn reward-btn" type="button" onclick="watchAd()">🎬 Ver Anuncio (+10 🪙)</button>
+                <span id="ad-timer" class="ad-timer-text" style="display: none;">Disponible en: <span id="countdown">45</span>s</span>
             </div>
 
             <button class="btn primary-btn" onclick="showScreen('main-menu')">🏠 Volver al Menú</button>
         </div>
     </div>
 
-    <!-- ANUNCIO ESTÁTICO INFERIOR (Simulando bloque de Banner AdSense) -->
+    <!-- ANUNCIO ESTÁTICO INFERIOR -->
     <div class="ad-banner">
         <span>Espacio Publicitario / Google AdSense Banner</span>
     </div>
