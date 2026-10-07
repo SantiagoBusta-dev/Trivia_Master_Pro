@@ -1,143 +1,343 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trivia Master Pro</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-</head>
-<body>
+// Estado del juego y datos guardados (Memoria Local localStorage)
+let gameState = JSON.parse(localStorage.getItem('triviaState')) || {
+    username: "Invitado",
+    coins: 100,
+    unlockedLevels: 1,
+    currentAvatar: "🤖",
+    ownedAvatars: ["🤖"],
+    score: 0
+};
 
-    <div class="game-container">
-        <!-- BARRA SUPERIOR -->
-        <header class="header">
-            <!-- Círculo de Perfil -->
-            <div class="profile-circle" onclick="showScreen('profile-screen')" title="Perfil y Cuenta">
-                <span id="header-avatar">🤖</span>
-            </div>
-            <!-- Contador de Monedas (Clic para abrir Tienda de Monedas / Anuncios) -->
-            <div class="coins-badge" onclick="showScreen('coin-shop-screen')" title="Conseguir Monedas">
-                🪙 <span id="coin-count">100</span>
-            </div>
-        </header>
+// Base de datos de avatares disponibles en la tienda
+const shopAvatars = [
+    { id: "🤖", name: "Robot Base", price: 0 },
+    { id: "😎", name: "Gafas Cool", price: 40 },
+    { id: "🧙‍♂️", name: "Mago Sabio", price: 80 },
+    { id: "🦸‍♂️", name: "Superhéroe", price: 120 },
+    { id: "👑", name: "Rey Legendario", price: 200 }
+];
 
-        <!-- PANTALLA DE MENÚ PRINCIPAL -->
-        <div id="main-menu" class="screen active">
-            <h2 id="welcome-msg">¡Bienvenido, Jugador!</h2>
-            <div class="menu-buttons">
-                <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Modo Niveles</button>
-                <button class="btn secondary-btn" onclick="showScreen('categories-screen')">🎮 Modo Libre</button>
-                <button class="btn event-btn" onclick="showScreen('events-screen')">⭐ Eventos Especiales</button>
-                <button class="btn shop-btn" onclick="showScreen('shop-screen')">🛒 Tienda de Avatares</button>
-                <button class="btn leaderboard-btn" onclick="openLeaderboard()">🏆 Tabla de Clasificación</button>
-            </div>
-        </div>
+// Niveles fijos (preparados para escalar a 50-100 niveles)
+const fixedLevels = {
+    1: [
+        { q: "¿Cuál es el planeta más cercano al Sol?", options: ["Venus", "Mercurio", "Marte", "Júpiter"], correct: 1 },
+        { q: "¿Qué gas abunda más en la atmósfera terrestre?", options: ["Oxígeno", "Nitrógeno", "Dióxido de Carbono", "Hidrógeno"], correct: 1 },
+        { q: "¿Cuál es la fórmula química del agua?", options: ["CO2", "H2O", "O2", "NaCl"], correct: 1 },
+        { q: "¿Quién formuló la teoría de la relatividad?", options: ["Isaac Newton", "Nikola Tesla", "Albert Einstein", "Galileo Galilei"], correct: 2 },
+        { q: "¿Qué órgano humano consume más energía?", options: ["El corazón", "El cerebro", "El hígado", "Los músculos"], correct: 1 }
+    ],
+    2: [
+        { q: "¿En qué año comenzó la Segunda Guerra Mundial?", options: ["1939", "1941", "1914", "1945"], correct: 0 },
+        { q: "¿Qué civilización construyó Machu Picchu?", options: ["Azteca", "Maya", "Inca", "Olmeca"], correct: 2 },
+        { q: "¿Quién fue el primer presidente de Estados Unidos?", options: ["Abraham Lincoln", "George Washington", "Thomas Jefferson", "John Adams"], correct: 1 },
+        { q: "¿En qué año cayó el Imperio Romano de Occidente?", options: ["476 d.C.", "1492 d.C.", "BC 300", "1054 d.C."], correct: 0 },
+        { q: "¿En qué país se originó la Revolución Industrial?", options: ["Francia", "Alemania", "Estados Unidos", "Gran Bretaña"], correct: 3 }
+    ],
+    3: [
+        { q: "¿Director de la trilogía de El Padrino?", options: ["Martin Scorsese", "Quentin Tarantino", "Francis Ford Coppola", "Stanley Kubrick"], correct: 2 },
+        { q: "¿Cómo se llama el hobbit protagonista de El Señor de los Anillos?", options: ["Frodo Bolsón", "Sam Gamygi", "Bilbo Bolsón", "Aragorn"], correct: 0 },
+        { q: "¿Qué película ganó más premios Óscar en la historia?", options: ["Titanic", "Ben-Hur", "El Señor de los Anillos: El retorno del rey", "Las tres empatan"], correct: 3 },
+        { q: "¿En qué año se estrenó la primera película de Star Wars?", options: ["1975", "1977", "1980", "1983"], correct: 1 },
+        { q: "¿Quién interpretó a Jack Dawson en Titanic?", options: ["Brad Pitt", "Tom Cruise", "Leonardo DiCaprio", "Johnny Depp"], correct: 2 }
+    ]
+};
 
-        <!-- PANTALLA DE NIVELES (Preparada para 50-100 niveles) -->
-        <div id="levels-screen" class="screen">
-            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>Modo Niveles</h2>
-            <p class="subtitle">Supera los retos y avanza</p>
-            <div id="levels-grid" class="levels-grid"></div>
-        </div>
+// Generar más niveles base automáticos para que lleguen hasta el 10 por ahora
+for (let i = 4; i <= 10; i++) {
+    fixedLevels[i] = [
+        { q: `Pregunta 1 del Nivel ${i}: ¿Cuánto es 5 + ${i}?`, options: [`${4+i}`, `${5+i}`, `${6+i}`, `${7+i}`], correct: 1 },
+        { q: `Pregunta 2 del Nivel ${i}: Capital de país europeo aleatorio`, options: ["Madrid", "París", "Roma", "Berlín"], correct: 0 },
+        { q: `Pregunta 3 del Nivel ${i}: ¿Elemento de la tabla periódica?`, options: ["Oxígeno", "Agua", "Fuego", "Tierra"], correct: 0 },
+        { q: `Pregunta 4 del Nivel ${i}: ¿Año actual aproximado?`, options: ["2024", "2025", "2026", "2027"], correct: 2 },
+        { q: `Pregunta 5 del Nivel ${i}: ¿Color del cielo despejado?`, options: ["Verde", "Azul", "Rojo", "Amarillo"], correct: 1 }
+    ];
+}
 
-        <!-- PANTALLA DE CATEGORÍAS -->
-        <div id="categories-screen" class="screen">
-            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>Elige una Categoría</h2>
-            <div id="categories-grid" class="categories-grid"></div>
-        </div>
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let gameMode = '';
+let currentLevelNum = 1;
+let canWatchAd = true;
+let adTimerInterval = null;
 
-        <!-- PANTALLA DE EVENTOS ESPECIALES -->
-        <div id="events-screen" class="screen">
-            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>⭐ Eventos Activos</h2>
-            <p class="subtitle">¡Gana el doble de monedas en estos retos!</p>
-            <div class="event-card">
-                <h3>🔥 Reto Relámpago de Ciencia</h3>
-                <p>Preguntas avanzadas con recompensa x2.</p>
-                <button class="btn primary-btn" onclick="startSpecialEvent()">¡Jugar Evento!</button>
-            </div>
-        </div>
+window.onload = function() {
+    saveAndSyncState();
+    renderLevels();
+    renderCategories();
+    renderAvatarShop();
+};
 
-        <!-- PANTALLA DE TIENDA DE AVATARES -->
-        <div id="shop-screen" class="screen">
-            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>🛒 Tienda de Avatares</h2>
-            <p class="subtitle">Elige tu estilo visual</p>
-            <div class="shop-items" id="avatar-shop-container">
-                <!-- Se cargan dinámicamente desde JS -->
-            </div>
-        </div>
+function saveAndSyncState() {
+    localStorage.setItem('triviaState', JSON.stringify(gameState));
+    document.getElementById('coin-count').textContent = gameState.coins;
+    document.getElementById('header-avatar').textContent = gameState.currentAvatar;
+    document.getElementById('welcome-msg').textContent = `¡Hola, ${gameState.username}!`;
+}
 
-        <!-- PANTALLA DE PERFIL / USUARIO -->
-        <div id="profile-screen" class="screen">
-            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>👤 Configuración de Perfil</h2>
-            <div class="profile-form">
-                <p>Personaliza tu nombre para la tabla de clasificación:</p>
-                <input type="text" id="username-input" placeholder="Tu nombre o alias..." maxlength="15">
-                <button class="btn primary-btn" onclick="saveUserProfile()">Guardar Perfil</button>
-                <button class="btn secondary-btn" onclick="playAsGuest()">Jugar como Invitado</button>
-            </div>
-        </div>
+function showScreen(screenId) {
+    screens = document.querySelectorAll('.screen');
+    screens.forEach(screen => screen.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+}
 
-        <!-- PANTALLA DE CONSEGUIR MONEDAS (ANUNCIOS Y PAQUETES) -->
-        <div id="coin-shop-screen" class="screen">
-            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>🪙 Banco y Monedas</h2>
-            <div class="reward-section">
-                <p><b>Ver video publicitario:</b></p>
-                <button id="ad-btn" class="btn reward-btn" onclick="watchAd()">🎬 Ver Anuncio (+15 🪙)</button>
-                <span id="ad-timer" class="ad-timer-text" style="display: none;">Disponible en: <span id="countdown">45</span>s</span>
-            </div>
-        </div>
+function updateCoins(amount) {
+    gameState.coins += amount;
+    saveAndSyncState();
+}
 
-        <!-- PANTALLA DE TABLA DE CLASIFICACIÓN -->
-        <div id="leaderboard-screen" class="screen">
-            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>🏆 Tabla de Líderes</h2>
-            <div id="leaderboard-list" class="leaderboard-list">
-                <!-- Se genera desde JS -->
-            </div>
-        </div>
+function renderLevels() {
+    const grid = document.getElementById('levels-grid');
+    grid.innerHTML = '';
+    for (let i = 1; i <= 10; i++) {
+        const btn = document.createElement('button');
+        btn.className = `level-btn ${i > gameState.unlockedLevels ? 'locked' : ''}`;
+        btn.textContent = i;
+        if (i <= gameState.unlockedLevels) {
+            btn.onclick = () => startLevel(i);
+        }
+        grid.appendChild(btn);
+    }
+}
 
-        <!-- PANTALLA DE JUEGO (TRIVIA) -->
-        <div id="quiz-screen" class="screen">
-            <div class="quiz-header">
-                <span id="quiz-title">Nivel 1</span>
-                <span id="question-counter">Pregunta 1/5</span>
-            </div>
-            
-            <div class="question-box">
-                <p id="question-text">Cargando pregunta...</p>
-            </div>
+function renderCategories() {
+    const grid = document.getElementById('categories-grid');
+    grid.innerHTML = '';
+    const cats = { ciencia: "🔬 Ciencia", historia: "📜 Historia", cine: "🎬 Cine", deportes: "⚽ Deportes", geografia: "🌍 Geografía" };
+    for (let key in cats) {
+        const btn = document.createElement('button');
+        btn.className = 'btn secondary-btn';
+        btn.textContent = cats[key];
+        btn.onclick = () => startCategoryQuiz(key, cats[key]);
+        grid.appendChild(btn);
+    }
+}
 
-            <div class="lifelines-container">
-                <button class="btn-lifeline" onclick="useFiftyFifty()">🗑️ 50:50 (-15 🪙)</button>
-                <button class="btn-lifeline" onclick="useSkipQuestion()">⏭️ Saltar (-20 🪙)</button>
-            </div>
+function renderAvatarShop() {
+    const container = document.getElementById('avatar-shop-container');
+    container.innerHTML = '';
+    shopAvatars.forEach(av => {
+        const isOwned = gameState.ownedAvatars.includes(av.id);
+        const isEquipped = gameState.currentAvatar === av.id;
+        
+        const card = document.createElement('div');
+        card.className = 'shop-item-card';
+        card.innerHTML = `
+            <span style="font-size: 2rem;">${av.id}</span>
+            <h4>${av.name}</h4>
+            <p>${av.price === 0 ? 'Gratis' : av.price + ' 🪙'}</p>
+            <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" onclick="selectOrBuyAvatar('${av.id}', ${av.price})">
+                ${isEquipped ? 'Equipado' : (isOwned ? 'Equipar' : 'Comprar')}
+            </button>
+        `;
+        container.appendChild(card);
+    });
+}
 
-            <div id="answers-container" class="answers-grid"></div>
-        </div>
+function selectOrBuyAvatar(id, price) {
+    if (gameState.ownedAvatars.includes(id)) {
+        gameState.currentAvatar = id;
+        alert(`✨ ¡Has equipado tu avatar ${id}!`);
+    } else {
+        if (gameState.coins < price) {
+            alert("❌ No tienes suficientes monedas.");
+            return;
+        }
+        updateCoins(-price);
+        gameState.ownedAvatars.push(id);
+        gameState.currentAvatar = id;
+        alert(`🎉 ¡Avatar comprado y equipado con éxito!`);
+    }
+    saveAndSyncState();
+    renderAvatarShop();
+}
 
-        <!-- PANTALLA DE RESULTADOS -->
-        <div id="result-screen" class="screen">
-            <h2 id="result-title">¡Resultado!</h2>
-            <p id="result-message">Has completado el reto.</p>
-            <div class="result-stats">
-                <p>Puntaje: <span id="final-score">0</span></p>
-                <p>Monedas ganadas: <span id="earned-coins">🪙 +0</span></p>
-            </div>
-            <button class="btn primary-btn" onclick="showScreen('main-menu')">🏠 Volver al Menú</button>
-        </div>
-    </div>
+function saveUserProfile() {
+    const nameInput = document.getElementById('username-input').value.trim();
+    if (nameInput) {
+        gameState.username = nameInput;
+        saveAndSyncState();
+        alert("✅ ¡Perfil guardado correctamente!");
+        showScreen('main-menu');
+    } else {
+        alert("⚠️ Por favor ingresa un nombre válido.");
+    }
+}
 
-    <div class="ad-banner">
-        <span>Espacio Publicitario / Google AdSense Banner</span>
-    </div>
+function playAsGuest() {
+    gameState.username = "Invitado";
+    saveAndSyncState();
+    alert("👤 Jugando en modo invitado.");
+    showScreen('main-menu');
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+function startLevel(levelNum) {
+    gameMode = 'level';
+    currentLevelNum = levelNum;
+    currentQuestions = fixedLevels[levelNum];
+    currentIndex = 0;
+    score = 0;
+    document.getElementById('quiz-title').textContent = `Nivel ${levelNum}`;
+    showScreen('quiz-screen');
+    loadQuestion();
+}
+
+function startCategoryQuiz(catKey, catName) {
+    gameMode = 'category';
+    currentQuestions = [
+        { q: `Pregunta rápida de ${catName} 1`, options: ["Opción A", "Opción B", "Opción C", "Opción D"], correct: 0 },
+        { q: `Pregunta rápida de ${catName} 2`, options: ["Opción A", "Opción B", "Opción C", "Opción D"], correct: 1 }
+    ];
+    currentIndex = 0;
+    score = 0;
+    document.getElementById('quiz-title').textContent = catName;
+    showScreen('quiz-screen');
+    loadQuestion();
+}
+
+function startSpecialEvent() {
+    gameMode = 'event';
+    currentQuestions = [
+        { q: "⭐ [EVENTO] ¿Cuál es la velocidad de la luz?", options: ["300,000 km/s", "150,000 km/s", "1,000 km/s", "Sin límite"], correct: 0 },
+        { q: "⭐ [EVENTO] ¿Qué científico descubrió la gravedad?", options: ["Einstein", "Newton", "Tesla", "Galileo"], correct: 1 }
+    ];
+    currentIndex = 0;
+    score = 0;
+    document.getElementById('quiz-title').textContent = "⭐ Evento Especial";
+    showScreen('quiz-screen');
+    loadQuestion();
+}
+
+function loadQuestion() {
+    if (currentIndex >= currentQuestions.length) {
+        endGame();
+        return;
+    }
+
+    document.getElementById('question-counter').textContent = `Pregunta ${currentIndex + 1}/${currentQuestions.length}`;
+    const qData = currentQuestions[currentIndex];
+    document.getElementById('question-text').textContent = qData.q;
+
+    const answersContainer = document.getElementById('answers-container');
+    answersContainer.innerHTML = '';
+
+    qData.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.textContent = opt;
+        btn.style.display = 'block';
+        btn.onclick = () => checkAnswer(index, btn);
+        answersContainer.appendChild(btn);
+    });
+}
+
+function useFiftyFifty() {
+    if (gameState.coins < 15) {
+        alert("❌ No tienes suficientes monedas (15 🪙 requeridas).");
+        return;
+    }
+    updateCoins(-15);
+    const qData = currentQuestions[currentIndex];
+    const allButtons = document.querySelectorAll('.answer-btn');
+    let hidden = 0;
+    allButtons.forEach((b, idx) => {
+        if (idx !== qData.correct && hidden < 2 && b.style.display !== 'none') {
+            b.style.display = 'none';
+            hidden++;
+        }
+    });
+}
+
+function useSkipQuestion() {
+    if (gameState.coins < 20) {
+        alert("❌ No tienes suficientes monedas (20 🪙 requeridas).");
+        return;
+    }
+    updateCoins(-20);
+    alert("⏭️ ¡Pregunta saltada!");
+    currentIndex++;
+    loadQuestion();
+}
+
+function checkAnswer(selectedIndex, btnElement) {
+    const qData = currentQuestions[currentIndex];
+    const allButtons = document.querySelectorAll('.answer-btn');
+    allButtons.forEach(b => b.disabled = true);
+
+    if (selectedIndex === qData.correct) {
+        btnElement.classList.add('correct');
+        score++;
+    } else {
+        btnElement.classList.add('wrong');
+        allButtons[qData.correct].classList.add('correct');
+    }
+
+    setTimeout(() => {
+        currentIndex++;
+        loadQuestion();
+    }, 1000);
+}
+
+function endGame() {
+    showScreen('result-screen');
+    document.getElementById('final-score').textContent = `${score} / ${currentQuestions.length}`;
+    
+    let earned = gameMode === 'event' ? score * 10 : score * 5;
+    document.getElementById('earned-coins').textContent = `🪙 +${earned}`;
+    updateCoins(earned);
+
+    if (gameMode === 'level' && score >= 3) {
+        if (currentLevelNum === gameState.unlockedLevels && gameState.unlockedLevels < 10) {
+            gameState.unlockedLevels++;
+            renderLevels();
+        }
+        document.getElementById('result-title').textContent = "¡Nivel Superado! 🎉";
+        document.getElementById('result-message').textContent = `Has ganado ${earned} monedas.`;
+    } else if (gameMode === 'level') {
+        document.getElementById('result-title').textContent = "¡Inténtalo de nuevo! 💡";
+        document.getElementById('result-message').textContent = `Necesitas al menos 3 aciertos.`;
+    } else {
+        document.getElementById('result-title').textContent = "¡Reto Finalizado! 🎯";
+        document.getElementById('result-message').textContent = `¡Buen trabajo!`;
+    }
+    saveAndSyncState();
+}
+
+function watchAd() {
+    if (!canWatchAd) return;
+
+    alert("🎬 Simulando anuncio... ¡Has ganado +15 monedas!");
+    updateCoins(15);
+    
+    canWatchAd = false;
+    const adBtn = document.getElementById('ad-btn');
+    const adTimer = document.getElementById('ad-timer');
+    const countdownSpan = document.getElementById('countdown');
+    
+    adBtn.style.display = 'none';
+    adTimer.style.display = 'block';
+    
+    let timeLeft = 45;
+    countdownSpan.textContent = timeLeft;
+
+    adTimerInterval = setInterval(() => {
+        timeLeft--;
+        countdownSpan.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(adTimerInterval);
+            canWatchAd = true;
+            adBtn.style.display = 'block';
+            adTimer.style.display = 'none';
+        }
+    }, 1000);
+}
+
+function openLeaderboard() {
+    showScreen('leaderboard-screen');
+    const list = document.getElementById('leaderboard-list');
+    list.innerHTML = `
+        <div class="leaderboard-item"><span>1. 👑 ProPlayer</span><span>🪙 450</span></div>
+        <div class="leaderboard-item"><span>2. 🧙‍♂️ SabioTrivia</span><span>🪙 320</span></div>
+        <div class="leaderboard-item"><span>3. ${gameState.currentAvatar} ${gameState.username} (Tú)</span><span>🪙 ${gameState.coins}</span></div>
+    `;
+}
