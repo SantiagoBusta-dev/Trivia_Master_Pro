@@ -35,9 +35,13 @@ body {
     padding-bottom: 10px;
 }
 
-.header h1 {
-    font-size: 1.2rem;
-    color: #38bdf8;
+.profile-badge {
+    background: #1e293b;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    border: 1px solid #475569;
+    font-size: 0.9rem;
 }
 
 .coins-badge {
@@ -71,7 +75,7 @@ h2 {
     margin-top: -10px;
 }
 
-.menu-buttons, .levels-grid, .categories-grid {
+.menu-buttons, .levels-grid, .categories-grid, .shop-items {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -104,19 +108,19 @@ h2 {
     background: #38bdf8;
     color: #0f172a;
 }
-
-.primary-btn:hover {
-    background: #0ea5e9;
-}
+.primary-btn:hover { background: #0ea5e9; }
 
 .secondary-btn {
     background: #334155;
     color: #fff;
 }
+.secondary-btn:hover { background: #475569; }
 
-.secondary-btn:hover {
-    background: #475569;
+.shop-btn {
+    background: #10b981;
+    color: white;
 }
+.shop-btn:hover { background: #059669; }
 
 .level-btn {
     background: #1e293b;
@@ -169,10 +173,23 @@ h2 {
     border: 1px solid #334155;
 }
 
-.question-box p {
-    font-size: 1.1rem;
+.lifelines-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn-lifeline {
+    background: #334155;
+    border: 1px solid #475569;
+    color: #38bdf8;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
     font-weight: 600;
 }
+.btn-lifeline:hover { background: #475569; }
 
 .answers-grid {
     display: flex;
@@ -188,30 +205,18 @@ h2 {
     border-radius: 10px;
     text-align: left;
     cursor: pointer;
-    font-size: 0.95srem;
-    transition: background 0.2s;
+    font-size: 0.95rem;
 }
+.answer-btn:hover { background: #334155; }
 
-.answer-btn:hover {
-    background: #334155;
-}
+.answer-btn.correct { background: #22c55e !important; border-color: #16a34a; }
+.answer-btn.wrong { background: #ef4444 !important; border-color: #dc2626; }
 
-.answer-btn.correct {
-    background: #22c55e !important;
-    border-color: #16a34a;
-}
-
-.answer-btn.wrong {
-    background: #ef4444 !important;
-    border-color: #dc2626;
-}
-
-.result-stats {
+.result-stats, .shop-section {
     background: #1e293b;
     padding: 15px;
     border-radius: 10px;
     text-align: center;
-    font-size: 1.1rem;
 }
 
 .reward-section {
@@ -222,11 +227,6 @@ h2 {
     border: 1px dashed #38bdf8;
 }
 
-.reward-section p {
-    font-size: 0.85rem;
-    margin-bottom: 8px;
-}
-
 .reward-btn {
     background: #10b981;
     color: white;
@@ -234,11 +234,6 @@ h2 {
     padding: 8px;
 }
 
-.reward-btn:hover {
-    background: #059669;
-}
-
-/* Simulación de Banner Publicitario Estático (AdSense) */
 .ad-banner {
     width: 100%;
     max-width: 480px;
@@ -251,24 +246,4 @@ h2 {
     border-radius: 8px;
     font-size: 0.75rem;
     color: #64748b;
-}
-
-.lifelines-container {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 5px;
-}
-.btn-lifeline {
-    background: #334155;
-    border: 1px solid #475569;
-    color: #38bdf8;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    font-weight: 600;
-}
-.btn-lifeline:hover {
-    background: #475569;
 }
