@@ -18,22 +18,21 @@ body {
     overflow-x: hidden;
 }
 
-/* Mascota vagando libremente por toda la pantalla */
+/* Mascota vagando libremente por toda la pantalla con animación fluida */
 .wandering-pet {
     position: fixed;
-    font-size: 1.8rem;
     z-index: 999;
     pointer-events: none;
-    animation: wanderScreen 14s ease-in-out infinite alternate;
-    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
+    animation: wanderScreen 16s ease-in-out infinite alternate;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
 }
 
 @keyframes wanderScreen {
-    0% { top: 10vh; left: 5vw; transform: scaleX(1); }
-    25% { top: 80vh; left: 85vw; transform: scaleX(-1); }
-    50% { top: 40vh; left: 50vw; transform: scaleX(1); }
-    75% { top: 85vh; left: 10vw; transform: scaleX(-1); }
-    100% { top: 15vh; left: 80vw; transform: scaleX(1); }
+    0% { top: 5vh; left: 5vw; transform: scaleX(1) rotate(-5deg); }
+    25% { top: 75vh; left: 80vw; transform: scaleX(-1) rotate(5deg); }
+    50% { top: 45vh; left: 40vw; transform: scaleX(1) rotate(0deg); }
+    75% { top: 80vh; left: 15vw; transform: scaleX(-1) rotate(-5deg); }
+    100% { top: 10vh; left: 75vw; transform: scaleX(1) rotate(5deg); }
 }
 
 .game-container {
@@ -56,22 +55,22 @@ body {
     padding-bottom: 10px;
 }
 
-/* Avatar de cuerpo completo con capas para ropa */
 .profile-area {
     display: flex;
     align-items: center;
     background: #1e293b;
-    padding: 4px 12px;
+    padding: 4px 8px;
     border-radius: 20px;
     border: 2px solid #38bdf8;
     cursor: pointer;
 }
 
-.full-body-avatar {
+.avatar-preview-container {
+    width: 45px;
+    height: 45px;
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-size: 1.1rem;
+    justify-content: center;
 }
 
 .coins-badge {
@@ -260,6 +259,15 @@ h2 {
 }
 .reward-btn { background: #10b981; color: white; width: 100%; padding: 10px; margin-top: 8px; }
 .reward-btn:hover { background: #059669; }
+
+.shop-item-visual {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 5px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .ad-timer-text { font-size: 0.85rem; color: #94a3b8; font-weight: 600; display: block; margin-top: 8px; }
 
