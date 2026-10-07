@@ -9,12 +9,17 @@
 </head>
 <body>
 
+    <!-- MASCOTA LIBRE EXPLORADORA DE PANTALLA COMPLETA -->
+    <div id="wandering-pet" class="wandering-pet">🐱</div>
+
     <div class="game-container">
-        <!-- BARRA SUPERIOR -->
+        <!-- BARRA SUPERIOR CON AVATAR DE CUERPO COMPLETO -->
         <header class="header">
-            <div class="profile-area" onclick="showScreen('profile-screen')" title="Perfil y Cuenta">
-                <span id="header-avatar">🤖</span>
-                <span id="header-pet" class="floating-pet">🐱</span>
+            <div class="profile-area" onclick="showScreen('profile-screen')" title="Perfil y Vestimenta">
+                <div class="full-body-avatar">
+                    <span id="header-body">🧍‍♂️</span>
+                    <span id="header-outfit">👕</span>
+                </div>
             </div>
             <div class="coins-badge" onclick="showScreen('coin-shop-screen')" title="Banco de Monedas">
                 🪙 <span id="coin-count">100</span>
@@ -28,7 +33,7 @@
                 <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Modo Niveles</button>
                 <button class="btn secondary-btn" onclick="showScreen('categories-screen')">🎮 Modo Libre</button>
                 <button class="btn event-btn" onclick="showScreen('events-screen')">⭐ Eventos Especiales</button>
-                <button class="btn shop-btn" onclick="showScreen('shop-screen')">🛒 Tienda (Avatares & Mascotas)</button>
+                <button class="btn shop-btn" onclick="showScreen('shop-screen')">🛒 Tienda (Ropa & Mascotas)</button>
                 <button class="btn leaderboard-btn" onclick="openLeaderboard()">🏆 Tabla de Clasificación</button>
             </div>
         </div>
@@ -60,16 +65,16 @@
             </div>
         </div>
 
-        <!-- PANTALLA DE TIENDA (AVATARES Y MASCOTAS) -->
+        <!-- PANTALLA DE TIENDA (ROPA / VESTIMENTA Y MASCOTAS) -->
         <div id="shop-screen" class="screen">
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>🛒 Tienda del juego</h2>
-            <p class="subtitle">Personaliza tu estilo y compañía</p>
+            <h2>🛒 Tienda de Vestimenta y Mascotas</h2>
+            <p class="subtitle">Compra ropa para tu cuerpo y nuevas mascotas</p>
             
-            <h3 class="shop-subtitle">Avatares</h3>
-            <div class="shop-items" id="avatar-shop-container"></div>
+            <h3 class="shop-subtitle">Vestimenta / Ropa</h3>
+            <div class="shop-items" id="outfit-shop-container"></div>
 
-            <h3 class="shop-subtitle" style="margin-top: 15px;">Mascotas Interactivas</h3>
+            <h3 class="shop-subtitle" style="margin-top: 15px;">Mascotas Exploradoras</h3>
             <div class="shop-items" id="pet-shop-container"></div>
         </div>
 
@@ -85,7 +90,7 @@
             </div>
         </div>
 
-        <!-- BANCO DE MONEDAS (ANUNCIOS Y PAGO REAL MERCADO PAGO) -->
+        <!-- BANCO DE MONEDAS -->
         <div id="coin-shop-screen" class="screen">
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
             <h2>🪙 Conseguir Monedas</h2>
@@ -98,13 +103,12 @@
 
             <div class="reward-section" style="margin-top: 15px; border-color: #38bdf8;">
                 <p><b>Recarga con Dinero Real (Mercado Pago):</b></p>
-                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px;">Obtén monedas instantáneamente para comprar ítems exclusivos.</p>
-                <!-- Reemplaza el '#' con tu link de cobro o botón de pago real de Mercado Pago -->
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px;">Obtén monedas instantáneamente.</p>
                 <a href="#" target="_blank" class="btn primary-btn" style="display: block; text-decoration: none; text-align: center;">Comprar 500 🪙 ($1000 ARS)</a>
             </div>
         </div>
 
-        <!-- TABLA DE CLASIFICACIÓN REAL -->
+        <!-- TABLA DE CLASIFICACIÓN -->
         <div id="leaderboard-screen" class="screen">
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
             <h2>🏆 Tabla de Líderes</h2>
@@ -131,7 +135,7 @@
             <div id="answers-container" class="answers-grid"></div>
         </div>
 
-        <!-- PANTALLA DE RESULTADOS (DEVUELVE AL MAPA DE NIVELES) -->
+        <!-- PANTALLA DE RESULTADOS -->
         <div id="result-screen" class="screen">
             <h2 id="result-title">¡Resultado!</h2>
             <p id="result-message">Has completado el reto.</p>
