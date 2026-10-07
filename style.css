@@ -298,49 +298,42 @@ h2 {
     font-size: 0.8rem;
 }
 
-/* MASCOTA Y BURBUJA ESTILO CÓMIC */
-.pet-companion-box {
-    background: #1f2937;
-    border: 2px solid #4b5563;
-    border-radius: 12px;
-    padding: 6px 10px;
-    display: flex;
+/* --- MASCOTA ESTÁTICA AL PIE DE PÁGINA --- */
+@keyframes petBreath {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-3px) scale(1.02); }
+}
+
+.pet-container {
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    background: #1e293b;
+    border: 2px solid #334155;
+    padding: 8px 16px;
+    border-radius: 12px;
+    margin: 15px auto;
+    animation: petBreath 3s ease-in-out infinite;
     cursor: pointer;
-    flex-shrink: 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     transition: background 0.2s;
 }
-.pet-companion-box:hover { background: #374151; border-color: #38bdf8; }
 
-.companion-pet-visual {
-    width: 40px;
-    height: 40px;
+.pet-container:hover {
+    background: #334155;
+    border-color: #38bdf8;
+}
+
+.pet-visual-box {
+    width: 45px;
+    height: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
 }
 
-.comic-speech-bubble {
-    position: relative;
-    background: #ffffff;
-    color: #111827;
-    padding: 6px 10px;
-    border-radius: 10px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    flex-grow: 1;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-}
-
-.comic-speech-bubble::before {
-    content: '';
-    position: absolute;
-    left: -7px;
-    top: 50%;
-    transform: translateY(-50%);
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-    border-right: 8px solid #ffffff;
+.pet-bubble {
+    font-size: 14px;
+    color: #f8fafc;
+    font-weight: 500;
 }
