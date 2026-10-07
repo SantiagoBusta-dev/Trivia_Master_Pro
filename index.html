@@ -5,15 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trivia Master Pro</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="game-container">
-        <!-- BARRA SUPERIOR (MONEDAS) -->
+        <!-- BARRA SUPERIOR (MONEDAS Y PERFIL) -->
         <header class="header">
-            <h1>🧠 Trivia Master</h1>
+            <div class="profile-badge" onclick="showScreen('shop-screen')" style="cursor: pointer;" title="Ir a la Tienda de Avatar">
+                <span id="avatar-icon">😎</span>
+                <span id="player-title">Novato</span>
+            </div>
             <div class="coins-badge">
                 🪙 <span id="coin-count">100</span>
             </div>
@@ -23,27 +25,40 @@
         <div id="main-menu" class="screen active">
             <h2>Elige un Modo de Juego</h2>
             <div class="menu-buttons">
-                <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Modo Niveles (Aventura)</button>
+                <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Modo Niveles (Fijos)</button>
                 <button class="btn secondary-btn" onclick="showScreen('categories-screen')">🎮 Modo Libre (Por Categorías)</button>
+                <button class="btn shop-btn" onclick="showScreen('shop-screen')">🛒 Tienda & Avatar</button>
             </div>
         </div>
 
-        <!-- PANTALLA DE NIVELES -->
+        <!-- PANTALLA DE NIVELES (FIJOS 1 al 10) -->
         <div id="levels-screen" class="screen">
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>Mapa de Niveles</h2>
-            <p class="subtitle">Preguntas mixtas de todas las categorías</p>
-            <div id="levels-grid" class="levels-grid">
-                <!-- Se generan dinámicamente desde JS -->
-            </div>
+            <h2>Mapa de Niveles Fijos</h2>
+            <p class="subtitle">Preguntas predefinidas que no cambian</p>
+            <div id="levels-grid" class="levels-grid"></div>
         </div>
 
-        <!-- PANTALLA DE CATEGORÍAS (MODO LIBRE) -->
+        <!-- PANTALLA DE CATEGORÍAS -->
         <div id="categories-screen" class="screen">
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
             <h2>Elige una Categoría</h2>
-            <div id="categories-grid" class="categories-grid">
-                <!-- Se generan dinámicamente desde JS -->
+            <div id="categories-grid" class="categories-grid"></div>
+        </div>
+
+        <!-- PANTALLA DE TIENDA Y AVATAR -->
+        <div id="shop-screen" class="screen">
+            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+            <h2>🛒 Tienda de Personalización</h2>
+            <p class="subtitle">Personaliza tu estilo con monedas</p>
+            
+            <div class="shop-section">
+                <h3>Gorras y Estilos</h3>
+                <div class="shop-items">
+                    <button class="btn secondary-btn" onclick="buyItem('🧢 Gorra Cool', 30, '🧢')">🧢 Gorra Cool (30 🪙)</button>
+                    <button class="btn secondary-btn" onclick="buyItem('👑 Corona Real', 100, '👑')">👑 Corona Real (100 🪙)</button>
+                    <button class="btn secondary-btn" onclick="buyItem('🕶️ Anteojos Pro', 50, '🕶️')">🕶️ Anteojos Pro (50 🪙)</button>
+                </div>
             </div>
         </div>
 
@@ -58,15 +73,13 @@
                 <p id="question-text">Cargando pregunta...</p>
             </div>
 
-            <!-- BOTONES DE AYUDA / COMODINES -->
+            <!-- COMODINES FUNCIONALES -->
             <div class="lifelines-container">
-                <button id="btn-fifty" class="btn-lifeline" type="button" onclick="useFiftyFifty()">🗑️ 50:50 (-15 🪙)</button>
-                <button id="btn-skip" class="btn-lifeline" type="button" onclick="useSkipQuestion()">⏭️ Saltar (-20 🪙)</button>
+                <button class="btn-lifeline" onclick="useFiftyFifty()">🗑️ 50:50 (-15 🪙)</button>
+                <button class="btn-lifeline" onclick="useSkipQuestion()">⏭️ Saltar (-20 🪙)</button>
             </div>
 
-            <div id="answers-container" class="answers-grid">
-                <!-- Opciones de respuesta -->
-            </div>
+            <div id="answers-container" class="answers-grid"></div>
         </div>
 
         <!-- PANTALLA DE RESULTADOS -->
@@ -78,10 +91,9 @@
                 <p>Monedas ganadas: <span id="earned-coins">🪙 +0</span></p>
             </div>
             
-            <!-- SECCIÓN DE ANUNCIO RECOMPENSADO -->
             <div class="reward-section">
                 <p>¿Necesitas más monedas?</p>
-                <button id="ad-btn" class="btn reward-btn" type="button" onclick="watchAd()">🎬 Ver Anuncio (+10 🪙)</button>
+                <button id="ad-btn" class="btn reward-btn" onclick="watchAd()">🎬 Ver Anuncio (+10 🪙)</button>
                 <span id="ad-timer" class="ad-timer-text" style="display: none;">Disponible en: <span id="countdown">45</span>s</span>
             </div>
 
@@ -89,7 +101,6 @@
         </div>
     </div>
 
-    <!-- ANUNCIO ESTÁTICO INFERIOR -->
     <div class="ad-banner">
         <span>Espacio Publicitario / Google AdSense Banner</span>
     </div>
