@@ -6,66 +6,78 @@
 }
 
 body {
-    background: linear-gradient(135deg, #1f4068, #162447);
+    background: linear-gradient(135deg, #0f172a, #1e293b);
     color: #fff;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 20px;
-    position: relative;
-    overflow-x: hidden;
-}
-
-/* Mascota vagando libremente por toda la pantalla con animación fluida */
-.wandering-pet {
-    position: fixed;
-    z-index: 999;
-    pointer-events: none;
-    animation: wanderScreen 16s ease-in-out infinite alternate;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
-}
-
-@keyframes wanderScreen {
-    0% { top: 5vh; left: 5vw; transform: scaleX(1) rotate(-5deg); }
-    25% { top: 75vh; left: 80vw; transform: scaleX(-1) rotate(5deg); }
-    50% { top: 45vh; left: 40vw; transform: scaleX(1) rotate(0deg); }
-    75% { top: 80vh; left: 15vw; transform: scaleX(-1) rotate(-5deg); }
-    100% { top: 10vh; left: 75vw; transform: scaleX(1) rotate(5deg); }
+    padding: 15px;
 }
 
 .game-container {
-    background: #0f172a;
+    background: #111827;
     width: 100%;
-    max-width: 480px;
-    border-radius: 20px;
+    max-width: 440px;
+    border-radius: 24px;
     padding: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    margin-bottom: 20px;
-    z-index: 2;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    border: 2px solid #374151;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #334155;
-    padding-bottom: 10px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #1f2937;
+    padding-bottom: 8px;
 }
 
 .profile-area {
     display: flex;
     align-items: center;
-    background: #1e293b;
-    padding: 4px 8px;
+    background: #1f2937;
+    padding: 4px 10px;
     border-radius: 20px;
     border: 2px solid #38bdf8;
     cursor: pointer;
 }
 
 .avatar-preview-container {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.coins-badge {
+    background: #1f2937;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    border: 1px solid #4b5563;
+    cursor: pointer;
+}
+
+/* ZONA DE MASCOTA COMPAÑERA ABAJO (Hace cosas al tocarla) */
+.pet-companion-box {
+    background: #1f2937;
+    border: 2px dashed #4b5563;
+    border-radius: 16px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+.pet-companion-box:hover { background: #374151; border-color: #38bdf8; }
+.pet-companion-box:active { transform: scale(0.98); }
+
+.companion-pet-visual {
     width: 45px;
     height: 45px;
     display: flex;
@@ -73,233 +85,177 @@ body {
     justify-content: center;
 }
 
-.coins-badge {
-    background: #1e293b;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-weight: 600;
-    border: 1px solid #475569;
-    cursor: pointer;
-    transition: background 0.2s;
+.pet-dialogue {
+    font-size: 0.8rem;
+    color: #e5e7eb;
+    background: #111827;
+    padding: 6px 10px;
+    border-radius: 10px;
+    flex-grow: 1;
+    border: 1px solid #374151;
 }
-.coins-badge:hover { background: #334155; }
 
 .screen {
     display: none;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
-
 .screen.active {
     display: flex;
 }
 
 h2 {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     text-align: center;
-    margin-bottom: 5px;
 }
 
 .subtitle {
     text-align: center;
-    font-size: 0.85rem;
-    color: #94a3b8;
-    margin-top: -10px;
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: -8px;
 }
 
 .menu-buttons, .levels-grid, .categories-grid, .shop-items {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 .levels-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
-    max-height: 320px;
+    max-height: 280px;
     overflow-y: auto;
 }
 
 .shop-subtitle {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #38bdf8;
-    margin-top: 5px;
 }
 
 .btn {
-    padding: 12px 20px;
+    padding: 12px;
     border: none;
     border-radius: 10px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.1s, background 0.2s;
     text-align: center;
+    transition: transform 0.1s;
 }
 .btn:active { transform: scale(0.97); }
 
 .primary-btn { background: #38bdf8; color: #0f172a; }
-.primary-btn:hover { background: #0ea5e9; }
-
-.secondary-btn { background: #334155; color: #fff; }
-.secondary-btn:hover { background: #475569; }
-
+.secondary-btn { background: #374151; color: #fff; }
 .event-btn { background: #f59e0b; color: #0f172a; }
-.event-btn:hover { background: #d97706; }
-
 .shop-btn { background: #10b981; color: white; }
-.shop-btn:hover { background: #059669; }
-
 .leaderboard-btn { background: #8b5cf6; color: white; }
-.leaderboard-btn:hover { background: #7c3aed; }
 
 .level-btn {
-    background: #1e293b;
-    border: 1px solid #475569;
+    background: #1f2937;
+    border: 1px solid #4b5563;
     color: white;
-    padding: 12px;
+    padding: 10px;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
 }
-.level-btn.locked { background: #090d16; color: #475569; border-color: #1e293b; cursor: not-allowed; }
-.level-btn:not(.locked):hover { background: #38bdf8; color: #0f172a; }
+.level-btn.locked { background: #0b0f19; color: #374151; cursor: not-allowed; }
 
 .btn-back {
     background: transparent;
     border: none;
-    color: #94a3b8;
+    color: #9ca3af;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     align-self: flex-start;
 }
 
 .quiz-header {
     display: flex;
     justify-content: space-between;
-    font-size: 0.9rem;
-    color: #94a3b8;
-    margin-bottom: 5px;
+    font-size: 0.85rem;
+    color: #9ca3af;
 }
 
 .question-box {
-    background: #1e293b;
-    padding: 20px;
-    border-radius: 12px;
+    background: #1f2937;
+    padding: 15px;
+    border-radius: 10px;
     text-align: center;
-    min-height: 100px;
+    min-height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #334155;
+    border: 1px solid #374151;
 }
 
 .lifelines-container {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     justify-content: center;
 }
 
 .btn-lifeline {
-    background: #334155;
-    border: 1px solid #475569;
+    background: #374151;
+    border: 1px solid #4b5563;
     color: #38bdf8;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
     cursor: pointer;
-    font-weight: 600;
 }
-.btn-lifeline:hover { background: #475569; }
 
 .answers-grid {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .answer-btn {
-    background: #1e293b;
-    border: 1px solid #475569;
+    background: #1f2937;
+    border: 1px solid #4b5563;
     color: white;
-    padding: 12px;
-    border-radius: 10px;
-    text-align: left;
-    cursor: pointer;
-    font-size: 0.95rem;
-}
-.answer-btn:hover { background: #334155; }
-.answer-btn.correct { background: #22c55e !important; border-color: #16a34a; }
-.answer-btn.wrong { background: #ef4444 !important; border-color: #dc2626; }
-
-.profile-form {
-    background: #1e293b;
-    padding: 20px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.profile-form input {
     padding: 10px;
     border-radius: 8px;
-    border: 1px solid #475569;
-    background: #0f172a;
-    color: white;
-    font-size: 1rem;
+    text-align: left;
+    cursor: pointer;
 }
+.answer-btn.correct { background: #22c55e !important; }
+.answer-btn.wrong { background: #ef4444 !important; }
 
-.reward-section, .event-card, .shop-item-card {
-    background: #1e293b;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-    border: 1px solid #334155;
+.profile-form, .reward-section, .event-card, .shop-item-card, .leaderboard-list {
+    background: #1f2937;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #374151;
 }
-.reward-btn { background: #10b981; color: white; width: 100%; padding: 10px; margin-top: 8px; }
-.reward-btn:hover { background: #059669; }
+.profile-form input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #4b5563;
+    background: #111827;
+    color: white;
+}
 
 .shop-item-visual {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 5px auto;
+    width: 45px;
+    height: 45px;
+    margin: 0 auto 4px auto;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.ad-timer-text { font-size: 0.85rem; color: #94a3b8; font-weight: 600; display: block; margin-top: 8px; }
-
-.leaderboard-list {
-    background: #1e293b;
-    padding: 15px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-height: 250px;
-    overflow-y: auto;
-}
 .leaderboard-item {
     display: flex;
     justify-content: space-between;
-    padding: 8px 12px;
-    background: #0f172a;
+    padding: 6px 10px;
+    background: #111827;
     border-radius: 6px;
-    font-size: 0.9rem;
-}
-
-.ad-banner {
-    width: 100%;
-    max-width: 480px;
-    height: 50px;
-    background: #1e293b;
-    border: 1px dashed #475569;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    color: #64748b;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
 }
