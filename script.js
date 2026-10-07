@@ -2,21 +2,24 @@ let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     username: "Invitado",
     coins: 100,
     unlockedLevels: 1,
-    currentAvatar: "🤖",
-    ownedAvatars: ["🤖"],
+    bodyType: "🧍‍♂️",
+    currentOutfit: "👕",
+    ownedOutfits: ["👕"],
     currentPet: "🐱",
     ownedPets: ["🐱"],
     highScore: 0
 };
 
-const shopAvatars = [
-    { id: "🤖", name: "Robot Base", price: 0 },
-    { id: "😎", name: "Gafas Cool", price: 40 },
-    { id: "🧙‍♂️", name: "Mago Sabio", price: 80 },
-    { id: "🦸‍♂️", name: "Superhéroe", price: 120 },
-    { id: "👑", name: "Rey Legendario", price: 200 }
+// Tienda de Ropa / Vestimenta para el cuerpo
+const shopOutfits = [
+    { id: "👕", name: "Camiseta Básica", price: 0 },
+    { id: "🧥", name: "Abrigo Elegante", price: 40 },
+    { id: "🦺", name: "Chaleco Pro", price: 70 },
+    { id: "🦸‍♂️", name: "Capa de Héroe", price: 120 },
+    { id: "👑", name: "Armadura Real", price: 200 }
 ];
 
+// Tienda de Mascotas Exploradoras
 const shopPets = [
     { id: "🐱", name: "Gatito", price: 0 },
     { id: "🐶", name: "Perrito", price: 50 },
@@ -76,8 +79,9 @@ window.onload = function() {
 function saveAndSyncState() {
     localStorage.setItem('triviaMasterState', JSON.stringify(gameState));
     document.getElementById('coin-count').textContent = gameState.coins;
-    document.getElementById('header-avatar').textContent = gameState.currentAvatar;
-    document.getElementById('header-pet').textContent = gameState.currentPet;
+    document.getElementById('header-body').textContent = gameState.bodyType;
+    document.getElementById('header-outfit').textContent = gameState.currentOutfit;
+    document.getElementById('wandering-pet').textContent = gameState.currentPet;
     document.getElementById('welcome-msg').textContent = `¡Hola, ${gameState.username}!`;
 }
 
@@ -120,23 +124,23 @@ function renderCategories() {
 }
 
 function renderShop() {
-    const avatarContainer = document.getElementById('avatar-shop-container');
-    avatarContainer.innerHTML = '';
-    shopAvatars.forEach(av => {
-        const isOwned = gameState.ownedAvatars.includes(av.id);
-        const isEquipped = gameState.currentAvatar === av.id;
+    const outfitContainer = document.getElementById('outfit-shop-container');
+    outfitContainer.innerHTML = '';
+    shopOutfits.forEach(item => {
+        const isOwned = gameState.ownedOutfits.includes(item.id);
+        const isEquipped = gameState.currentOutfit === item.id;
         
         const card = document.createElement('div');
         card.className = 'shop-item-card';
         card.innerHTML = `
-            <span style="font-size: 2rem;">${av.id}</span>
-            <h4>${av.name}</h4>
-            <p>${av.price === 0 ? 'Gratis' : av.price + ' 🪙'}</p>
-            <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" onclick="selectOrBuyAvatar('${av.id}', ${av.price})">
+            <span style="font-size: 2rem;">${item.id}</span>
+            <h4>${item.name}</h4>
+            <p>${item.price === 0 ? 'Gratis' : item.price + ' 🪙'}</p>
+            <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" onclick="selectOrBuyOutfit('${item.id}', ${item.price})">
                 ${isEquipped ? 'Equipado' : (isOwned ? 'Equipar' : 'Comprar')}
             </button>
         `;
-        avatarContainer.appendChild(card);
+        outfitContainer.appendChild(card);
     });
 
     const petContainer = document.getElementById('pet-shop-container');
@@ -152,24 +156,24 @@ function renderShop() {
             <h4>${pet.name}</h4>
             <p>${pet.price === 0 ? 'Gratis' : pet.price + ' 🪙'}</p>
             <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" onclick="selectOrBuyPet('${pet.id}', ${pet.price})">
-                ${isEquipped ? 'Acompañando' : (isOwned ? 'Elegir' : 'Comprar')}
+                ${isEquipped ? 'Explorando' : (isOwned ? 'Elegir' : 'Comprar')}
             </button>
         `;
         petContainer.appendChild(card);
     });
 }
 
-function selectOrBuyAvatar(id, price) {
-    if (gameState.ownedAvatars.includes(id)) {
-        gameState.currentAvatar = id;
+function selectOrBuyOutfit(id, price) {
+    if (gameState.ownedOutfits.includes(id)) {
+        gameState.currentOutfit = id;
     } else {
         if (gameState.coins < price) {
             alert("❌ No tienes suficientes monedas.");
             return;
         }
         updateCoins(-price);
-        gameState.ownedAvatars.push(id);
-        gameState.currentAvatar = id;
+        gameState.ownedOutfits.push(id);
+        gameState.currentOutfit = id;
     }
     saveAndSyncState();
     renderShop();
@@ -386,6 +390,6 @@ function openLeaderboard() {
     list.innerHTML = `
         <div class="leaderboard-item"><span>1. 👑 MasterPro</span><span>🪙 850</span></div>
         <div class="leaderboard-item"><span>2. 🧙‍♂️ SabioTrivia</span><span>🪙 520</span></div>
-        <div class="leaderboard-item"><span>3. ${gameState.currentAvatar} ${gameState.username} (Tú)</span><span>🪙 ${gameState.coins}</span></div>
+        <div class="leaderboard-item"><span>3. ${gameState.bodyType}${gameState.currentOutfit} ${gameState.username} (Tú)</span><span>🪙 ${gameState.coins}</span></div>
     `;
 }
