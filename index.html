@@ -9,135 +9,23 @@
 </head>
 <body>
 
-    <!-- MASCOTA ANIMADA ESTILO CARICATURA (CAMINANDO POR LA PANTALLA) -->
-    <div id="wandering-pet" class="wandering-pet">
-        <svg class="cartoon-pet" viewBox="0 0 100 100" width="70" height="70">
-            <!-- Cuerpo / Fondo Mascota -->
-            <ellipse cx="50" cy="55" rx="35" ry="30" fill="#f59e0b"/>
-            <!-- Orejas -->
-            <polygon points="25,35 15,10 40,25" fill="#f59e0b"/>
-            <polygon points="75,35 85,10 60,25" fill="#f59e0b"/>
-            <polygon points="27,33 20,16 38,26" fill="#fbcfe8"/>
-            <polygon points="73,33 80,16 62,26" fill="#fbcfe8"/>
-            <!-- Ojos brillantes -->
-            <circle cx="38" cy="48" r="8" fill="#1e293b"/>
-            <circle cx="62" cy="48" r="8" fill="#1e293b"/>
-            <circle cx="36" cy="46" r="3" fill="#ffffff"/>
-            <circle cx="60" cy="46" r="3" fill="#ffffff"/>
-            <!-- Nariz y Boca -->
-            <ellipse cx="50" cy="57" rx="4" ry="3" fill="#1e293b"/>
-            <path d="M 45 63 Q 50 70 55 63" stroke="#1e293b" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <!-- Patitas -->
-            <ellipse cx="30" cy="80" rx="7" ry="5" fill="#f59e0b"/>
-            <ellipse cx="70" cy="80" rx="7" ry="5" fill="#f59e0b"/>
-        </svg>
-    </div>
-
     <div class="game-container">
-        <!-- BARRA SUPERIOR CON AVATAR ESTILO CARICATURA -->
+        <!-- BARRA SUPERIOR -->
         <header class="header">
             <div class="profile-area" onclick="showScreen('profile-screen')" title="Perfil y Vestimenta">
-                <div class="cartoon-avatar-container" id="header-avatar-preview">
-                    <!-- El SVG del avatar se inyectará dinámicamente -->
-                </div>
-                <span id="header-username-label" style="font-size: 0.85rem; font-weight: 600; color: #38bdf8;">Mi Avatar</span>
+                <div class="avatar-preview-container" id="header-avatar-svg"></div>
+                <span id="header-username-label" style="font-size: 0.8rem; font-weight: 600; color: #38bdf8; margin-left: 5px;">Mi Avatar</span>
             </div>
             <div class="coins-badge" onclick="showScreen('coin-shop-screen')" title="Banco de Monedas">
                 🪙 <span id="coin-count">100</span>
             </div>
         </header>
 
-        <!-- PANTALLA DE MENÚ PRINCIPAL -->
-        <div id="main-menu" class="screen active">
-            <h2 id="welcome-msg">¡Bienvenido, Jugador!</h2>
-            <div class="menu-buttons">
-                <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Modo Niveles</button>
-                <button class="btn secondary-btn" onclick="showScreen('categories-screen')">🎮 Modo Libre</button>
-                <button class="btn event-btn" onclick="showScreen('events-screen')">⭐ Eventos Especiales</button>
-                <button class="btn shop-btn" onclick="showScreen('shop-screen')">🛒 Tienda Cartoon (Ropa & Mascotas)</button>
-                <button class="btn leaderboard-btn" onclick="openLeaderboard()">🏆 Tabla de Clasificación</button>
-            </div>
+        <!-- ZONA DE MASCOTA INTERACTIVA (Acompañante abajo del menú) -->
+        <div class="pet-companion-box" onclick="interactWithPet()" title="¡Toca a tu mascota!">
+            <div id="companion-pet-svg" class="companion-pet-visual"></div>
+            <div class="pet-dialogue" id="pet-speech">¡Hola! ¿Listo para jugar? 🐾</div>
         </div>
-
-        <!-- PANTALLA DE NIVELES -->
-        <div id="levels-screen" class="screen">
-            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>Modo Niveles</h2>
-            <p class="subtitle">Supera los retos para avanzar</p>
-            <div id="levels-grid" class="levels-grid"></div>
-        </div>
-
-        <!-- PANTALLA DE CATEGORÍAS -->
-        <div id="categories-screen" class="screen">
-            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>Elige una Categoría</h2>
-            <div id="categories-grid" class="categories-grid"></div>
-        </div>
-
-        <!-- PANTALLA DE EVENTOS ESPECIALES -->
-        <div id="events-screen" class="screen">
-            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>⭐ Eventos Activos</h2>
-            <p class="subtitle">¡Gana el doble de monedas en estos retos!</p>
-            <div class="event-card">
-                <h3>🔥 Reto Relámpago de Ciencia</h3>
-                <p>Preguntas avanzadas con recompensa x2.</¡Excelente! Para darle ese estilo visual idéntico a los juegos de avatares caricaturizados (tipo chibi con trajes de animales y disfraces divertidos como los de las imágenes), vamos a rediseñar los archivos para incorporar **avatares vectoriales SVG personalizados** y **mascotas animadas** que recorran toda la pantalla libremente.
-
-Aquí tienes los códigos actualizados para **`index.html`**, **`style.css`** y **`script.js`**:
-
----
-
-### 1. Archivo `index.html`
-Copia y reemplaza todo tu archivo `index.html`:
-
-```html
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trivia Master Pro - Cartoon Edition</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="[https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap)" rel="stylesheet">
-</head>
-<body>
-
-    <!-- MASCOTA ANIMADA EXPLORADORA DE PANTALLA COMPLETA -->
-    <div id="wandering-pet" class="wandering-pet">
-        <svg viewBox="0 0 100 100" width="60" height="60">
-            <!-- Cuerpo del Gato/Mascota estilo Cartoon -->
-            <circle cx="50" cy="55" r="30" fill="#ffa726"/>
-            <!-- Orejas -->
-            <polygon points="25,35 30,15 45,30" fill="#ffa726"/>
-            <polygon points="75,35 70,15 55,30" fill="#ffa726"/>
-            <polygon points="28,32 32,20 42,28" fill="#ffccbc"/>
-            <polygon points="72,32 68,20 58,28" fill="#ffccbc"/>
-            <!-- Ojos brillantes -->
-            <circle cx="40" cy="50" r="6" fill="#fff"/>
-            <circle cx="40" cy="50" r="3" fill="#000"/>
-            <circle cx="60" cy="50" r="6" fill="#fff"/>
-            <circle cx="60" cy="50" r="3" fill="#000"/>
-            <!-- Nariz y Boca -->
-            <polygon points="50,58 47,55 53,55" fill="#d84315"/>
-            <path d="M 46 62 Q 50 67 54 62" stroke="#d84315" stroke-width="2" fill="none"/>
-            <!-- Patitas -->
-            <circle cx="35" cy="80" r="8" fill="#ffa726"/>
-            <circle cx="65" cy="80" r="8" fill="#ffa726"/>
-        </svg>
-    </div>
-
-    <div class="game-container">
-        <!-- BARRA SUPERIOR CON AVATAR ESTILO CARTOON -->
-        <header class="header">
-            <div class="profile-area" onclick="showScreen('profile-screen')" title="Perfil y Vestimenta">
-                <div class="avatar-preview-container" id="header-avatar-svg">
-                    <!-- El SVG del avatar se inyectará dinámicamente -->
-                </div>
-            </div>
-            <div class="coins-badge" onclick="showScreen('coin-shop-screen')" title="Banco de Monedas">
-                🪙 <span id="coin-count">100</span>
-            </div>
-        </header>
 
         <!-- PANTALLA DE MENÚ PRINCIPAL -->
         <div id="main-menu" class="screen active">
@@ -166,11 +54,10 @@ Copia y reemplaza todo tu archivo `index.html`:
             <div id="categories-grid" class="categories-grid"></div>
         </div>
 
-        <!-- PANTALLA DE EVENTOS ESPECIALES -->
+        <!-- PANTALLA DE EVENTOS -->
         <div id="events-screen" class="screen">
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
             <h2>⭐ Eventos Activos</h2>
-            <p class="subtitle">¡Gana el doble de monedas en estos retos!</p>
             <div class="event-card">
                 <h3>🔥 Reto Relámpago de Ciencia</h3>
                 <p>Preguntas avanzadas con recompensa x2.</p>
@@ -178,16 +65,15 @@ Copia y reemplaza todo tu archivo `index.html`:
             </div>
         </div>
 
-        <!-- PANTALLA DE TIENDA (DISFRACES ESTILO CARTOON) -->
+        <!-- PANTALLA DE TIENDA -->
         <div id="shop-screen" class="screen">
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>🛒 Tienda de Disfraces y Mascotas</h2>
-            <p class="subtitle">Personaliza tu personaje estilo caricatura</p>
+            <h2>🛒 Tienda Cartoon</h2>
             
             <h3 class="shop-subtitle">Disfraces de Personaje</h3>
             <div class="shop-items" id="outfit-shop-container"></div>
 
-            <h3 class="shop-subtitle" style="margin-top: 15px;">Mascotas Exploradoras</h3>
+            <h3 class="shop-subtitle" style="margin-top: 15px;">Mascotas</h3>
             <div class="shop-items" id="pet-shop-container"></div>
         </div>
 
@@ -196,8 +82,8 @@ Copia y reemplaza todo tu archivo `index.html`:
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
             <h2>👤 Tu Perfil</h2>
             <div class="profile-form">
-                <p>Ingresa tu nombre para la Tabla de Líderes:</p>
-                <input type="text" id="username-input" placeholder="Tu nombre o alias..." maxlength="15">
+                <p>Tu nombre para la Tabla de Líderes:</p>
+                <input type="text" id="username-input" placeholder="Tu alias..." maxlength="15">
                 <button class="btn primary-btn" onclick="saveUserProfile()">Guardar Nombre</button>
                 <button class="btn secondary-btn" onclick="playAsGuest()">Jugar como Invitado</button>
             </div>
@@ -207,25 +93,17 @@ Copia y reemplaza todo tu archivo `index.html`:
         <div id="coin-shop-screen" class="screen">
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
             <h2>🪙 Conseguir Monedas</h2>
-            
             <div class="reward-section">
                 <p><b>Ver video publicitario:</b></p>
                 <button id="ad-btn" class="btn reward-btn" onclick="watchAd()">🎬 Ver Anuncio (+15 🪙)</button>
                 <span id="ad-timer" class="ad-timer-text" style="display: none;">Disponible en: <span id="countdown">45</span>s</span>
             </div>
-
-            <div class="reward-section" style="margin-top: 15px; border-color: #38bdf8;">
-                <p><b>Recarga con Dinero Real (Mercado Pago):</b></p>
-                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px;">Obtén monedas instantáneamente.</p>
-                <a href="#" target="_blank" class="btn primary-btn" style="display: block; text-decoration: none; text-align: center;">Comprar 500 🪙 ($1000 ARS)</a>
-            </div>
         </div>
 
-        <!-- TABLA DE CLASIFICACIÓN -->
+        <!-- TABLA DE LÍDERES -->
         <div id="leaderboard-screen" class="screen">
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
             <h2>🏆 Tabla de Líderes</h2>
-            <p class="subtitle">Tus mejores registros locales</p>
             <div id="leaderboard-list" class="leaderboard-list"></div>
         </div>
 
@@ -235,33 +113,26 @@ Copia y reemplaza todo tu archivo `index.html`:
                 <span id="quiz-title">Nivel 1</span>
                 <span id="question-counter">Pregunta 1/5</span>
             </div>
-            
             <div class="question-box">
-                <p id="question-text">Cargando pregunta...</p>
+                <p id="question-text">Cargando...</p>
             </div>
-
             <div class="lifelines-container">
                 <button class="btn-lifeline" onclick="useFiftyFifty()">🗑️ 50:50 (-15 🪙)</button>
                 <button class="btn-lifeline" onclick="useSkipQuestion()">⏭️ Saltar (-20 🪙)</button>
             </div>
-
             <div id="answers-container" class="answers-grid"></div>
         </div>
 
         <!-- PANTALLA DE RESULTADOS -->
         <div id="result-screen" class="screen">
             <h2 id="result-title">¡Resultado!</h2>
-            <p id="result-message">Has completado el reto.</p>
+            <p id="result-message">Completado.</p>
             <div class="result-stats">
                 <p>Puntaje: <span id="final-score">0</span></p>
-                <p>Monedas ganadas: <span id="earned-coins">🪙 +0</span></p>
+                <p>Monedas: <span id="earned-coins">🪙 +0</span></p>
             </div>
-            <button class="btn primary-btn" onclick="returnToLevels()">🗺️ Volver al Mapa de Niveles</button>
+            <button class="btn primary-btn" onclick="returnToLevels()">🗺️ Volver</button>
         </div>
-    </div>
-
-    <div class="ad-banner">
-        <span>Espacio Publicitario / Google AdSense Banner</span>
     </div>
 
     <script src="script.js"></script>
