@@ -1,14 +1,16 @@
-// Estado del juego y datos guardados (Memoria Local localStorage)
-let gameState = JSON.parse(localStorage.getItem('triviaState')) || {
+// Estado del juego con persistencia completa en localStorage
+let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     username: "Invitado",
     coins: 100,
     unlockedLevels: 1,
     currentAvatar: "🤖",
     ownedAvatars: ["🤖"],
-    score: 0
+    currentPet: "🐱",
+    ownedPets: ["🐱"],
+    highScore: 0
 };
 
-// Base de datos de avatares disponibles en la tienda
+// Tienda de Avatares
 const shopAvatars = [
     { id: "🤖", name: "Robot Base", price: 0 },
     { id: "😎", name: "Gafas Cool", price: 40 },
@@ -17,7 +19,15 @@ const shopAvatars = [
     { id: "👑", name: "Rey Legendario", price: 200 }
 ];
 
-// Niveles fijos (preparados para escalar a 50-100 niveles)
+// Tienda de Mascotas
+const shopPets = [
+    { id: "🐱", name: "Gatito", price: 0 },
+    { id: "🐶", name: "Perrito", price: 50 },
+    { id: "👻", name: "Fantasmita", price: 100 },
+    { id: "🐉", name: "Dragón", price: 250 }
+];
+
+// Niveles Fijos
 const fixedLevels = {
     1: [
         { q: "¿Cuál es el planeta más cercano al Sol?", options: ["Venus", "Mercurio", "Marte", "Júpiter"], correct: 1 },
@@ -42,13 +52,13 @@ const fixedLevels = {
     ]
 };
 
-// Generar más niveles base automáticos para que lleguen hasta el 10 por ahora
+// Generar niveles automáticos adicionales
 for (let i = 4; i <= 10; i++) {
     fixedLevels[i] = [
         { q: `Pregunta 1 del Nivel ${i}: ¿Cuánto es 5 + ${i}?`, options: [`${4+i}`, `${5+i}`, `${6+i}`, `${7+i}`], correct: 1 },
-        { q: `Pregunta 2 del Nivel ${i}: Capital de país europeo aleatorio`, options: ["Madrid", "París", "Roma", "Berlín"], correct: 0 },
+        { q: `Pregunta 2 del Nivel ${i}: Capital de país común`, options: ["Madrid", "París", "Roma", "Berlín"], correct: 0 },
         { q: `Pregunta 3 del Nivel ${i}: ¿Elemento de la tabla periódica?`, options: ["Oxígeno", "Agua", "Fuego", "Tierra"], correct: 0 },
-        { q: `Pregunta 4 del Nivel ${i}: ¿Año actual aproximado?`, options: ["2024", "2025", "2026", "2027"], correct: 2 },
+        { q: `Pregunta 4 del Nivel ${i}: ¿Año actual de desarrollo?`, options: ["2024", "2025", "2026", "2027"], correct: 2 },
         { q: `Pregunta 5 del Nivel ${i}: ¿Color del cielo despejado?`, options: ["Verde", "Azul", "Rojo", "Amarillo"], correct: 1 }
     ];
 }
@@ -65,18 +75,19 @@ window.onload = function() {
     saveAndSyncState();
     renderLevels();
     renderCategories();
-    renderAvatarShop();
+    renderShop();
 };
 
 function saveAndSyncState() {
-    localStorage.setItem('triviaState', JSON.stringify(gameState));
+    localStorage.setItem('triviaMasterState', JSON.stringify(gameState));
     document.getElementById('coin-count').textContent = gameState.coins;
     document.getElementById('header-avatar').textContent = gameState.currentAvatar;
+    document.getElementById('header-pet').textContent = gameState.currentPet;
     document.getElementById('welcome-msg').textContent = `¡Hola, ${gameState.username}!`;
 }
 
 function showScreen(screenId) {
-    screens = document.querySelectorAll('.screen');
+    const screens = document.querySelectorAll('.screen');
     screens.forEach(screen => screen.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
 }
@@ -113,9 +124,10 @@ function renderCategories() {
     }
 }
 
-function renderAvatarShop() {
-    const container = document.getElementById('avatar-shop-container');
-    container.innerHTML = '';
+function renderShop() {
+    // Renderizar Avatares
+    const avatarContainer = document.getElementById('avatar-shop-container');
+    avatarContainer.innerHTML = '';
     shopAvatars.forEach(av => {
         const isOwned = gameState.ownedAvatars.includes(av.id);
         const isEquipped = gameState.currentAvatar === av.id;
@@ -130,14 +142,33 @@ function renderAvatarShop() {
                 ${isEquipped ? 'Equipado' : (isOwned ? 'Equipar' : 'Comprar')}
             </button>
         `;
-        container.appendChild(card);
+        avatarContainer.appendChild(card);
+    });
+
+    // Renderizar Mascotas
+    const petContainer = document.getElementById('pet-shop-container');
+    petContainer.innerHTML = '';
+    shopPets.forEach(pet => {
+        const isOwned = gameState.ownedPets.includes(pet.id);
+        const isEquipped = gameState.currentPet === pet.id;
+        
+        const card = document.createElement('div');
+        card.className = 'shop-item-card';
+        card.innerHTML = `
+            <span style="font-size: 2rem;">${pet.id}</span>
+            <h4>${pet.name}</h4>
+            <p>${pet.price === 0 ? 'Gratis' : pet.price + ' 🪙'}</p>
+            <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" onclick="selectOrBuyPet('${pet.id}', ${pet.price})">
+                ${isEquipped ? 'Acompañando' : (isOwned ? 'Elegir' : 'Comprar')}
+            </button>
+        `;
+        petContainer.appendChild(card);
     });
 }
 
 function selectOrBuyAvatar(id, price) {
     if (gameState.ownedAvatars.includes(id)) {
         gameState.currentAvatar = id;
-        alert(`✨ ¡Has equipado tu avatar ${id}!`);
     } else {
         if (gameState.coins < price) {
             alert("❌ No tienes suficientes monedas.");
@@ -146,10 +177,25 @@ function selectOrBuyAvatar(id, price) {
         updateCoins(-price);
         gameState.ownedAvatars.push(id);
         gameState.currentAvatar = id;
-        alert(`🎉 ¡Avatar comprado y equipado con éxito!`);
     }
     saveAndSyncState();
-    renderAvatarShop();
+    renderShop();
+}
+
+function selectOrBuyPet(id, price) {
+    if (gameState.ownedPets.includes(id)) {
+        gameState.currentPet = id;
+    } else {
+        if (gameState.coins < price) {
+            alert("❌ No tienes suficientes monedas.");
+            return;
+        }
+        updateCoins(-price);
+        gameState.ownedPets.push(id);
+        gameState.currentPet = id;
+    }
+    saveAndSyncState();
+    renderShop();
 }
 
 function saveUserProfile() {
@@ -300,7 +346,18 @@ function endGame() {
         document.getElementById('result-title').textContent = "¡Reto Finalizado! 🎯";
         document.getElementById('result-message').textContent = `¡Buen trabajo!`;
     }
+
+    // Actualizar récord personal / tabla real
+    if (gameState.coins > gameState.highScore) {
+        gameState.highScore = gameState.coins;
+    }
     saveAndSyncState();
+}
+
+// Botón para volver directo al mapa de niveles al terminar un reto
+function returnToLevels() {
+    renderLevels();
+    showScreen('levels-screen');
 }
 
 function watchAd() {
@@ -336,8 +393,8 @@ function openLeaderboard() {
     showScreen('leaderboard-screen');
     const list = document.getElementById('leaderboard-list');
     list.innerHTML = `
-        <div class="leaderboard-item"><span>1. 👑 ProPlayer</span><span>🪙 450</span></div>
-        <div class="leaderboard-item"><span>2. 🧙‍♂️ SabioTrivia</span><span>🪙 320</span></div>
+        <div class="leaderboard-item"><span>1. 👑 MasterPro</span><span>🪙 850</span></div>
+        <div class="leaderboard-item"><span>2. 🧙‍♂️ SabioTrivia</span><span>🪙 520</span></div>
         <div class="leaderboard-item"><span>3. ${gameState.currentAvatar} ${gameState.username} (Tú)</span><span>🪙 ${gameState.coins}</span></div>
     `;
 }
