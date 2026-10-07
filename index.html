@@ -58,6 +58,16 @@
                 <p id="question-text">Cargando pregunta...</p>
             </div>
 
+            <!-- BOTONES DE AYUDA / COMODINES (USAN MONEDAS) -->
+            <div class="lifelines-container">
+                <button class="btn-lifeline" onclick="useFiftyFifty()" title="Elimina 2 respuestas incorrectas">
+                    🗑️ 50:50 (-15 🪙)
+                </button>
+                <button class="btn-lifeline" onclick="useSkipQuestion()" title="Salta la pregunta actual">
+                    ⏭️ Saltar (-20 🪙)
+                </button>
+            </div>
+
             <div id="answers-container" class="answers-grid">
                 <!-- Opciones de respuesta -->
             </div>
@@ -72,10 +82,11 @@
                 <p>Monedas ganadas: <span id="earned-coins">🪙 +0</span></p>
             </div>
             
-            <!-- Botón simulado/preparado para AdSense o Anuncio Recompensado -->
+            <!-- SECCIÓN DE ANUNCIO RECOMPENSADO CON COOLDOWN -->
             <div class="reward-section">
-                <p>¿Quieres duplicar tus monedas viendo un anuncio?</p>
-                <button class="btn reward-btn" onclick="watchAd()">🎬 Ver Anuncio (+50 🪙)</button>
+                <p>¿Necesitas más monedas?</p>
+                <button id="ad-btn" class="btn reward-btn" onclick="watchAd()">🎬 Ver Anuncio (+10 🪙)</button>
+                <span id="ad-timer" class="ad-timer-text" style="display: none;">Disponible en: <span id="countdown">60</span>s</span>
             </div>
 
             <button class="btn primary-btn" onclick="showScreen('main-menu')">🏠 Volver al Menú</button>
