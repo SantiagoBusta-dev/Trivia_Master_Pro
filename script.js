@@ -44,42 +44,40 @@ let unlockedLevels = 1;
 let currentQuestions = [];
 let currentIndex = 0;
 let score = 0;
-let gameMode = ''; // 'level' o 'category'
+let gameMode = ''; 
 let selectedCategory = '';
+
+// Control de tiempo para anuncios (Cooldown de 45 segundos)
+let canWatchAd = true;
+let adTimerInterval = null;
 
 // Elementos del DOM
 const coinCountSpan = document.getElementById('coin-count');
 const screens = document.querySelectorAll('.screen');
 
-// Inicializar la aplicación
 window.onload = function() {
     updateCoins(0);
     renderLevels();
     renderCategories();
 };
 
-// Cambiar de pantalla
 function showScreen(screenId) {
     screens.forEach(screen => screen.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
 }
 
-// Actualizar monedas
 function updateCoins(amount) {
     coins += amount;
     coinCountSpan.textContent = coins;
 }
 
-// Generar botones de Niveles (1 al 10)
 function renderLevels() {
     const grid = document.getElementById('levels-grid');
     grid.innerHTML = '';
-    
     for (let i = 1; i <= 10; i++) {
         const btn = document.createElement('button');
         btn.className = `level-btn ${i > unlockedLevels ? 'locked' : ''}`;
         btn.textContent = `Nivel ${i}`;
-        
         if (i <= unlockedLevels) {
             btn.onclick = () => startLevel(i);
         }
@@ -87,11 +85,9 @@ function renderLevels() {
     }
 }
 
-// Generar botones de Categorías (Modo Libre)
 function renderCategories() {
     const grid = document.getElementById('categories-grid');
     grid.innerHTML = '';
-    
     const categoriesNames = {
         ciencia: "🔬 Ciencia y Tecnología",
         historia: "📜 Historia",
@@ -109,43 +105,32 @@ function renderCategories() {
     }
 }
 
-// Iniciar Modo Nivel (Preguntas mixtas de todas las categorías)
 function startLevel(levelNum) {
     gameMode = 'level';
     currentLevel = levelNum;
-    
-    // Mezclar preguntas de todas las categorías para hacer un cuestionario variado
     let allQuestions = [];
     Object.values(questionBank).forEach(catArray => {
         allQuestions = allQuestions.concat(catArray);
     });
-    
-    // Tomar 5 preguntas aleatorias para el nivel
     currentQuestions = shuffleArray(allQuestions).slice(0, 5);
     currentIndex = 0;
     score = 0;
-    
     document.getElementById('quiz-title').textContent = `Nivel ${levelNum}`;
     showScreen('quiz-screen');
     loadQuestion();
 }
 
-// Iniciar Modo Libre por Categoría
 function startCategoryQuiz(catKey, catName) {
     gameMode = 'category';
     selectedCategory = catKey;
-    
-    // Tomar las preguntas de esa categoría
     currentQuestions = shuffleArray([...questionBank[catKey]]);
     currentIndex = 0;
     score = 0;
-    
     document.getElementById('quiz-title').textContent = catName;
     showScreen('quiz-screen');
     loadQuestion();
 }
 
-// Cargar pregunta actual
 function loadQuestion() {
     if (currentIndex >= currentQuestions.length) {
         endGame();
@@ -168,12 +153,43 @@ function loadQuestion() {
     });
 }
 
-// Verificar respuesta seleccionada
+// COMODÍN 1: 50:50 (Elimina 2 respuestas incorrectas por 15 monedas)
+function useFiftyFifty() {
+    if (coins < 15) {
+        alert("❌ No tienes suficientes monedas (Necesitas 15 🪙).");
+        return;
+    }
+
+    updateCoins(-15);
+    const qData = currentQuestions[currentIndex];
+    const allButtons = document.querySelectorAll('.answer-btn');
+    
+    let hiddenCount = 0;
+    allButtons.forEach((btn, index) => {
+        if (index !== qData.correct && hiddenCount < 2) {
+            btn.style.visibility = 'hidden';
+            hiddenCount++;
+        }
+    });
+}
+
+// COMODÍN 2: Saltar pregunta (Cuesta 20 monedas)
+function useSkipQuestion() {
+    if (coins < 20) {
+        alert("❌ No tienes suficientes monedas (Necesitas 20 🪙).");
+        return;
+    }
+
+    updateCoins(-20);
+    alert("⏭️ ¡Pregunta saltada con éxito!");
+    currentIndex++;
+    loadQuestion();
+}
+
 function checkAnswer(selectedIndex, btnElement) {
     const qData = currentQuestions[currentIndex];
     const allButtons = document.querySelectorAll('.answer-btn');
     
-    // Deshabilitar todos los botones para evitar doble clic
     allButtons.forEach(b => b.disabled = true);
 
     if (selectedIndex === qData.correct) {
@@ -190,17 +206,14 @@ function checkAnswer(selectedIndex, btnElement) {
     }, 1000);
 }
 
-// Finalizar partida
 function endGame() {
     showScreen('result-screen');
-    
     document.getElementById('final-score').textContent = `${score} / ${currentQuestions.length}`;
     
-    let earnedCoins = score * 10;
+    let earnedCoins = score * 5;
     document.getElementById('earned-coins').textContent = `🪙 +${earnedCoins}`;
     updateCoins(earnedCoins);
 
-    // Si es modo nivel y aprueba (ej. 3 de 5 o más), desbloquea el siguiente nivel
     if (gameMode === 'level' && score >= 3) {
         if (currentLevel === unlockedLevels && unlockedLevels < 10) {
             unlockedLevels++;
@@ -217,13 +230,37 @@ function endGame() {
     }
 }
 
-// Simulación del botón de anuncio recompensado
+// Sistema de Anuncios con Cooldown de 45 segundos
 function watchAd() {
-    alert("🎬 Simulando anuncio... ¡Has ganado 50 monedas extra!");
-    updateCoins(50);
+    if (!canWatchAd) return;
+
+    alert("🎬 Simulando anuncio de Google AdSense... ¡Has ganado +10 monedas!");
+    updateCoins(10);
+    
+    // Activar cooldown
+    canWatchAd = false;
+    const adBtn = document.getElementById('ad-btn');
+    const adTimer = document.getElementById('ad-timer');
+    const countdownSpan = document.getElementById('countdown');
+    
+    adBtn.style.display = 'none';
+    adTimer.style.display = 'block';
+    
+    let timeLeft = 45;
+    countdownSpan.textContent = timeLeft;
+
+    adTimerInterval = setInterval(() => {
+        timeLeft--;
+        countdownSpan.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(adTimerInterval);
+            canWatchAd = true;
+            adBtn.style.display = 'block';
+            adTimer.style.display = 'none';
+        }
+    }, 1000);
 }
 
-// Función auxiliar para mezclar arrays aleatoriamente
 function shuffleArray(array) {
     let arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
