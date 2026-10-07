@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Master Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- BARRA SUPERIOR (MONEDAS) -->
+        <header class="header">
+            <h1>🧠 Trivia Master</h1>
+            <div class="coins-badge">
+                🪙 <span id="coin-count">100</span>
+            </div>
+        </header>
+
+        <!-- PANTALLA DE MENÚ PRINCIPAL -->
+        <div id="main-menu" class="screen active">
+            <h2>Elige un Modo de Juego</h2>
+            <div class="menu-buttons">
+                <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Modo Niveles (Aventura)</button>
+                <button class="btn secondary-btn" onclick="showScreen('categories-screen')">🎮 Modo Libre (Por Categorías)</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE NIVELES -->
+        <div id="levels-screen" class="screen">
+            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+            <h2>Mapa de Niveles</h2>
+            <p class="subtitle">Preguntas mixtas de todas las categorías</p>
+            <div id="levels-grid" class="levels-grid">
+                <!-- Se generan dinámicamente desde JS -->
+            </div>
+        </div>
+
+        <!-- PANTALLA DE CATEGORÍAS (MODO LIBRE) -->
+        <div id="categories-screen" class="screen">
+            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+            <h2>Elige una Categoría</h2>
+            <div id="categories-grid" class="categories-grid">
+                <!-- Se generan dinámicamente desde JS -->
+            </div>
+        </div>
+
+        <!-- PANTALLA DE JUEGO (TRIVIA) -->
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <span id="quiz-title">Nivel 1</span>
+                <span id="question-counter">Pregunta 1/5</span>
+            </div>
+            
+            <div class="question-box">
+                <p id="question-text">Cargando pregunta...</p>
+            </div>
+
+            <div id="answers-container" class="answers-grid">
+                <!-- Opciones de respuesta -->
+            </div>
+        </div>
+
+        <!-- PANTALLA DE RESULTADOS -->
+        <div id="result-screen" class="screen">
+            <h2 id="result-title">¡Resultado!</h2>
+            <p id="result-message">Has completado el reto.</p>
+            <div class="result-stats">
+                <p>Puntaje: <span id="final-score">0</span></p>
+                <p>Monedas ganadas: <span id="earned-coins">🪙 +0</span></p>
+            </div>
+            
+            <!-- Botón simulado/preparado para AdSense o Anuncio Recompensado -->
+            <div class="reward-section">
+                <p>¿Quieres duplicar tus monedas viendo un anuncio?</p>
+                <button class="btn reward-btn" onclick="watchAd()">🎬 Ver Anuncio (+50 🪙)</button>
+            </div>
+
+            <button class="btn primary-btn" onclick="showScreen('main-menu')">🏠 Volver al Menú</button>
+        </div>
+    </div>
+
+    <!-- ANUNCIO ESTÁTICO INFERIOR (Simulando bloque de Banner AdSense) -->
+    <div class="ad-banner">
+        <span>Espacio Publicitario / Google AdSense Banner</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
