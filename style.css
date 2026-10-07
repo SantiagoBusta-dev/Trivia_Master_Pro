@@ -73,7 +73,6 @@ body {
     cursor: pointer;
 }
 
-/* CONTENEDOR DE PANTALLAS */
 .main-content {
     flex-grow: 1;
     overflow-y: auto;
@@ -323,7 +322,6 @@ h2 {
     flex-shrink: 0;
 }
 
-/* BURBUJA DE DIÁLOGO DE CARICATURA */
 .comic-speech-bubble {
     position: relative;
     background: #ffffff;
