@@ -72,12 +72,12 @@
             <div id="shop-screen" class="screen">
                 <div class="screen-header-row">
                     <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-                    <h2>🛒 Tienda Cartoon</h2>
+                    <h2>🛒 Tienda de Ropa y Mascotas</h2>
                 </div>
                 <div class="shop-scroll-area">
-                    <h3 class="shop-subtitle">Disfraces de Personaje</h3>
+                    <h3 class="shop-subtitle">Ropa para tu Avatar</h3>
                     <div class="shop-items" id="outfit-shop-container"></div>
-                    <h3 class="shop-subtitle" style="margin-top: 15px;">Mascotas</h3>
+                    <h3 class="shop-subtitle" style="margin-top: 15px;">Mascotas de Compañía</h3>
                     <div class="shop-items" id="pet-shop-container"></div>
                 </div>
             </div>
@@ -86,10 +86,11 @@
             <div id="profile-screen" class="screen">
                 <div class="screen-header-row">
                     <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-                    <h2>👤 Tu Perfil</h2>
+                    <h2>👤 Tu Perfil y Avatar</h2>
                 </div>
                 <div class="profile-form">
-                    <p>Tu nombre para la Tabla de Líderes:</p>
+                    <div class="full-body-showcase" id="profile-avatar-full"></div>
+                    <p>Tu nombre:</p>
                     <input type="text" id="username-input" placeholder="Tu alias..." maxlength="15">
                     <button class="btn primary-btn" onclick="saveUserProfile()">Guardar Nombre</button>
                     <button class="btn secondary-btn" onclick="playAsGuest()">Jugar como Invitado</button>
@@ -146,10 +147,12 @@
 
         </main>
 
-        <!-- ZONA DE MASCOTA ESTÁTICA ABAJO (Interactiva, no vuela) -->
+        <!-- ZONA DE MASCOTA CON BURBUJA DE DIÁLOGO ESTILO CARICATURA -->
         <footer class="pet-companion-box" onclick="interactWithPet()" title="¡Toca a tu mascota!">
             <div id="companion-pet-svg" class="companion-pet-visual"></div>
-            <div class="pet-dialogue" id="pet-speech">¡Hola! ¿Listo para jugar? 🐾</div>
+            <div class="comic-speech-bubble">
+                <span id="pet-speech">¡Hola! ¿Listo para jugar?</span>
+            </div>
         </footer>
     </div>
 
