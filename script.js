@@ -8,87 +8,42 @@ let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     ownedPets: ["cat"]
 };
 
-// Avatares detallados estilo Cartoon / Disfraces
 const shopOutfits = [
     { 
         id: "batman", 
         name: "Héroe Nocturno", 
         price: 0,
-        svg: `<svg viewBox="0 0 100 100" width="36" height="36">
-                <circle cx="50" cy="55" r="26" fill="#ffccbc"/>
-                <path d="M 28 45 L 34 14 L 47 34 L 53 34 L 66 14 L 72 45 Z" fill="#1e293b"/>
-                <circle cx="41" cy="46" r="4" fill="#fff"/><circle cx="59" cy="46" r="4" fill="#fff"/>
-                <circle cx="41" cy="46" r="1.5" fill="#000"/><circle cx="59" cy="46" r="1.5" fill="#000"/>
-                <path d="M 45 56 Q 50 62 55 56" stroke="#c2410c" stroke-width="2.5" fill="none"/>
-              </svg>`
+        svg: `<svg viewBox="0 0 100 100" width="30" height="30"><circle cx="50" cy="55" r="26" fill="#ffccbc"/><path d="M 28 45 L 34 14 L 47 34 L 53 34 L 66 14 L 72 45 Z" fill="#1e293b"/><circle cx="41" cy="46" r="4" fill="#fff"/><circle cx="59" cy="46" r="4" fill="#fff"/><circle cx="41" cy="46" r="1.5" fill="#000"/><circle cx="59" cy="46" r="1.5" fill="#000"/><path d="M 45 56 Q 50 62 55 56" stroke="#c2410c" stroke-width="2.5" fill="none"/></svg>`
     },
     { 
         id: "dino", 
-        name: "Disfraz de Dino", 
+        name: "Disfraz Dino", 
         price: 40,
-        svg: `<svg viewBox="0 0 100 100" width="36" height="36">
-                <circle cx="50" cy="55" r="26" fill="#ffccbc"/>
-                <path d="M 26 42 Q 50 10 74 42 L 70 58 L 30 58 Z" fill="#22c55e"/>
-                <polygon points="42,20 46,10 50,20" fill="#86efac"/>
-                <polygon points="50,20 54,10 58,20" fill="#86efac"/>
-                <circle cx="41" cy="46" r="4" fill="#fff"/><circle cx="59" cy="46" r="4" fill="#fff"/>
-                <circle cx="41" cy="46" r="1.5" fill="#000"/><circle cx="59" cy="46" r="1.5" fill="#000"/>
-                <path d="M 45 56 Q 50 62 55 56" stroke="#15803d" stroke-width="2.5" fill="none"/>
-              </svg>`
-    },
-    { 
-        id: "shark", 
-        name: "Disfraz de Tiburón", 
-        price: 80,
-        svg: `<svg viewBox="0 0 100 100" width="36" height="36">
-                <circle cx="50" cy="55" r="26" fill="#ffccbc"/>
-                <path d="M 25 45 Q 50 12 75 45 L 70 58 L 30 58 Z" fill="#0ea5e9"/>
-                <polygon points="50,14 62,28 50,28" fill="#bae6fd"/>
-                <circle cx="41" cy="46" r="4" fill="#fff"/><circle cx="59" cy="46" r="4" fill="#fff"/>
-                <circle cx="41" cy="46" r="1.5" fill="#000"/><circle cx="59" cy="46" r="1.5" fill="#000"/>
-                <path d="M 45 56 Q 50 62 55 56" stroke="#0369a1" stroke-width="2.5" fill="none"/>
-              </svg>`
+        svg: `<svg viewBox="0 0 100 100" width="30" height="30"><circle cx="50" cy="55" r="26" fill="#ffccbc"/><path d="M 26 42 Q 50 10 74 42 L 70 58 L 30 58 Z" fill="#22c55e"/><polygon points="42,20 46,10 50,20" fill="#86efac"/><polygon points="50,20 54,10 58,20" fill="#86efac"/><circle cx="41" cy="46" r="4" fill="#fff"/><circle cx="59" cy="46" r="4" fill="#fff"/><circle cx="41" cy="46" r="1.5" fill="#000"/><circle cx="59" cy="46" r="1.5" fill="#000"/><path d="M 45 56 Q 50 62 55 56" stroke="#15803d" stroke-width="2.5" fill="none"/></svg>`
     }
 ];
 
-// Mascotas interactivas
 const shopPets = [
     { 
         id: "cat", 
         name: "Gatito Naranja", 
         price: 0,
-        svg: `<svg viewBox="0 0 100 100" width="40" height="40">
-                <circle cx="50" cy="55" r="28" fill="#fb923c"/>
-                <polygon points="28,36 33,12 46,30" fill="#fb923c"/>
-                <polygon points="72,36 67,12 54,30" fill="#fb923c"/>
-                <circle cx="40" cy="50" r="5" fill="#fff"/><circle cx="60" cy="50" r="5" fill="#fff"/>
-                <circle cx="40" cy="50" r="2.5" fill="#000"/><circle cx="60" cy="50" r="2.5" fill="#000"/>
-                <polygon points="50,57 47,54 53,54" fill="#c2410c"/>
-                <path d="M 45 62 Q 50 68 55 62" stroke="#c2410c" stroke-width="2.5" fill="none"/>
-              </svg>`
+        svg: `<svg viewBox="0 0 100 100" width="32" height="32"><circle cx="50" cy="55" r="28" fill="#fb923c"/><polygon points="28,36 33,12 46,30" fill="#fb923c"/><polygon points="72,36 67,12 54,30" fill="#fb923c"/><circle cx="40" cy="50" r="5" fill="#fff"/><circle cx="60" cy="50" r="5" fill="#fff"/><circle cx="40" cy="50" r="2.5" fill="#000"/><circle cx="60" cy="50" r="2.5" fill="#000"/><polygon points="50,57 47,54 53,54" fill="#c2410c"/><path d="M 45 62 Q 50 68 55 62" stroke="#c2410c" stroke-width="2.5" fill="none"/></svg>`
     },
     { 
         id: "bunny", 
         name: "Conepín", 
         price: 50,
-        svg: `<svg viewBox="0 0 100 100" width="40" height="40">
-                <ellipse cx="40" cy="20" rx="6" ry="16" fill="#e5e7eb"/>
-                <ellipse cx="60" cy="20" rx="6" ry="16" fill="#e5e7eb"/>
-                <circle cx="50" cy="60" r="28" fill="#e5e7eb"/>
-                <circle cx="40" cy="55" r="5" fill="#fff"/><circle cx="60" cy="55" r="5" fill="#fff"/>
-                <circle cx="40" cy="55" r="2.5" fill="#000"/><circle cx="60" cy="55" r="2.5" fill="#000"/>
-                <polygon points="50,63 48,60 52,60" fill="#ec4899"/>
-                <path d="M 45 68 Q 50 73 55 68" stroke="#9ca3af" stroke-width="2.5" fill="none"/>
-              </svg>`
+        svg: `<svg viewBox="0 0 100 100" width="32" height="32"><ellipse cx="40" cy="20" rx="6" ry="16" fill="#e5e7eb"/><ellipse cx="60" cy="20" rx="6" ry="16" fill="#e5e7eb"/><circle cx="50" cy="60" r="28" fill="#e5e7eb"/><circle cx="40" cy="55" r="5" fill="#fff"/><circle cx="60" cy="55" r="5" fill="#fff"/><circle cx="40" cy="55" r="2.5" fill="#000"/><circle cx="60" cy="55" r="2.5" fill="#000"/><polygon points="50,63 48,60 52,60" fill="#ec4899"/><path d="M 45 68 Q 50 73 55 68" stroke="#9ca3af" stroke-width="2.5" fill="none"/></svg>`
     }
 ];
 
 const petPhrases = [
-    "¡Hola! Tócame para jugar 🐾",
+    "¡Hola! Tócame para hablar 🐾",
     "¡Miau! ¿Qué nivel jugamos hoy?",
     "¡Excelente elección de avatar! ✨",
-    "¡A ganar muchas monedas hoy! 🪙",
-    "¡Ronroneo de felicidad cuando aciertas! 💛"
+    "¡A ganar monedas hoy! 🪙",
+    "¡Listo para responder! 💛"
 ];
 
 const fixedLevels = {
@@ -103,10 +58,10 @@ const fixedLevels = {
 for (let i = 2; i <= 10; i++) {
     fixedLevels[i] = [
         { q: `Pregunta 1 del Nivel ${i}: ¿Cuánto es 5 + ${i}?`, options: [`${4+i}`, `${5+i}`, `${6+i}`, `${7+i}`], correct: 1 },
-        { q: `Pregunta 2 del Nivel ${i}: Capital de país común`, options: ["Madrid", "París", "Roma", "Berlín"], correct: 0 },
-        { q: `Pregunta 3 del Nivel ${i}: ¿Elemento de la tabla periódica?`, options: ["Oxígeno", "Agua", "Fuego", "Tierra"], correct: 0 },
-        { q: `Pregunta 4 del Nivel ${i}: ¿Año actual de desarrollo?`, options: ["2024", "2025", "2026", "2027"], correct: 2 },
-        { q: `Pregunta 5 del Nivel ${i}: ¿Color del cielo despejado?`, options: ["Verde", "Azul", "Rojo", "Amarillo"], correct: 1 }
+        { q: `Pregunta 2 del Nivel ${i}: Capital común`, options: ["Madrid", "París", "Roma", "Berlín"], correct: 0 },
+        { q: `Pregunta 3 del Nivel ${i}: ¿Elemento químico?`, options: ["Oxígeno", "Agua", "Fuego", "Tierra"], correct: 0 },
+        { q: `Pregunta 4 del Nivel ${i}: ¿Año actual?`, options: ["2024", "2025", "2026", "2027"], correct: 2 },
+        { q: `Pregunta 5 del Nivel ${i}: ¿Color del cielo?`, options: ["Verde", "Azul", "Rojo", "Amarillo"], correct: 1 }
     ];
 }
 
@@ -187,7 +142,7 @@ function renderShop() {
             <div class="shop-item-visual">${item.svg}</div>
             <h4>${item.name}</h4>
             <p>${item.price === 0 ? 'Gratis' : item.price + ' 🪙'}</p>
-            <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" onclick="selectOrBuyOutfit('${item.id}', ${item.price})">
+            <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" style="padding: 6px; font-size: 0.75rem;" onclick="selectOrBuyOutfit('${item.id}', ${item.price})">
                 ${isEquipped ? 'Equipado' : (isOwned ? 'Equipar' : 'Comprar')}
             </button>`;
         outfitContainer.appendChild(card);
@@ -204,7 +159,7 @@ function renderShop() {
             <div class="shop-item-visual">${pet.svg}</div>
             <h4>${pet.name}</h4>
             <p>${pet.price === 0 ? 'Gratis' : pet.price + ' 🪙'}</p>
-            <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" onclick="selectOrBuyPet('${pet.id}', ${pet.price})">
+            <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" style="padding: 6px; font-size: 0.75rem;" onclick="selectOrBuyPet('${pet.id}', ${pet.price})">
                 ${isEquipped ? 'Acompañando' : (isOwned ? 'Elegir' : 'Comprar')}
             </button>`;
         petContainer.appendChild(card);
