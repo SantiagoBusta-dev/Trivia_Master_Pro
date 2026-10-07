@@ -249,3 +249,7 @@ function openLeaderboard() {
         <div class="leaderboard-item"><span>1. 👑 MasterPro</span><span>🪙 850</span></div>
         <div class="leaderboard-item"><span>2. 🦸‍♂️ ${gameState.username} (Tú)</span><span>🪙 ${gameState.coins}</span></div>`;
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    renderStaticPet('footer-container');
+});
