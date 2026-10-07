@@ -10,32 +10,35 @@
 <body>
 
     <div class="game-container">
-        <!-- BARRA SUPERIOR (MONEDAS Y PERFIL) -->
+        <!-- BARRA SUPERIOR -->
         <header class="header">
-            <div class="profile-badge" onclick="showScreen('shop-screen')" style="cursor: pointer;" title="Ir a la Tienda de Avatar">
-                <span id="avatar-icon">😎</span>
-                <span id="player-title">Novato</span>
+            <!-- Círculo de Perfil -->
+            <div class="profile-circle" onclick="showScreen('profile-screen')" title="Perfil y Cuenta">
+                <span id="header-avatar">🤖</span>
             </div>
-            <div class="coins-badge">
+            <!-- Contador de Monedas (Clic para abrir Tienda de Monedas / Anuncios) -->
+            <div class="coins-badge" onclick="showScreen('coin-shop-screen')" title="Conseguir Monedas">
                 🪙 <span id="coin-count">100</span>
             </div>
         </header>
 
         <!-- PANTALLA DE MENÚ PRINCIPAL -->
         <div id="main-menu" class="screen active">
-            <h2>Elige un Modo de Juego</h2>
+            <h2 id="welcome-msg">¡Bienvenido, Jugador!</h2>
             <div class="menu-buttons">
-                <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Modo Niveles (Fijos)</button>
-                <button class="btn secondary-btn" onclick="showScreen('categories-screen')">🎮 Modo Libre (Por Categorías)</button>
-                <button class="btn shop-btn" onclick="showScreen('shop-screen')">🛒 Tienda & Avatar</button>
+                <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Modo Niveles</button>
+                <button class="btn secondary-btn" onclick="showScreen('categories-screen')">🎮 Modo Libre</button>
+                <button class="btn event-btn" onclick="showScreen('events-screen')">⭐ Eventos Especiales</button>
+                <button class="btn shop-btn" onclick="showScreen('shop-screen')">🛒 Tienda de Avatares</button>
+                <button class="btn leaderboard-btn" onclick="openLeaderboard()">🏆 Tabla de Clasificación</button>
             </div>
         </div>
 
-        <!-- PANTALLA DE NIVELES (FIJOS 1 al 10) -->
+        <!-- PANTALLA DE NIVELES (Preparada para 50-100 niveles) -->
         <div id="levels-screen" class="screen">
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>Mapa de Niveles Fijos</h2>
-            <p class="subtitle">Preguntas predefinidas que no cambian</p>
+            <h2>Modo Niveles</h2>
+            <p class="subtitle">Supera los retos y avanza</p>
             <div id="levels-grid" class="levels-grid"></div>
         </div>
 
@@ -46,19 +49,57 @@
             <div id="categories-grid" class="categories-grid"></div>
         </div>
 
-        <!-- PANTALLA DE TIENDA Y AVATAR -->
+        <!-- PANTALLA DE EVENTOS ESPECIALES -->
+        <div id="events-screen" class="screen">
+            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+            <h2>⭐ Eventos Activos</h2>
+            <p class="subtitle">¡Gana el doble de monedas en estos retos!</p>
+            <div class="event-card">
+                <h3>🔥 Reto Relámpago de Ciencia</h3>
+                <p>Preguntas avanzadas con recompensa x2.</p>
+                <button class="btn primary-btn" onclick="startSpecialEvent()">¡Jugar Evento!</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE TIENDA DE AVATARES -->
         <div id="shop-screen" class="screen">
             <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
-            <h2>🛒 Tienda de Personalización</h2>
-            <p class="subtitle">Personaliza tu estilo con monedas</p>
-            
-            <div class="shop-section">
-                <h3>Gorras y Estilos</h3>
-                <div class="shop-items">
-                    <button class="btn secondary-btn" onclick="buyItem('🧢 Gorra Cool', 30, '🧢')">🧢 Gorra Cool (30 🪙)</button>
-                    <button class="btn secondary-btn" onclick="buyItem('👑 Corona Real', 100, '👑')">👑 Corona Real (100 🪙)</button>
-                    <button class="btn secondary-btn" onclick="buyItem('🕶️ Anteojos Pro', 50, '🕶️')">🕶️ Anteojos Pro (50 🪙)</button>
-                </div>
+            <h2>🛒 Tienda de Avatares</h2>
+            <p class="subtitle">Elige tu estilo visual</p>
+            <div class="shop-items" id="avatar-shop-container">
+                <!-- Se cargan dinámicamente desde JS -->
+            </div>
+        </div>
+
+        <!-- PANTALLA DE PERFIL / USUARIO -->
+        <div id="profile-screen" class="screen">
+            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+            <h2>👤 Configuración de Perfil</h2>
+            <div class="profile-form">
+                <p>Personaliza tu nombre para la tabla de clasificación:</p>
+                <input type="text" id="username-input" placeholder="Tu nombre o alias..." maxlength="15">
+                <button class="btn primary-btn" onclick="saveUserProfile()">Guardar Perfil</button>
+                <button class="btn secondary-btn" onclick="playAsGuest()">Jugar como Invitado</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE CONSEGUIR MONEDAS (ANUNCIOS Y PAQUETES) -->
+        <div id="coin-shop-screen" class="screen">
+            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+            <h2>🪙 Banco y Monedas</h2>
+            <div class="reward-section">
+                <p><b>Ver video publicitario:</b></p>
+                <button id="ad-btn" class="btn reward-btn" onclick="watchAd()">🎬 Ver Anuncio (+15 🪙)</button>
+                <span id="ad-timer" class="ad-timer-text" style="display: none;">Disponible en: <span id="countdown">45</span>s</span>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE TABLA DE CLASIFICACIÓN -->
+        <div id="leaderboard-screen" class="screen">
+            <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+            <h2>🏆 Tabla de Líderes</h2>
+            <div id="leaderboard-list" class="leaderboard-list">
+                <!-- Se genera desde JS -->
             </div>
         </div>
 
@@ -73,7 +114,6 @@
                 <p id="question-text">Cargando pregunta...</p>
             </div>
 
-            <!-- COMODINES FUNCIONALES -->
             <div class="lifelines-container">
                 <button class="btn-lifeline" onclick="useFiftyFifty()">🗑️ 50:50 (-15 🪙)</button>
                 <button class="btn-lifeline" onclick="useSkipQuestion()">⏭️ Saltar (-20 🪙)</button>
@@ -90,13 +130,6 @@
                 <p>Puntaje: <span id="final-score">0</span></p>
                 <p>Monedas ganadas: <span id="earned-coins">🪙 +0</span></p>
             </div>
-            
-            <div class="reward-section">
-                <p>¿Necesitas más monedas?</p>
-                <button id="ad-btn" class="btn reward-btn" onclick="watchAd()">🎬 Ver Anuncio (+10 🪙)</button>
-                <span id="ad-timer" class="ad-timer-text" style="display: none;">Disponible en: <span id="countdown">45</span>s</span>
-            </div>
-
             <button class="btn primary-btn" onclick="showScreen('main-menu')">🏠 Volver al Menú</button>
         </div>
     </div>
