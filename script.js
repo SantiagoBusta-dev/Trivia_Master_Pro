@@ -1,4 +1,23 @@
-// Niveles 100% fijos y predefinidos (no cambian ni se mezclan al azar)
+// Estado del juego y datos guardados (Memoria Local localStorage)
+let gameState = JSON.parse(localStorage.getItem('triviaState')) || {
+    username: "Invitado",
+    coins: 100,
+    unlockedLevels: 1,
+    currentAvatar: "🤖",
+    ownedAvatars: ["🤖"],
+    score: 0
+};
+
+// Base de datos de avatares disponibles en la tienda
+const shopAvatars = [
+    { id: "🤖", name: "Robot Base", price: 0 },
+    { id: "😎", name: "Gafas Cool", price: 40 },
+    { id: "🧙‍♂️", name: "Mago Sabio", price: 80 },
+    { id: "🦸‍♂️", name: "Superhéroe", price: 120 },
+    { id: "👑", name: "Rey Legendario", price: 200 }
+];
+
+// Niveles fijos (preparados para escalar a 50-100 niveles)
 const fixedLevels = {
     1: [
         { q: "¿Cuál es el planeta más cercano al Sol?", options: ["Venus", "Mercurio", "Marte", "Júpiter"], correct: 1 },
@@ -20,86 +39,51 @@ const fixedLevels = {
         { q: "¿Qué película ganó más premios Óscar en la historia?", options: ["Titanic", "Ben-Hur", "El Señor de los Anillos: El retorno del rey", "Las tres empatan"], correct: 3 },
         { q: "¿En qué año se estrenó la primera película de Star Wars?", options: ["1975", "1977", "1980", "1983"], correct: 1 },
         { q: "¿Quién interpretó a Jack Dawson en Titanic?", options: ["Brad Pitt", "Tom Cruise", "Leonardo DiCaprio", "Johnny Depp"], correct: 2 }
-    ],
-    4: [
-        { q: "¿Cada cuántos años se celebran los Juegos Olímpicos?", options: ["2 años", "3 años", "4 años", "5 años"], correct: 2 },
-        { q: "¿En qué deporte destacó Michael Jordan?", options: ["Fútbol americano", "Béisbol", "Baloncesto", "Golf"], correct: 2 },
-        { q: "¿Cuántos jugadores forman un equipo de fútbol en cancha?", options: ["10", "11", "12", "9"], correct: 1 },
-        { q: "¿Qué país ganó la Copa Mundial de Fútbol de 2022?", options: ["Francia", "Brasil", "Argentina", "Alemania"], correct: 2 },
-        { q: "¿En qué superficie se juega el torneo de tenis Roland Garros?", options: ["Césped", "Dura", "Arcilla / Polvo de ladrillo", "Alfombra"], correct: 2 }
-    ],
-    5: [
-        { q: "¿Cuál es el río más largo del mundo?", options: ["Nilo", "Amazonas", "Misisipi", "Yangtsé"], correct: 1 },
-        { q: "¿Cuál es la capital de Australia?", options: ["Sídney", "Melbourne", "Canberra", "Perth"], correct: 2 },
-        { q: "¿En qué continente se encuentra el desierto del Sahara?", options: ["Asia", "África", "América", "Oceanía"], correct: 1 },
-        { q: "¿Cuál es el país más grande del mundo por superficie?", options: ["Canadá", "China", "Estados Unidos", "Rusia"], correct: 3 },
-        { q: "¿Qué país tiene forma de bota?", options: ["Grecia", "España", "Italia", "Chile"], correct: 2 }
-    ],
-    // Niveles 6 al 10 con combinaciones base
-    6: [
-        { q: "Símbolo químico del Oro", options: ["Ag", "Au", "Cu", "Fe"], correct: 1 },
-        { q: "¿Quién pintó la Mona Lisa?", options: ["Van Gogh", "Picasso", "Leonardo da Vinci", "Dalí"], correct: 2 },
-        { q: "¿Cuál es el océano más grande del mundo?", options: ["Atlántico", "Índico", "Ártico", "Pacífico"], correct: 3 },
-        { q: "¿En qué país se encuentra la torre Eiffel?", options: ["Italia", "Francia", "Inglaterra", "Alemania"], correct: 1 },
-        { q: "¿Cuántos huesos tiene el cuerpo humano adulto?", options: ["206", "180", "215", "195"], correct: 0 }
-    ],
-    7: [
-        { q: "¿Cuál es la moneda oficial de Japón?", options: ["Yuan", "Dólar", "Yen", "Won"], correct: 2 },
-        { q: "¿Qué instrumento mide los terremotos?", options: ["Barómetro", "Termómetro", "Sismógrafo", "Anemómetro"], correct: 2 },
-        { q: "¿En qué año llegó el hombre a la Luna?", options: ["1965", "1969", "1972", "1959"], correct: 1 },
-        { q: "¿Cuál es el mamífero terrestre más rápido?", options: ["León", "Guepardo", "Caballo", "Cebra"], correct: 1 },
-        { q: "¿Qué elemento químico es el diamante?", options: ["Carbono", "Silicio", "Oro", "Platino"], correct: 0 }
-    ],
-    8: [
-        { q: "¿Quién escribió 'Don Quijote de la Mancha'?", options: ["Lope de Vega", "Cervantes", "Quevedo", "Góngora"], correct: 1 },
-        { q: "¿Cuál es el país con más población del mundo?", options: ["India", "Estados Unidos", "China", "Rusia"], correct: 0 },
-        { q: "¿Cuál es la capital de Canadá?", options: ["Toronto", "Vancouver", "Ottawa", "Montreal"], correct: 2 },
-        { q: "¿Qué gas es esencial para la fotosíntesis?", options: ["Oxígeno", "Nitrógeno", "Dióxido de Carbono", "Hidrógeno"], correct: 2 },
-        { q: "¿En qué continente está Egipto?", options: ["Asia", "África", "Europa", "Oceanía"], correct: 1 }
-    ],
-    9: [
-        { q: "¿Quién descubrió la penicilina?", options: ["Alexander Fleming", "Louis Pasteur", "Marie Curie", "Albert Einstein"], correct: 0 },
-        { q: "¿Cuál es la montaña más alta del mundo?", options: ["K2", "Everest", "Aconcagua", "Makalu"], correct: 1 },
-        { q: "¿Qué metal es líquido a temperatura ambiente?", options: ["Hierro", "Mercurio", "Plata", "Plomo"], correct: 1 },
-        { q: "¿En qué año se fundó Google?", options: ["1995", "1998", "2001", "2004"], correct: 1 },
-        { q: "¿Cuántos lados tiene un hexágono?", options: ["5", "6", "7", "8"], correct: 1 }
-    ],
-    10: [
-        { q: "¿Cuál es el animal más grande del planeta?", options: ["Elefante africano", "Tiburón ballena", "Ballena azul", "Jirafa"], correct: 2 },
-        { q: "¿Qué velocidad tiene la luz aproximadamente?", options: ["300,000 km/s", "150,000 km/s", "1,000 km/s", "3,000,000 km/s"], correct: 0 },
-        { q: "¿En qué siglo ocurrió la Revolución Francesa?", options: ["Siglo XVI", "Siglo XVII", "Siglo XVIII", "Siglo XIX"], correct: 2 },
-        { q: "¿Cuál es el país más pequeño del mundo?", options: ["Mónaco", "Vaticano", "San Marino", "Liechtenstein"], correct: 1 },
-        { q: "¿Quién desarrolló la teoría de la evolución por selección natural?", options: ["Gregor Mendel", "Charles Darwin", "Jean-Baptiste Lamarck", "Louis Pasteur"], correct: 1 }
     ]
 };
 
-let coins = 100;
-let currentLevel = 1;
-let unlockedLevels = 1;
+// Generar más niveles base automáticos para que lleguen hasta el 10 por ahora
+for (let i = 4; i <= 10; i++) {
+    fixedLevels[i] = [
+        { q: `Pregunta 1 del Nivel ${i}: ¿Cuánto es 5 + ${i}?`, options: [`${4+i}`, `${5+i}`, `${6+i}`, `${7+i}`], correct: 1 },
+        { q: `Pregunta 2 del Nivel ${i}: Capital de país europeo aleatorio`, options: ["Madrid", "París", "Roma", "Berlín"], correct: 0 },
+        { q: `Pregunta 3 del Nivel ${i}: ¿Elemento de la tabla periódica?`, options: ["Oxígeno", "Agua", "Fuego", "Tierra"], correct: 0 },
+        { q: `Pregunta 4 del Nivel ${i}: ¿Año actual aproximado?`, options: ["2024", "2025", "2026", "2027"], correct: 2 },
+        { q: `Pregunta 5 del Nivel ${i}: ¿Color del cielo despejado?`, options: ["Verde", "Azul", "Rojo", "Amarillo"], correct: 1 }
+    ];
+}
+
 let currentQuestions = [];
 let currentIndex = 0;
 let score = 0;
-let gameMode = ''; 
+let gameMode = '';
+let currentLevelNum = 1;
 let canWatchAd = true;
 let adTimerInterval = null;
 
-const coinCountSpan = document.getElementById('coin-count');
-const screens = document.querySelectorAll('.screen');
-
 window.onload = function() {
-    updateCoins(0);
+    saveAndSyncState();
     renderLevels();
     renderCategories();
+    renderAvatarShop();
 };
 
+function saveAndSyncState() {
+    localStorage.setItem('triviaState', JSON.stringify(gameState));
+    document.getElementById('coin-count').textContent = gameState.coins;
+    document.getElementById('header-avatar').textContent = gameState.currentAvatar;
+    document.getElementById('welcome-msg').textContent = `¡Hola, ${gameState.username}!`;
+}
+
 function showScreen(screenId) {
+    screens = document.querySelectorAll('.screen');
     screens.forEach(screen => screen.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
 }
 
 function updateCoins(amount) {
-    coins += amount;
-    coinCountSpan.textContent = coins;
+    gameState.coins += amount;
+    saveAndSyncState();
 }
 
 function renderLevels() {
@@ -107,9 +91,9 @@ function renderLevels() {
     grid.innerHTML = '';
     for (let i = 1; i <= 10; i++) {
         const btn = document.createElement('button');
-        btn.className = `level-btn ${i > unlockedLevels ? 'locked' : ''}`;
-        btn.textContent = `Nivel ${i}`;
-        if (i <= unlockedLevels) {
+        btn.className = `level-btn ${i > gameState.unlockedLevels ? 'locked' : ''}`;
+        btn.textContent = i;
+        if (i <= gameState.unlockedLevels) {
             btn.onclick = () => startLevel(i);
         }
         grid.appendChild(btn);
@@ -119,27 +103,77 @@ function renderLevels() {
 function renderCategories() {
     const grid = document.getElementById('categories-grid');
     grid.innerHTML = '';
-    const categoriesNames = {
-        ciencia: "🔬 Ciencia y Tecnología",
-        historia: "📜 Historia",
-        cine: "🎬 Cine y Series",
-        deportes: "⚽ Deportes",
-        geografia: "🌍 Geografía"
-    };
-
-    for (let key in categoriesNames) {
+    const cats = { ciencia: "🔬 Ciencia", historia: "📜 Historia", cine: "🎬 Cine", deportes: "⚽ Deportes", geografia: "🌍 Geografía" };
+    for (let key in cats) {
         const btn = document.createElement('button');
         btn.className = 'btn secondary-btn';
-        btn.textContent = categoriesNames[key];
-        btn.onclick = () => startCategoryQuiz(key, categoriesNames[key]);
+        btn.textContent = cats[key];
+        btn.onclick = () => startCategoryQuiz(key, cats[key]);
         grid.appendChild(btn);
     }
 }
 
-// Iniciar Nivel Fijo
+function renderAvatarShop() {
+    const container = document.getElementById('avatar-shop-container');
+    container.innerHTML = '';
+    shopAvatars.forEach(av => {
+        const isOwned = gameState.ownedAvatars.includes(av.id);
+        const isEquipped = gameState.currentAvatar === av.id;
+        
+        const card = document.createElement('div');
+        card.className = 'shop-item-card';
+        card.innerHTML = `
+            <span style="font-size: 2rem;">${av.id}</span>
+            <h4>${av.name}</h4>
+            <p>${av.price === 0 ? 'Gratis' : av.price + ' 🪙'}</p>
+            <button class="btn ${isEquipped ? 'secondary-btn' : 'primary-btn'}" onclick="selectOrBuyAvatar('${av.id}', ${av.price})">
+                ${isEquipped ? 'Equipado' : (isOwned ? 'Equipar' : 'Comprar')}
+            </button>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function selectOrBuyAvatar(id, price) {
+    if (gameState.ownedAvatars.includes(id)) {
+        gameState.currentAvatar = id;
+        alert(`✨ ¡Has equipado tu avatar ${id}!`);
+    } else {
+        if (gameState.coins < price) {
+            alert("❌ No tienes suficientes monedas.");
+            return;
+        }
+        updateCoins(-price);
+        gameState.ownedAvatars.push(id);
+        gameState.currentAvatar = id;
+        alert(`🎉 ¡Avatar comprado y equipado con éxito!`);
+    }
+    saveAndSyncState();
+    renderAvatarShop();
+}
+
+function saveUserProfile() {
+    const nameInput = document.getElementById('username-input').value.trim();
+    if (nameInput) {
+        gameState.username = nameInput;
+        saveAndSyncState();
+        alert("✅ ¡Perfil guardado correctamente!");
+        showScreen('main-menu');
+    } else {
+        alert("⚠️ Por favor ingresa un nombre válido.");
+    }
+}
+
+function playAsGuest() {
+    gameState.username = "Invitado";
+    saveAndSyncState();
+    alert("👤 Jugando en modo invitado.");
+    showScreen('main-menu');
+}
+
 function startLevel(levelNum) {
     gameMode = 'level';
-    currentLevel = levelNum;
+    currentLevelNum = levelNum;
     currentQuestions = fixedLevels[levelNum];
     currentIndex = 0;
     score = 0;
@@ -150,14 +184,26 @@ function startLevel(levelNum) {
 
 function startCategoryQuiz(catKey, catName) {
     gameMode = 'category';
-    // Para modo libre usamos una selección rápida
     currentQuestions = [
-        { q: "¿Pregunta de práctica 1 de " + catName + "?", options: ["Opción A", "Opción B", "Opción C", "Opción D"], correct: 0 },
-        { q: "¿Pregunta de práctica 2 de " + catName + "?", options: ["Opción A", "Opción B", "Opción C", "Opción D"], correct: 1 }
+        { q: `Pregunta rápida de ${catName} 1`, options: ["Opción A", "Opción B", "Opción C", "Opción D"], correct: 0 },
+        { q: `Pregunta rápida de ${catName} 2`, options: ["Opción A", "Opción B", "Opción C", "Opción D"], correct: 1 }
     ];
     currentIndex = 0;
     score = 0;
     document.getElementById('quiz-title').textContent = catName;
+    showScreen('quiz-screen');
+    loadQuestion();
+}
+
+function startSpecialEvent() {
+    gameMode = 'event';
+    currentQuestions = [
+        { q: "⭐ [EVENTO] ¿Cuál es la velocidad de la luz?", options: ["300,000 km/s", "150,000 km/s", "1,000 km/s", "Sin límite"], correct: 0 },
+        { q: "⭐ [EVENTO] ¿Qué científico descubrió la gravedad?", options: ["Einstein", "Newton", "Tesla", "Galileo"], correct: 1 }
+    ];
+    currentIndex = 0;
+    score = 0;
+    document.getElementById('quiz-title').textContent = "⭐ Evento Especial";
     showScreen('quiz-screen');
     loadQuestion();
 }
@@ -185,48 +231,30 @@ function loadQuestion() {
     });
 }
 
-// Comodín 50:50
 function useFiftyFifty() {
-    if (coins < 15) {
-        alert("❌ No tienes suficientes monedas (Necesitas 15 🪙).");
+    if (gameState.coins < 15) {
+        alert("❌ No tienes suficientes monedas (15 🪙 requeridas).");
         return;
     }
-
+    updateCoins(-15);
     const qData = currentQuestions[currentIndex];
     const allButtons = document.querySelectorAll('.answer-btn');
-    
-    let incorrectButtons = [];
+    let hidden = 0;
     allButtons.forEach((b, idx) => {
-        if (idx !== qData.correct && b.style.display !== 'none') {
-            incorrectButtons.push(b);
-        }
-    });
-
-    if (incorrectButtons.length === 0) {
-        alert("⚠️ Ya no hay más opciones para ocultar.");
-        return;
-    }
-
-    updateCoins(-15);
-    incorrectButtons.sort(() => Math.random() - 0.5);
-    let hiddenCount = 0;
-    incorrectButtons.forEach(btn => {
-        if (hiddenCount < 2) {
-            btn.style.display = 'none';
-            hiddenCount++;
+        if (idx !== qData.correct && hidden < 2 && b.style.display !== 'none') {
+            b.style.display = 'none';
+            hidden++;
         }
     });
 }
 
-// Comodín Saltar
 function useSkipQuestion() {
-    if (coins < 20) {
-        alert("❌ No tienes suficientes monedas (Necesitas 20 🪙).");
+    if (gameState.coins < 20) {
+        alert("❌ No tienes suficientes monedas (20 🪙 requeridas).");
         return;
     }
-
     updateCoins(-20);
-    alert("⏭️ ¡Pregunta saltada con éxito!");
+    alert("⏭️ ¡Pregunta saltada!");
     currentIndex++;
     loadQuestion();
 }
@@ -234,7 +262,6 @@ function useSkipQuestion() {
 function checkAnswer(selectedIndex, btnElement) {
     const qData = currentQuestions[currentIndex];
     const allButtons = document.querySelectorAll('.answer-btn');
-    
     allButtons.forEach(b => b.disabled = true);
 
     if (selectedIndex === qData.correct) {
@@ -255,45 +282,32 @@ function endGame() {
     showScreen('result-screen');
     document.getElementById('final-score').textContent = `${score} / ${currentQuestions.length}`;
     
-    let earnedCoins = score * 5;
-    document.getElementById('earned-coins').textContent = `🪙 +${earnedCoins}`;
-    updateCoins(earnedCoins);
+    let earned = gameMode === 'event' ? score * 10 : score * 5;
+    document.getElementById('earned-coins').textContent = `🪙 +${earned}`;
+    updateCoins(earned);
 
     if (gameMode === 'level' && score >= 3) {
-        if (currentLevel === unlockedLevels && unlockedLevels < 10) {
-            unlockedLevels++;
+        if (currentLevelNum === gameState.unlockedLevels && gameState.unlockedLevels < 10) {
+            gameState.unlockedLevels++;
             renderLevels();
         }
         document.getElementById('result-title').textContent = "¡Nivel Superado! 🎉";
-        document.getElementById('result-message').textContent = `Has avanzado con éxito.`;
+        document.getElementById('result-message').textContent = `Has ganado ${earned} monedas.`;
     } else if (gameMode === 'level') {
         document.getElementById('result-title').textContent = "¡Inténtalo de nuevo! 💡";
-        document.getElementById('result-message').textContent = `Necesitas al menos 3 aciertos para pasar el nivel.`;
+        document.getElementById('result-message').textContent = `Necesitas al menos 3 aciertos.`;
     } else {
-        document.getElementById('result-title').textContent = "¡Práctica Finalizada! 🎯";
-        document.getElementById('result-message').textContent = `Buen trabajo entrenando.`;
+        document.getElementById('result-title').textContent = "¡Reto Finalizado! 🎯";
+        document.getElementById('result-message').textContent = `¡Buen trabajo!`;
     }
+    saveAndSyncState();
 }
 
-// Comprar accesorios en la tienda de avatar
-function buyItem(itemName, cost, icon) {
-    if (coins < cost) {
-        alert(`❌ No tienes suficientes monedas para ${itemName} (Necesitas ${cost} 🪙).`);
-        return;
-    }
-
-    updateCoins(-cost);
-    document.getElementById('avatar-icon').textContent = icon;
-    document.getElementById('player-title').textContent = itemName.split(" ")[1];
-    alert(`🎉 ¡Has comprado y equipado: ${itemName}!`);
-}
-
-// Sistema de Anuncios con Cooldown
 function watchAd() {
     if (!canWatchAd) return;
 
-    alert("🎬 Simulando anuncio de Google AdSense... ¡Has ganado +10 monedas!");
-    updateCoins(10);
+    alert("🎬 Simulando anuncio... ¡Has ganado +15 monedas!");
+    updateCoins(15);
     
     canWatchAd = false;
     const adBtn = document.getElementById('ad-btn');
@@ -316,4 +330,14 @@ function watchAd() {
             adTimer.style.display = 'none';
         }
     }, 1000);
+}
+
+function openLeaderboard() {
+    showScreen('leaderboard-screen');
+    const list = document.getElementById('leaderboard-list');
+    list.innerHTML = `
+        <div class="leaderboard-item"><span>1. 👑 ProPlayer</span><span>🪙 450</span></div>
+        <div class="leaderboard-item"><span>2. 🧙‍♂️ SabioTrivia</span><span>🪙 320</span></div>
+        <div class="leaderboard-item"><span>3. ${gameState.currentAvatar} ${gameState.username} (Tú)</span><span>🪙 ${gameState.coins}</span></div>
+    `;
 }
