@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Master Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- BARRA SUPERIOR -->
+        <header class="header">
+            <div class="profile-area" onclick="showScreen('profile-screen')">
+                <div class="avatar-preview-container" id="header-avatar-svg">
+                    <svg viewBox="0 0 100 120" width="30" height="30"><circle cx="50" cy="22" r="14" fill="#ffccbc"/><rect x="38" y="38" width="24" height="30" rx="4" fill="#38bdf8"/></svg>
+                </div>
+                <span id="header-username-label" class="username-label">Mi Avatar</span>
+            </div>
+            <div class="coins-badge" onclick="showScreen('coin-shop-screen')">
+                🪙 <span id="coin-count">100</span>
+            </div>
+        </header>
+
+        <!-- CONTENEDOR DE PANTALLAS -->
+        <main class="main-content">
+            <!-- MENÚ PRINCIPAL -->
+            <div id="main-menu" class="screen active">
+                <h2 id="welcome-msg" class="welcome-title">¡Hola, Jugador!</h2>
+                <div class="menu-buttons">
+                    <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Modo Niveles</button>
+                    <button class="btn secondary-btn" onclick="showScreen('categories-screen')">🎮 Modo Libre</button>
+                    <button class="btn event-btn" onclick="showScreen('events-screen')">⭐ Eventos Especiales</button>
+                    <button class="btn shop-btn" onclick="showScreen('shop-screen')">🛒 Tienda & Avatares</button>
+                    <button class="btn leaderboard-btn" onclick="openLeaderboard()">🏆 Tabla de Líderes</button>
+                </div>
+            </div>
+
+            <!-- NIVELES -->
+            <div id="levels-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+                    <h2>Modo Niveles</h2>
+                </div>
+                <div id="levels-grid" class="levels-grid"></div>
+            </div>
+
+            <!-- CATEGORÍAS -->
+            <div id="categories-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+                    <h2>Elige una Categoría</h2>
+                </div>
+                <div id="categories-grid" class="categories-grid"></div>
+            </div>
+
+            <!-- EVENTOS -->
+            <div id="events-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+                    <h2>⭐ Eventos Activos</h2>
+                </div>
+                <div class="event-card">
+                    <h3>🔥 Reto Relámpago</h3>
+                    <button class="btn primary-btn" onclick="startSpecialEvent()">¡Jugar Evento!</button>
+                </div>
+            </div>
+
+            <!-- TIENDA -->
+            <div id="shop-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+                    <h2>🛒 Tienda</h2>
+                </div>
+                <div class="shop-scroll-area">
+                    <div class="shop-items" id="outfit-shop-container"></div>
+                </div>
+            </div>
+
+            <!-- PERFIL -->
+            <div id="profile-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+                    <h2>👤 Perfil</h2>
+                </div>
+                <div class="profile-form">
+                    <p>Tu nombre:</p>
+                    <input type="text" id="username-input" placeholder="Tu alias..." maxlength="15">
+                    <button class="btn primary-btn" onclick="saveUserProfile()">Guardar Nombre</button>
+                </div>
+            </div>
+
+            <!-- MONEDAS -->
+            <div id="coin-shop-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+                    <h2>🪙 Monedas</h2>
+                </div>
+                <button class="btn reward-btn" onclick="watchAd()">🎬 Ver Anuncio (+15 🪙)</button>
+            </div>
+
+            <!-- LÍDERES -->
+            <div id="leaderboard-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅ Volver</button>
+                    <h2>🏆 Líderes</h2>
+                </div>
+                <div id="leaderboard-list" class="leaderboard-list"></div>
+            </div>
+
+            <!-- JUEGO -->
+            <div id="quiz-screen" class="screen">
+                <div class="quiz-header">
+                    <span id="quiz-title">Nivel 1</span>
+                    <span id="question-counter">Pregunta 1/5</span>
+                </div>
+                <div class="question-box">
+                    <p id="question-text">Cargando...</p>
+                </div>
+                <div id="answers-container" class="answers-grid"></div>
+            </div>
+
+            <!-- RESULTADOS -->
+            <div id="result-screen" class="screen">
+                <h2 id="result-title">¡Resultado!</h2>
+                <p id="result-message">Completado.</p>
+                <button class="btn primary-btn" onclick="returnToLevels()">🗺️ Volver</button>
+            </div>
+        </main>
+
+        <!-- MASCOTA CON BURBUJA -->
+        <footer class="pet-companion-box" onclick="interactWithPet()">
+            <div class="companion-pet-visual">
+                <svg viewBox="0 0 100 100" width="35" height="35"><circle cx="50" cy="55" r="24" fill="#fb923c"/><polygon points="32,38 36,16 46,32" fill="#fb923c"/><polygon points="68,38 64,16 54,32" fill="#fb923c"/><circle cx="41" cy="50" r="3.5" fill="#fff"/><circle cx="59" cy="50" r="3.5" fill="#fff"/></svg>
+            </div>
+            <div class="comic-speech-bubble">
+                <span id="pet-speech">¡Hola! ¿Listo para jugar?</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
