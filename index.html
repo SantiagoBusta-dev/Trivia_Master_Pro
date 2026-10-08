@@ -17,7 +17,7 @@
                 <div class="avatar-preview-container" id="header-avatar">
                     <!-- Avatar inyectado por JS -->
                 </div>
-                <span class="username-label" id="welcome-msg">Invitado</span>
+                <span class="username-label" id="welcome-msg">¡Hola, Invitado!</span>
             </div>
             <div class="coins-badge" onclick="watchAd()">
                 🪙 <span id="coin-count">0</span>
@@ -27,25 +27,28 @@
         <!-- CONTENIDO DINÁMICO DE PANTALLAS -->
         <main class="main-content">
 
-            <!-- 1. PANTALLA DE INICIO / PERFIL -->
-            <section id="profile-screen" class="screen active">
-                <div class="profile-form">
-                    <h2>Configura tu Perfil</h2>
-                    <p style="font-size: 0.85rem; color: #9ca3af;">Ingresa tu nombre para comenzar la aventura</p>
-                    <input type="text" id="username-input" placeholder="Tu nombre..." maxlength="15">
-                    <button class="btn primary-btn" onclick="saveUserProfile()">¡Comenzar!</button>
-                </div>
-            </section>
-
-            <!-- 2. MENÚ PRINCIPAL -->
-            <section id="main-menu" class="screen">
+            <!-- 1. MENÚ PRINCIPAL (PANTALLA DE INICIO POR DEFECTO) -->
+            <section id="main-menu" class="screen active">
                 <h2 class="welcome-title">Menú Principal</h2>
                 <div class="menu-buttons">
                     <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Jugar 100 Niveles</button>
-                    <button class="btn secondary-btn" onclick="showScreen('categories-screen')">📚 Categorías</button>
+                    <button class="btn secondary-btn" onclick="openCategories()">📚 Categorías</button>
                     <button class="btn event-btn" onclick="startSpecialEvent()">⭐ Evento Relámpago</button>
-                    <button class="btn shop-btn" onclick="showScreen('shop-screen')">🛍️ Tienda (Avatares y Mascotas)</button>
+                    <button class="btn shop-btn" onclick="openShop()">🛍️ Tienda (Avatares y Mascotas)</button>
                     <button class="btn leaderboard-btn" onclick="openLeaderboard()">🏆 Tabla de Líderes</button>
+                </div>
+            </section>
+
+            <!-- 2. CONFIGURACIÓN DE PERFIL (OPCIONAL DESDE EL HEADER) -->
+            <section id="profile-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅️ Volver</button>
+                    <h2>Configura tu Perfil</h2>
+                </div>
+                <div class="profile-form">
+                    <p style="font-size: 0.85rem; color: #9ca3af;">Actualiza tu nombre de usuario</p>
+                    <input type="text" id="username-input" placeholder="Tu nombre..." maxlength="15">
+                    <button class="btn primary-btn" onclick="saveUserProfile()">Guardar Nombre</button>
                 </div>
             </section>
 
