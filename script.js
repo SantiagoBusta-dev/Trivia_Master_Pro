@@ -29,7 +29,6 @@ const petsList = [
 ];
 
 window.onload = function() {
-    // Verificar si es un usuario nuevo sin nombre registrado
     if (!gameState.username || gameState.username.trim() === "") {
         showScreen('profile-screen');
     } else {
@@ -43,11 +42,9 @@ window.onload = function() {
 function saveAndSyncState() {
     localStorage.setItem('triviaMasterState', JSON.stringify(gameState));
     
-    // Actualizar monedas en pantalla
     const coinEl = document.getElementById('coin-count');
     if(coinEl) coinEl.textContent = gameState.coins;
     
-    // Actualizar saludo
     const userEl = document.getElementById('welcome-msg');
     if(userEl) {
         userEl.textContent = gameState.username ? `¡Hola, ${gameState.username}!` : "¡Hola, Jugador!";
@@ -62,7 +59,6 @@ function showScreen(screenId) {
     const target = document.getElementById(screenId);
     if(target) target.classList.add('active');
     
-    // Si abre la tienda, renderizarla inmediatamente de forma sincronizada
     if(screenId === 'shop-screen') {
         openShop();
     }
@@ -197,14 +193,12 @@ function openLeaderboard() {
     const list = document.getElementById('leaderboard-list');
     if(!list) return;
 
-    // Tabla de clasificación real y dinámica basada en memoria local y niveles reales alcanzados
     let players = [
         { name: "ProPlayer99", level: 100 },
         { name: "TriviaQueen", level: 95 },
         { name: gameState.username || "Tú", level: gameState.unlockedLevels, isUser: true }
     ];
 
-    // Ordenar de mayor a menor nivel real
     players.sort((a, b) => b.level - a.level);
 
     list.innerHTML = players.map((p, index) => `
@@ -307,35 +301,28 @@ function renderStaticPet() {
     `;
 }
 
-// Interacciones específicas para cada mascota elegida
 function interactPet(petId) {
     const speech = document.getElementById('pet-speech');
     const box = document.getElementById('pet-box');
     if(!speech) return;
 
     if (petId === 0) {
-        // Gato: Miau y ronroneo
         speech.textContent = "¡Miau... prrr, prrr! 🐾";
     } else if (petId === 1) {
-        // Perro: Guau
         speech.textContent = "¡Guau, guau! 🐶";
     } else if (petId === 2) {
-        // Oso Panda: Come bambú
         speech.textContent = "Masticando bambú 🎋... ¡Ñam ñam!";
     } else if (petId === 3) {
-        // Conejo: Salto
         if (box) {
             box.style.transform = "translateY(-15px)";
             setTimeout(() => { box.style.transform = "translateY(0)"; }, 200);
         }
         speech.textContent = "¡Boing! ¡Saltando 🐰!";
     } else if (petId === 4) {
-        // Cabra Suprema (Especial): Grito épico de letra en letra con "!!" al final
         let textToType = "¡¡MESSI!!";
         speech.textContent = "";
         let i = 0;
         
-        // Animación de salto de la cabra
         if (box) {
             box.style.transform = "scale(1.3)";
             setTimeout(() => { box.style.transform = "scale(1)"; }, 300);
