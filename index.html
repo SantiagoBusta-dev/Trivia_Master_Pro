@@ -3,124 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trivia Master 100 Niveles</title>
+    <title>Trivia Master Pro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- CABECERA GLOBAL -->
-    <header class="app-header">
-        <div class="header-left">
-            <span id="welcome-msg">¡Hola, Invitado!</span>
-        </div>
-        <div class="header-right">
-            <div class="coin-display">🪙 <span id="coin-count">100</span></div>
-        </div>
-    </header>
+    <!-- CONTENEDOR PRINCIPAL DEL JUEGO -->
+    <div class="game-container">
 
-    <!-- CONTENEDOR PRINCIPAL DE PANTALLAS -->
-    <main class="main-container">
-
-        <!-- 1. PANTALLA DE INICIO / PERFIL -->
-        <section id="profile-screen" class="screen active">
-            <div class="card">
-                <h2>Configura tu Perfil</h2>
-                <p>Ingresa tu nombre para comenzar la aventura</p>
-                <input type="text" id="username-input" placeholder="Tu nombre..." maxlength="15">
-                <button class="btn primary-btn" onclick="saveUserProfile()">¡Comenzar!</button>
-            </div>
-        </section>
-
-        <!-- 2. MENÚ PRINCIPAL -->
-        <section id="main-menu" class="screen">
-            <div class="card menu-card">
-                <h2>Menú Principal</h2>
-                <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Jugar 100 Niveles</button>
-                <button class="btn secondary-btn" onclick="showScreen('categories-screen')">📚 Categorías</button>
-                <button class="btn secondary-btn" onclick="startSpecialEvent()">⭐ Evento Relámpago</button>
-                <button class="btn secondary-btn" onclick="showScreen('shop-screen')">🛍️ Tienda (Avatares y Mascotas)</button>
-                <button class="btn secondary-btn" onclick="openLeaderboard()">🏆 Tabla de Líderes</button>
-                <button class="btn secondary-btn" onclick="watchAd()">🪙 Ganar Monedas</button>
-            </div>
-        </section>
-
-        <!-- 3. PANTALLA DE NIVELES (1 AL 100) -->
-        <section id="levels-screen" class="screen">
-            <div class="screen-header">
-                <button class="btn back-btn" onclick="showScreen('main-menu')">⬅️ Volver</button>
-                <h2>Selecciona un Nivel</h2>
-            </div>
-            <div id="levels-grid" class="levels-grid">
-                <!-- Se inyecta automáticamente por JS -->
-            </div>
-        </section>
-
-        <!-- 4. PANTALLA DE CATEGORÍAS -->
-        <section id="categories-screen" class="screen">
-            <div class="screen-header">
-                <button class="btn back-btn" onclick="showScreen('main-menu')">⬅️ Volver</button>
-                <h2>Elige una Categoría</h2>
-            </div>
-            <div id="categories-grid" class="menu-card">
-                <!-- Se inyecta automáticamente por JS -->
-            </div>
-        </section>
-
-        <!-- 5. PANTALLA DE JUEGO (QUIZ) -->
-        <section id="quiz-screen" class="screen">
-            <div class="quiz-header">
-                <h3 id="quiz-title">Nivel 1</h3>
-                <span id="question-counter">Pregunta 1/5</span>
-            </div>
-            <div class="card quiz-card">
-                <p id="question-text" class="question-text">Cargando pregunta...</p>
-                <div id="answers-container" class="answers-grid">
-                    <!-- Botones de respuesta -->
+        <!-- CABECERA -->
+        <header class="header">
+            <div class="profile-area" onclick="showScreen('profile-screen')">
+                <div class="avatar-preview-container" id="header-avatar">
+                    <!-- Avatar inyectado por JS -->
                 </div>
+                <span class="username-label" id="welcome-msg">Invitado</span>
             </div>
-        </section>
+            <div class="coins-badge" onclick="watchAd()">
+                🪙 <span id="coin-count">0</span>
+            </div>
+        </header>
 
-        <!-- 6. PANTALLA DE RESULTADOS -->
-        <section id="result-screen" class="screen">
-            <div class="card result-card">
-                <h2>¡Resultado de la Partida!</h2>
-                <p>Puntaje obtenido:</p>
-                <h1 id="final-score">0 / 5</h1>
-                <div id="earned-coins" class="earned-coins">🪙 +0</div>
-                <button class="btn primary-btn" onclick="returnToLevels()">Continuar</button>
-            </div>
-        </section>
+        <!-- CONTENIDO DINÁMICO DE PANTALLAS -->
+        <main class="main-content">
 
-        <!-- 7. PANTALLA DE TIENDA -->
-        <section id="shop-screen" class="screen">
-            <div class="screen-header">
-                <button class="btn back-btn" onclick="showScreen('main-menu')">⬅️ Volver</button>
-                <h2>Tienda de Recompensas</h2>
-            </div>
-            <div id="shop-container" class="shop-main-container">
-                <!-- Se inyecta dinámicamente por JS -->
-            </div>
-        </section>
+            <!-- 1. PANTALLA DE INICIO / PERFIL -->
+            <section id="profile-screen" class="screen active">
+                <div class="profile-form">
+                    <h2>Configura tu Perfil</h2>
+                    <p style="font-size: 0.85rem; color: #9ca3af;">Ingresa tu nombre para comenzar la aventura</p>
+                    <input type="text" id="username-input" placeholder="Tu nombre..." maxlength="15">
+                    <button class="btn primary-btn" onclick="saveUserProfile()">¡Comenzar!</button>
+                </div>
+            </section>
 
-        <!-- 8. PANTALLA DE RANKING -->
-        <section id="leaderboard-screen" class="screen">
-            <div class="screen-header">
-                <button class="btn back-btn" onclick="showScreen('main-menu')">⬅️ Volver</button>
-                <h2>Tabla de Líderes</h2>
-            </div>
-            <div class="card">
-                <div id="leaderboard-list" class="leaderboard-list">
+            <!-- 2. MENÚ PRINCIPAL -->
+            <section id="main-menu" class="screen">
+                <h2 class="welcome-title">Menú Principal</h2>
+                <div class="menu-buttons">
+                    <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Jugar 100 Niveles</button>
+                    <button class="btn secondary-btn" onclick="showScreen('categories-screen')">📚 Categorías</button>
+                    <button class="btn event-btn" onclick="startSpecialEvent()">⭐ Evento Relámpago</button>
+                    <button class="btn shop-btn" onclick="showScreen('shop-screen')">🛍️ Tienda (Avatares y Mascotas)</button>
+                    <button class="btn leaderboard-btn" onclick="openLeaderboard()">🏆 Tabla de Líderes</button>
+                </div>
+            </section>
+
+            <!-- 3. PANTALLA DE NIVELES -->
+            <section id="levels-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅️ Volver</button>
+                    <h2>Selecciona un Nivel</h2>
+                </div>
+                <div id="levels-grid" class="levels-grid">
+                    <!-- Se inyecta automáticamente por JS -->
+                </div>
+            </section>
+
+            <!-- 4. PANTALLA DE CATEGORÍAS -->
+            <section id="categories-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅️ Volver</button>
+                    <h2>Elige una Categoría</h2>
+                </div>
+                <div id="categories-grid" class="categories-grid">
+                    <!-- Se inyecta automáticamente por JS -->
+                </div>
+            </section>
+
+            <!-- 5. PANTALLA DE JUEGO (QUIZ) -->
+            <section id="quiz-screen" class="screen">
+                <div class="quiz-header">
+                    <span id="quiz-title">Nivel 1</span>
+                    <span id="question-counter">Pregunta 1/5</span>
+                </div>
+                <div class="question-box">
+                    <p id="question-text">Cargando pregunta...</p>
+                </div>
+                <div id="answers-container" class="answers-grid">
+                    <!-- Botones de respuesta inyectados por JS -->
+                </div>
+            </section>
+
+            <!-- 6. PANTALLA DE RESULTADOS -->
+            <section id="result-screen" class="screen">
+                <div class="profile-form" style="text-align: center;">
+                    <h2>¡Resultado de la Partida!</h2>
+                    <p style="font-size: 0.85rem; color: #9ca3af;">Puntaje obtenido:</p>
+                    <h1 id="final-score" style="font-size: 1.8rem; color: #38bdf8;">0 / 5</h1>
+                    <div id="earned-coins" style="font-weight: bold; color: #f59e0b;">🪙 +0</div>
+                    <button class="btn primary-btn" onclick="returnToLevels()">Continuar</button>
+                </div>
+            </section>
+
+            <!-- 7. PANTALLA DE TIENDA -->
+            <section id="shop-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅️ Volver</button>
+                    <h2>Tienda de Recompensas</h2>
+                </div>
+                <div id="shop-container" class="shop-scroll-area">
+                    <!-- Se inyecta dinámicamente por JS -->
+                </div>
+            </section>
+
+            <!-- 8. PANTALLA DE RANKING -->
+            <section id="leaderboard-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅️ Volver</button>
+                    <h2>Tabla de Líderes</h2>
+                </div>
+                <div class="leaderboard-list" id="leaderboard-list">
                     <!-- Contenido dinámico -->
                 </div>
-            </div>
-        </section>
+            </section>
 
-    </main>
+        </main>
 
-    <!-- FOOTER DONDE VIVE LA MASCOTA -->
-    <footer id="footer-container" class="app-footer">
-        <!-- Renderizado por renderStaticPet() -->
-    </footer>
+        <!-- FOOTER / MASCOTA -->
+        <footer id="footer-container" style="text-align: center; flex-shrink: 0;">
+            <!-- Renderizado por renderStaticPet() -->
+        </footer>
+
+    </div>
 
     <script src="script.js"></script>
 </body>
