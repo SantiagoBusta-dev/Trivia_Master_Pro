@@ -118,7 +118,8 @@ h2 {
     grid-template-columns: repeat(4, 1fr);
     gap: 6px;
     overflow-y: auto;
-    max-height: 220px;
+    max-height: 380px; /* Ajustado para visualizar correctamente los 100 niveles */
+    padding-right: 4px;
 }
 
 /* --- TIENDA MEJORADA --- */
