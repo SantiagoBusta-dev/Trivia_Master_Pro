@@ -1,0 +1,35 @@
+:root{--bg:#14123a;--card:#221f5c;--line:#3a3690;--tx:#f4f2ff;--coin:#ffc933;--ok:#3ddc97;--bad:#ff5d73}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Trebuchet MS",system-ui,sans-serif;min-height:100vh;max-width:480px;margin:auto;display:flex;flex-direction:column}
+#hd{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--card)}
+#hd .av{font-size:2rem}#hd b{flex:1;cursor:pointer}#hd .c{color:var(--coin);font-weight:700}
+main{flex:1;padding:16px}
+h1{text-align:center;font-size:2rem;margin:.4em 0}h2{margin:.4em 0 .8em}
+button{font:inherit;color:var(--tx);background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--coin)}button:disabled{opacity:.4;cursor:not-allowed}
+.menu{display:grid;gap:10px}.menu button{font-size:1.1rem;padding:16px;text-align:left}
+.back{margin-bottom:8px;padding:6px 14px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.opts{display:grid;gap:10px}.opts button{text-align:left;font-size:1.05rem}
+.opts .ok{background:var(--ok);color:#0b2a1c;border-color:var(--ok)}.opts .bad{background:var(--bad);border-color:var(--bad)}
+.opts .gone{visibility:hidden}
+.bar{display:flex;justify-content:space-between;opacity:.8}.cat{margin:.8em 0 0;color:var(--coin)}
+.hint{min-height:1.4em;color:var(--coin)}
+.helps{display:flex;gap:8px;flex-wrap:wrap}.helps button{flex:1;font-size:.85rem;padding:8px}
+.big{font-size:3rem;text-align:center;margin:.3em 0}
+.row{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:14px;padding:12px;margin-bottom:10px}
+.row .e{font-size:2rem}.row .t{flex:1}.row small{display:block;opacity:.7}
+.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs button{flex:1}
+#pet{padding:10px 16px;background:var(--card);display:flex;align-items:center;gap:10px;cursor:pointer;min-height:64px}
+.pe{font-size:2.4rem;display:inline-block}#say{font-size:.95rem;color:var(--coin)}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--coin);color:#222;padding:10px 18px;border-radius:20px;opacity:0;transition:opacity .3s;pointer-events:none}
+#toast.on{opacity:1}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+
+#pet .pe svg{width:60px;height:60px;overflow:visible}#hd .av svg{width:40px;height:40px}.row .e svg{width:50px;height:50px}.pe *{transform-box:fill-box}
+.tl{transform-origin:0 100%}.paw,.bam,.hd,.hp{transform-origin:50% 100%}.mt{transform-origin:50% 50%}.tg{transform-origin:50% 0}
+.idle .tl,.act .tl{animation:wag .35s 6}.idle .paw,.act .paw{animation:lick 1s 2}.idle .bam,.act .bam{animation:munch .5s 4}.idle .hd,.act .hd{animation:eat 1.2s 2}
+.idle .hp,.act .hp{animation:hop .5s 3}.act .mt{animation:talk .22s 8}.act .tg{animation:pant .3s 6}
+@keyframes wag{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(14deg)}}@keyframes lick{50%{transform:translate(8px,-14px) rotate(-25deg)}}
+@keyframes munch{50%{transform:translateY(-5px) scale(1,.92)}}@keyframes eat{50%{transform:translateY(12px) rotate(8deg)}}
+@keyframes hop{50%{transform:translateY(-14px)}}@keyframes talk{50%{transform:scaleY(3.4)}}@keyframes pant{50%{transform:scaleY(1.6)}}
