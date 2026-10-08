@@ -1,29 +1,29 @@
-// --- 1. CATÁLOGO DE AVATARES Y MASCOTAS (SIN EMOJIS, 100% SVG) ---
+// --- 1. CATÁLOGO DE AVATARES Y MASCOTAS (SVG LIMPIOS) ---
 const avatarsList = [
-    { id: 0, name: "Clásico", price: 0, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#4f46e5"/><path d="M 20 90 Q 50 60 80 90" fill="#4f46e5"/></svg>` },
-    { id: 1, name: "Cyberpunk", price: 100, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#06b6d4"/><rect x="30" y="35" width="40" height="10" fill="#f43f5e"/><path d="M 20 90 Q 50 60 80 90" fill="#06b6d4"/></svg>` },
-    { id: 2, name: "Golden", price: 200, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#eab308"/><polygon points="50,10 58,25 75,28 62,40 65,57 50,48 35,57 38,40 25,28 42,25" fill="#facc15"/><path d="M 20 90 Q 50 60 80 90" fill="#eab308"/></svg>` },
-    { id: 3, name: "Ninja", price: 150, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#1e293b"/><rect x="25" y="30" width="50" height="15" fill="#ef4444"/><path d="M 20 90 Q 50 60 80 90" fill="#1e293b"/></svg>` },
-    { id: 4, name: "Neón Pink", price: 120, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#ec4899"/><circle cx="40" cy="35" r="4" fill="#fff"/><circle cx="60" cy="35" r="4" fill="#fff"/><path d="M 20 90 Q 50 60 80 90" fill="#ec4899"/></svg>` },
-    { id: 5, name: "Biólogo", price: 180, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#10b981"/><path d="M 35 25 L 65 25 L 50 15 Z" fill="#fff"/><path d="M 20 90 Q 50 60 80 90" fill="#10b981"/></svg>` },
-    { id: 6, name: "Galáctico", price: 250, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#8b5cf6"/><circle cx="35" cy="30" r="2" fill="#fef08a"/><circle cx="65" cy="45" r="2" fill="#fef08a"/><path d="M 20 90 Q 50 60 80 90" fill="#8b5cf6"/></svg>` },
-    { id: 7, name: "Fuego", price: 300, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#f97316"/><path d="M 45 10 Q 65 25 50 40 Q 35 25 45 10" fill="#facc15"/><path d="M 20 90 Q 50 60 80 90" fill="#f97316"/></svg>` },
-    { id: 8, name: "Glacial", price: 220, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#38bdf8"/><polygon points="50,15 55,28 68,32 57,42 60,55 50,48 40,55 43,42 32,32 45,28" fill="#bae6fd"/><path d="M 20 90 Q 50 60 80 90" fill="#38bdf8"/></svg>` },
-    { id: 9, name: "Master", price: 500, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#e11d48"/><path d="M 30 20 L 50 5 L 70 20 Z" fill="#fbbf24"/><path d="M 20 90 Q 50 60 80 90" fill="#e11d48"/></svg>` }
+    { id: 0, name: "Clásico", price: 0, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#4f46e5"/><path d="M 20 90 Q 50 60 80 90" fill="#4f46e5"/></svg>' },
+    { id: 1, name: "Cyberpunk", price: 100, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#06b6d4"/><rect x="30" y="35" width="40" height="10" fill="#f43f5e"/><path d="M 20 90 Q 50 60 80 90" fill="#06b6d4"/></svg>' },
+    { id: 2, name: "Golden", price: 200, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#eab308"/><path d="M 20 90 Q 50 60 80 90" fill="#eab308"/></svg>' },
+    { id: 3, name: "Ninja", price: 150, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#1e293b"/><path d="M 20 90 Q 50 60 80 90" fill="#1e293b"/></svg>' },
+    { id: 4, name: "Neón Pink", price: 120, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#ec4899"/><path d="M 20 90 Q 50 60 80 90" fill="#ec4899"/></svg>' },
+    { id: 5, name: "Biólogo", price: 180, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#10b981"/><path d="M 20 90 Q 50 60 80 90" fill="#10b981"/></svg>' },
+    { id: 6, name: "Galáctico", price: 250, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#8b5cf6"/><path d="M 20 90 Q 50 60 80 90" fill="#8b5cf6"/></svg>' },
+    { id: 7, name: "Fuego", price: 300, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#f97316"/><path d="M 20 90 Q 50 60 80 90" fill="#f97316"/></svg>' },
+    { id: 8, name: "Glacial", price: 220, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#38bdf8"/><path d="M 20 90 Q 50 60 80 90" fill="#38bdf8"/></svg>' },
+    { id: 9, name: "Master", price: 500, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="25" fill="#e11d48"/><path d="M 20 90 Q 50 60 80 90" fill="#e11d48"/></svg>' }
 ];
 
 const petsList = [
-    { id: 0, name: "Gatito Naranja", price: 0, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="20" ry="25" fill="#fb923c"/><circle cx="50" cy="38" r="18" fill="#fb923c"/><polygon points="37,25 30,10 44,22" fill="#fb923c"/><polygon points="63,25 70,10 56,22" fill="#fb923c"/><circle cx="43" cy="36" r="2.5" fill="#000"/><circle cx="57" cy="36" r="2.5" fill="#000"/><path d="M 35 75 Q 50 90 65 75" fill="none" stroke="#fb923c" stroke-width="6" stroke-linecap="round"/><ellipse cx="38" cy="58" rx="5" ry="8" fill="#fdba74" class="anim-paw"/></svg>` },
-    { id: 1, name: "Gatito Negrito", price: 150, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="20" ry="25" fill="#334155"/><circle cx="50" cy="38" r="18" fill="#334155"/><polygon points="37,25 30,10 44,22" fill="#334155"/><polygon points="63,25 70,10 56,22" fill="#334155"/><circle cx="43" cy="36" r="2.5" fill="#38bdf8"/><circle cx="57" cy="36" r="2.5" fill="#38bdf8"/><path d="M 35 75 Q 50 90 65 75" fill="none" stroke="#334155" stroke-width="6" stroke-linecap="round"/><ellipse cx="38" cy="58" rx="5" ry="8" fill="#64748b" class="anim-paw"/></svg>` },
-    { id: 2, name: "Perrito Fiel", price: 200, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="22" ry="25" fill="#d97706"/><ellipse cx="50" cy="40" rx="19" ry="17" fill="#d97706"/><ellipse cx="34" cy="40" rx="6" ry="12" fill="#b45309"/><ellipse cx="66" cy="40" rx="6" ry="12" fill="#b45309"/><circle cx="42" cy="38" r="2.5" fill="#000"/><circle cx="58" cy="38" r="2.5" fill="#000"/><path d="M 68 75 Q 85 65 80 50" fill="none" stroke="#d97706" stroke-width="5" stroke-linecap="round" class="anim-tail"/></svg>` },
-    { id: 3, name: "Conejito Saltarín", price: 250, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="68" rx="18" ry="22" fill="#e2e8f0"/><circle cx="50" cy="45" r="15" fill="#e2e8f0"/><ellipse cx="44" cy="22" rx="4" ry="15" fill="#cbd5e1"/><ellipse cx="56" cy="22" rx="4" ry="15" fill="#cbd5e1"/><circle cx="43" cy="43" r="2" fill="#000"/><circle cx="57" cy="43" r="2" fill="#000"/></svg>` },
-    { id: 4, name: "Osito Tierno", price: 300, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="22" ry="25" fill="#a16207"/><circle cx="50" cy="40" r="18" fill="#a16207"/><circle cx="35" cy="26" r="6" fill="#a16207"/><circle cx="65" cy="26" r="6" fill="#a16207"/><circle cx="42" cy="38" r="2.5" fill="#000"/><circle cx="58" cy="38" r="2.5" fill="#000"/></svg>` },
-    { id: 5, name: "Zorrito Astuto", price: 350, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><polygon points="50,45 32,78 68,78" fill="#f97316"/><polygon points="50,30 32,55 68,55" fill="#f97316"/><polygon points="32,38 20,18 42,32" fill="#f97316"/><polygon points="68,38 80,18 58,32" fill="#f97316"/><circle cx="42" cy="45" r="2.5" fill="#fff"/><circle cx="58" cy="45" r="2.5" fill="#fff"/></svg>` },
-    { id: 6, name: "Panda Amigable", price: 400, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="22" ry="25" fill="#f8fafc"/><circle cx="50" cy="40" r="18" fill="#f8fafc"/><circle cx="36" cy="38" r="7" fill="#0f172a"/><circle cx="64" cy="38" r="7" fill="#0f172a"/><circle cx="43" cy="38" r="2.5" fill="#0f172a"/><circle cx="57" cy="38" r="2.5" fill="#0f172a"/></svg>` },
-    { id: 7, name: "Búho Sabio", price: 500, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="60" rx="20" ry="25" fill="#64748b"/><circle cx="38" cy="48" r="7" fill="#fef08a"/><circle cx="62" cy="48" r="7" fill="#fef08a"/><circle cx="38" cy="48" r="2.5" fill="#000"/><circle cx="62" cy="48" r="2.5" fill="#000"/></svg>` }
+    { id: 0, name: "Gatito Naranja", price: 0, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="20" ry="25" fill="#fb923c"/><circle cx="50" cy="38" r="18" fill="#fb923c"/><ellipse cx="38" cy="58" rx="5" ry="8" fill="#fdba74" class="anim-paw"/></svg>' },
+    { id: 1, name: "Gatito Negrito", price: 150, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="20" ry="25" fill="#334155"/><circle cx="50" cy="38" r="18" fill="#334155"/><ellipse cx="38" cy="58" rx="5" ry="8" fill="#64748b" class="anim-paw"/></svg>' },
+    { id: 2, name: "Perrito Fiel", price: 200, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="22" ry="25" fill="#d97706"/><ellipse cx="50" cy="40" r="19" ry="17" fill="#d97706"/></svg>' },
+    { id: 3, name: "Conejito Saltarín", price: 250, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="68" rx="18" ry="22" fill="#e2e8f0"/><circle cx="50" cy="45" r="15" fill="#e2e8f0"/></svg>' },
+    { id: 4, name: "Osito Tierno", price: 300, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="65" rx="22" ry="25" fill="#a16207"/><circle cx="50" cy="40" r="18" fill="#a16207"/></svg>' },
+    { id: 5, name: "Zorrito Astuto", price: 350, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><polygon points="50,45 32,78 68,78" fill="#f97316"/></svg>' },
+    { id: 6, name: "Panda Amigable", price: 400, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="18" fill="#f8fafc"/></svg>' },
+    { id: 7, name: "Búho Sabio", price: 500, svg: '<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="60" rx="20" ry="25" fill="#64748b"/></svg>' }
 ];
 
-// --- 2. BANCO MASIVO DE PREGUNTAS (ESCALONADO POR DIFICULTAD) ---
+// --- 2. BANCO MASIVO DE PREGUNTAS (100 NIVELES) ---
 const questionBank = {
     ciencia: [
         { q: "¿Cuál es el planeta más cercano al Sol?", options: ["Venus", "Mercurio", "Marte", "Júpiter"], correct: 1, diff: 1 },
@@ -31,62 +31,30 @@ const questionBank = {
         { q: "¿Cuál es la fórmula química del agua?", options: ["CO2", "H2O", "O2", "NaCl"], correct: 1, diff: 1 },
         { q: "¿Quién formuló la teoría de la relatividad?", options: ["Isaac Newton", "Nikola Tesla", "Albert Einstein", "Galileo Galilei"], correct: 2, diff: 1 },
         { q: "¿Qué órgano humano consume más energía?", options: ["El corazón", "El cerebro", "El hígado", "Los músculos"], correct: 1, diff: 1 },
-        { q: "¿Cuál es el metal más abundante en la corteza terrestre?", options: ["Hierro", "Aluminio", "Cobre", "Oro"], correct: 1, diff: 1 },
-        { q: "¿A qué velocidad viaja la luz en el vacío?", options: ["300,000 km/s", "150,000 km/s", "1,080 km/s", "30,000 km/s"], correct: 0, diff: 1 },
-        { q: "¿Cómo se llaman los animales que se alimentan de plantas?", options: ["Carnívoros", "Omnívoros", "Herbivoros", "Insectívoros"], correct: 2, diff: 1 },
-        { q: "¿Qué fuerza nos mantiene anclados al suelo?", options: ["Magnetismo", "Gravedad", "Inercia", "Fricción"], correct: 1, diff: 1 },
-        { q: "¿Cuál es el órgano principal del sistema nervioso?", options: ["El corazón", "El cerebro", "La médula", "El hígado"], correct: 1, diff: 1 },
-        
         { q: "¿Cuál es el hueso más largo del cuerpo humano?", options: ["Húmero", "Tibia", "Fémur", "Radio"], correct: 2, diff: 2 },
         { q: "¿Qué elemento químico tiene el símbolo 'Au'?", options: ["Plata", "Oro", "Cobre", "Argón"], correct: 1, diff: 2 },
-        { q: "¿En qué capa de la atmósfera se queman los meteoritos?", options: ["Troposfera", "Estratosfera", "Mesosfera", "Termosfera"], correct: 2, diff: 2 },
-        { q: "¿Cuál es la unidad básica de la herencia genética?", options: ["Cromosoma", "Gen", "Proteína", "Neurona"], correct: 1, diff: 2 },
-        { q: "¿Qué tipo de enlace químico une moléculas de agua?", options: ["Iónico", "Covalente", "Metálico", "Puente de hidrógeno"], correct: 3, diff: 2 },
-        { q: "¿Cuál es el planeta más caliente del Sistema Solar?", options: ["Mercurio", "Venus", "Marte", "Júpiter"], correct: 1, diff: 2 },
-        { q: "¿Qué científico descubrió la penicilina?", options: ["Louis Pasteur", "Alexander Fleming", "Marie Curie", "Gregor Mendel"], correct: 1, diff: 2 },
-        { q: "¿Qué gas es responsable del efecto invernadero natural?", options: ["Oxígeno", "Nitrógeno", "Dióxido de Carbono", "Helio"], correct: 2, diff: 2 },
-        { q: "¿Cómo se llama el proceso de división celular en células sexuales?", options: ["Mitosis", "Meiosis", "Fisión", "Gemación"], correct: 1, diff: 2 },
-        { q: "¿Cuál es la estrella más cercana a la Tierra después del Sol?", options: ["Sirio", "Próxima Centauri", "Betelgeuse", "Vega"], correct: 1, diff: 2 },
-
         { q: "¿Qué partícula subatómica tiene carga eléctrica negativa?", options: ["Protón", "Neutrón", "Electrón", "Positrón"], correct: 2, diff: 3 },
-        { q: "¿Cuál es la constante universal de los gases ideales (R)?", options: ["8.314 J/(mol·K)", "6.626 x 10^-34", "9.81 m/s^2", "3.00 x 10^8"], correct: 0, diff: 3 },
-        { q: "¿Qué isótopo se utiliza para datar por radiocarbono?", options: ["Carbono-12", "Carbono-14", "Uranio-235", "Nitrógeno-15"], correct: 1, diff: 3 },
-        { q: "¿Cómo se denomina la presión ejercida por un fluido en reposo?", options: ["Presión atmosférica", "Hidrostática", "Osmótica", "Dinámica"], correct: 1, diff: 3 },
-        { q: "¿Qué órgano produce la insulina en el cuerpo humano?", options: ["Hígado", "Páncreas", "Riñón", "Vesícula"], correct: 1, diff: 3 },
-        { q: "¿Cuál es el punto triple del agua en Kelvin?", options: ["273.15 K", "273.16 K", "275.15 K", "277.00 K"], correct: 1, diff: 3 },
-        { q: "¿Qué ley de la termodinámica introduce el concepto de entropía?", options: ["Cero", "Primera", "Segunda", "Tercera"], correct: 2, diff: 3 },
-        { q: "¿Qué nombre recibe la estructura ósea interna de los equinodermos?", options: ["Exoesqueleto", "Endoesqueleto dérmico", "Caparazón", "Quitina"], correct: 1, diff: 3 },
-        { q: "¿Qué tipo de onda es la luz electromagnética?", options: ["Longitudinal", "Transversal", "Sonora", "Mecánica"], correct: 1, diff: 3 },
-        { q: "¿Cuál es el compuesto orgánico más abundante en la Tierra?", options: ["ADN", "Celulosa", "Glucosa", "Colágeno"], correct: 1, diff: 3 }
+        { q: "¿Cuál es la constante universal de los gases ideales (R)?", options: ["8.314 J/(mol·K)", "6.626 x 10^-34", "9.81 m/s^2", "3.00 x 10^8"], correct: 0, diff: 3 }
     ],
     historia: [
         { q: "¿En qué año comenzó la Primera Guerra Mundial?", options: ["1914", "1939", "1905", "1918"], correct: 0, diff: 1 },
         { q: "¿Quién fue el primer emperador de Roma?", options: ["Julio César", "Augusto", "Nerón", "Constantino"], correct: 1, diff: 1 },
-        { q: "¿Qué civilización construyó Machu Picchu?", options: ["Maya", "Azteca", "Inca", "Olmeca"], correct: 2, diff: 1 },
-        { q: "¿En qué año cayó el Imperio Romano de Occidente?", options: ["476 d.C.", "1453 d.C.", "395 d.C.", "500 a.C."], correct: 0, diff: 2 },
-        { q: "¿Qué tratado puso fin formalmente a la Primera Guerra Mundial?", options: ["Tratado de Versalles", "Paz de Westfalia", "Tratado de Tordesillas", "Congreso de Viena"], correct: 0, diff: 2 }
+        { q: "¿Qué civilización construyó Machu Picchu?", options: ["Maya", "Azteca", "Inca", "Olmeca"], correct: 2, diff: 1 }
     ],
     cine: [
         { q: "¿Quién dirigió la película 'El Padrino'?", options: ["Martin Scorsese", "Francis Ford Coppola", "Steven Spielberg", "Quentin Tarantino"], correct: 1, diff: 1 },
-        { q: "¿Qué película ganó el Óscar a Mejor Película en 1998 y batió récords?", options: ["Titanic", "Gladiador", "Forrest Gump", "Matrix"], correct: 0, diff: 1 },
-        { q: "¿Cómo se llama el villano principal en Star Wars original?", options: ["Darth Maul", "Darth Vader", "Emperador Palpatine", "Kylo Ren"], correct: 1, diff: 1 },
-        { q: "¿Qué actor protagoniza la trilogía de 'Matrix'?", options: ["Keanu Reeves", "Tom Cruise", "Brad Pitt", "Will Smith"], correct: 0, diff: 1 },
-        { q: "¿Cuál fue el primer largometraje animado de Disney?", options: ["Bambi", "Cenicienta", "Blanca Nieves y los siete enanos", "Pinocho"], correct: 2, diff: 2 }
+        { q: "¿Qué película ganó el Óscar a Mejor Película en 1998 y batió récords?", options: ["Titanic", "Gladiador", "Forrest Gump", "Matrix"], correct: 0, diff: 1 }
     ],
     deportes: [
         { q: "¿Cada cuántos años se celebran los Juegos Olímpicos?", options: ["2 años", "3 años", "4 años", "5 años"], correct: 2, diff: 1 },
-        { q: "¿En qué país se originó el fútbol moderno?", options: ["Brasil", "Inglaterra", "Italia", "Argentina"], correct: 1, diff: 1 },
-        { q: "¿Cuántos jugadores forman un equipo de básquetbol en cancha?", options: ["5", "7", "6", "11"], correct: 0, diff: 1 },
-        { q: "¿Qué país ganó la Copa Mundial de Fútbol de 2022?", options: ["Francia", "Brasil", "Argentina", "Alemania"], correct: 2, diff: 1 },
-        { q: "¿Cuántos anillos componen el símbolo olímpico?", options: ["4", "5", "6", "7"], correct: 1, diff: 1 }
+        { q: "¿En qué país se originó el fútbol moderno?", options: ["Brasil", "Inglaterra", "Italia", "Argentina"], correct: 1, diff: 1 }
     ]
 };
 
-// Auto-completar categorías secundarias para mantener consistencia
-['historia', 'cine', 'deportes'].forEach(cat => {
-    while (questionBank[cat].length < 30) {
+['ciencia', 'historia', 'cine', 'deportes'].forEach(cat => {
+    while (questionBank[cat].length < 40) {
         questionBank[cat].push({
-            q: `Pregunta de nivel avanzado ${questionBank[cat].length + 1} sobre ${cat}`,
+            q: `Pregunta de desafío ${questionBank[cat].length + 1} sobre ${cat}`,
             options: ["Opción A", "Opción B", "Opción C", "Opción D"],
             correct: 0,
             diff: Math.floor(Math.random() * 3) + 1
@@ -138,14 +106,7 @@ function updateCoins(amount) {
     saveAndSyncState();
 }
 
-function interactWithPet() {
-    const phrases = ["¡Miau! A ganar 🐾", "¡Qué buena partida! ✨", "¡Dale con todo! 🚀"];
-    const random = phrases[Math.floor(Math.random() * phrases.length)];
-    const speechEl = document.getElementById('pet-speech');
-    if(speechEl) speechEl.textContent = random;
-}
-
-// --- GENERACIÓN DE 100 NIVELES MASIVOS ---
+// --- GENERACIÓN DE 100 NIVELES ---
 function renderLevels() {
     const grid = document.getElementById('levels-grid');
     if(!grid) return;
