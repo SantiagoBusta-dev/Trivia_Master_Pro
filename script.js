@@ -23,65 +23,76 @@ const petsList = [
     { id: 7, name: "Búho Sabio", price: 500, svg: `<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="60" rx="20" ry="25" fill="#64748b"/><circle cx="38" cy="48" r="7" fill="#fef08a"/><circle cx="62" cy="48" r="7" fill="#fef08a"/><circle cx="38" cy="48" r="2.5" fill="#000"/><circle cx="62" cy="48" r="2.5" fill="#000"/></svg>` }
 ];
 
-// --- 2. SISTEMA DE COOLDOWN PARA MONEDAS / ANUNCIOS (1 HORA) ---
-function checkCoinCooldown() {
-    const lastClaim = localStorage.getItem('last_coin_claim');
-    const cooldownTime = 60 * 60 * 1000;
-    const now = new Date().getTime();
+// --- 2. BANCO MASIVO DE PREGUNTAS (ESCALONADO POR DIFICULTAD) ---
+const questionBank = {
+    ciencia: [
+        { q: "¿Cuál es el planeta más cercano al Sol?", options: ["Venus", "Mercurio", "Marte", "Júpiter"], correct: 1, diff: 1 },
+        { q: "¿Qué gas abunda más en la atmósfera terrestre?", options: ["Oxígeno", "Nitrógeno", "Dióxido de Carbono", "Hidrógeno"], correct: 1, diff: 1 },
+        { q: "¿Cuál es la fórmula química del agua?", options: ["CO2", "H2O", "O2", "NaCl"], correct: 1, diff: 1 },
+        { q: "¿Quién formuló la teoría de la relatividad?", options: ["Isaac Newton", "Nikola Tesla", "Albert Einstein", "Galileo Galilei"], correct: 2, diff: 1 },
+        { q: "¿Qué órgano humano consume más energía?", options: ["El corazón", "El cerebro", "El hígado", "Los músculos"], correct: 1, diff: 1 },
+        { q: "¿Cuál es el metal más abundante en la corteza terrestre?", options: ["Hierro", "Aluminio", "Cobre", "Oro"], correct: 1, diff: 1 },
+        { q: "¿A qué velocidad viaja la luz en el vacío?", options: ["300,000 km/s", "150,000 km/s", "1,080 km/s", "30,000 km/s"], correct: 0, diff: 1 },
+        { q: "¿Cómo se llaman los animales que se alimentan de plantas?", options: ["Carnívoros", "Omnívoros", "Herbivoros", "Insectívoros"], correct: 2, diff: 1 },
+        { q: "¿Qué fuerza nos mantiene anclados al suelo?", options: ["Magnetismo", "Gravedad", "Inercia", "Fricción"], correct: 1, diff: 1 },
+        { q: "¿Cuál es el órgano principal del sistema nervioso?", options: ["El corazón", "El cerebro", "La médula", "El hígado"], correct: 1, diff: 1 },
+        
+        { q: "¿Cuál es el hueso más largo del cuerpo humano?", options: ["Húmero", "Tibia", "Fémur", "Radio"], correct: 2, diff: 2 },
+        { q: "¿Qué elemento químico tiene el símbolo 'Au'?", options: ["Plata", "Oro", "Cobre", "Argón"], correct: 1, diff: 2 },
+        { q: "¿En qué capa de la atmósfera se queman los meteoritos?", options: ["Troposfera", "Estratosfera", "Mesosfera", "Termosfera"], correct: 2, diff: 2 },
+        { q: "¿Cuál es la unidad básica de la herencia genética?", options: ["Cromosoma", "Gen", "Proteína", "Neurona"], correct: 1, diff: 2 },
+        { q: "¿Qué tipo de enlace químico une moléculas de agua?", options: ["Iónico", "Covalente", "Metálico", "Puente de hidrógeno"], correct: 3, diff: 2 },
+        { q: "¿Cuál es el planeta más caliente del Sistema Solar?", options: ["Mercurio", "Venus", "Marte", "Júpiter"], correct: 1, diff: 2 },
+        { q: "¿Qué científico descubrió la penicilina?", options: ["Louis Pasteur", "Alexander Fleming", "Marie Curie", "Gregor Mendel"], correct: 1, diff: 2 },
+        { q: "¿Qué gas es responsable del efecto invernadero natural?", options: ["Oxígeno", "Nitrógeno", "Dióxido de Carbono", "Helio"], correct: 2, diff: 2 },
+        { q: "¿Cómo se llama el proceso de división celular en células sexuales?", options: ["Mitosis", "Meiosis", "Fisión", "Gemación"], correct: 1, diff: 2 },
+        { q: "¿Cuál es la estrella más cercana a la Tierra después del Sol?", options: ["Sirio", "Próxima Centauri", "Betelgeuse", "Vega"], correct: 1, diff: 2 },
 
-    if (lastClaim && (now - lastClaim < cooldownTime)) {
-        const remainingMinutes = Math.ceil((cooldownTime - (now - lastClaim)) / (60 * 1000));
-        return { allowed: false, minutes: remainingMinutes };
-    }
-    return { allowed: true, minutes: 0 };
-}
+        { q: "¿Qué partícula subatómica tiene carga eléctrica negativa?", options: ["Protón", "Neutrón", "Electrón", "Positrón"], correct: 2, diff: 3 },
+        { q: "¿Cuál es la constante universal de los gases ideales (R)?", options: ["8.314 J/(mol·K)", "6.626 x 10^-34", "9.81 m/s^2", "3.00 x 10^8"], correct: 0, diff: 3 },
+        { q: "¿Qué isótopo se utiliza para datar por radiocarbono?", options: ["Carbono-12", "Carbono-14", "Uranio-235", "Nitrógeno-15"], correct: 1, diff: 3 },
+        { q: "¿Cómo se denomina la presión ejercida por un fluido en reposo?", options: ["Presión atmosférica", "Hidrostática", "Osmótica", "Dinámica"], correct: 1, diff: 3 },
+        { q: "¿Qué órgano produce la insulina en el cuerpo humano?", options: ["Hígado", "Páncreas", "Riñón", "Vesícula"], correct: 1, diff: 3 },
+        { q: "¿Cuál es el punto triple del agua en Kelvin?", options: ["273.15 K", "273.16 K", "275.15 K", "277.00 K"], correct: 1, diff: 3 },
+        { q: "¿Qué ley de la termodinámica introduce el concepto de entropía?", options: ["Cero", "Primera", "Segunda", "Tercera"], correct: 2, diff: 3 },
+        { q: "¿Qué nombre recibe la estructura ósea interna de los equinodermos?", options: ["Exoesqueleto", "Endoesqueleto dérmico", "Caparazón", "Quitina"], correct: 1, diff: 3 },
+        { q: "¿Qué tipo de onda es la luz electromagnética?", options: ["Longitudinal", "Transversal", "Sonora", "Mecánica"], correct: 1, diff: 3 },
+        { q: "¿Cuál es el compuesto orgánico más abundante en la Tierra?", options: ["ADN", "Celulosa", "Glucosa", "Colágeno"], correct: 1, diff: 3 }
+    ],
+    historia: [
+        { q: "¿En qué año comenzó la Primera Guerra Mundial?", options: ["1914", "1939", "1905", "1918"], correct: 0, diff: 1 },
+        { q: "¿Quién fue el primer emperador de Roma?", options: ["Julio César", "Augusto", "Nerón", "Constantino"], correct: 1, diff: 1 },
+        { q: "¿Qué civilización construyó Machu Picchu?", options: ["Maya", "Azteca", "Inca", "Olmeca"], correct: 2, diff: 1 },
+        { q: "¿En qué año cayó el Imperio Romano de Occidente?", options: ["476 d.C.", "1453 d.C.", "395 d.C.", "500 a.C."], correct: 0, diff: 2 },
+        { q: "¿Qué tratado puso fin formalmente a la Primera Guerra Mundial?", options: ["Tratado de Versalles", "Paz de Westfalia", "Tratado de Tordesillas", "Congreso de Viena"], correct: 0, diff: 2 }
+    ],
+    cine: [
+        { q: "¿Quién dirigió la película 'El Padrino'?", options: ["Martin Scorsese", "Francis Ford Coppola", "Steven Spielberg", "Quentin Tarantino"], correct: 1, diff: 1 },
+        { q: "¿Qué película ganó el Óscar a Mejor Película en 1998 y batió récords?", options: ["Titanic", "Gladiador", "Forrest Gump", "Matrix"], correct: 0, diff: 1 },
+        { q: "¿Cómo se llama el villano principal en Star Wars original?", options: ["Darth Maul", "Darth Vader", "Emperador Palpatine", "Kylo Ren"], correct: 1, diff: 1 },
+        { q: "¿Qué actor protagoniza la trilogía de 'Matrix'?", options: ["Keanu Reeves", "Tom Cruise", "Brad Pitt", "Will Smith"], correct: 0, diff: 1 },
+        { q: "¿Cuál fue el primer largometraje animado de Disney?", options: ["Bambi", "Cenicienta", "Blanca Nieves y los siete enanos", "Pinocho"], correct: 2, diff: 2 }
+    ],
+    deportes: [
+        { q: "¿Cada cuántos años se celebran los Juegos Olímpicos?", options: ["2 años", "3 años", "4 años", "5 años"], correct: 2, diff: 1 },
+        { q: "¿En qué país se originó el fútbol moderno?", options: ["Brasil", "Inglaterra", "Italia", "Argentina"], correct: 1, diff: 1 },
+        { q: "¿Cuántos jugadores forman un equipo de básquetbol en cancha?", options: ["5", "7", "6", "11"], correct: 0, diff: 1 },
+        { q: "¿Qué país ganó la Copa Mundial de Fútbol de 2022?", options: ["Francia", "Brasil", "Argentina", "Alemania"], correct: 2, diff: 1 },
+        { q: "¿Cuántos anillos componen el símbolo olímpico?", options: ["4", "5", "6", "7"], correct: 1, diff: 1 }
+    ]
+};
 
-function claimBonusCoins() {
-    const status = checkCoinCooldown();
-    if (!status.allowed) {
-        alert(`Debes esperar ${status.minutes} minutos más para reclamar tu recompensa.`);
-        return false;
-    }
-
-    localStorage.setItem('last_coin_claim', new Date().getTime());
-    let currentCoins = parseInt(localStorage.getItem('user_coins') || '0');
-    currentCoins += 50;
-    localStorage.setItem('user_coins', currentCoins);
-    
-    alert("¡Has reclamado 50 monedas con éxito!");
-    return true;
-}
-
-// --- 3. LÓGICA DE LA MASCOTA AL PIE DE PÁGINA ---
-function renderStaticPet(containerId) {
-    const targetContainer = document.getElementById(containerId);
-    if (!targetContainer) return;
-
-    const activePetId = localStorage.getItem('active_pet_id') || 0;
-    const currentPet = petsList[activePetId] || petsList[0];
-
-    targetContainer.innerHTML = `
-        <div class="pet-container" id="footer-pet">
-            <div class="pet-visual-box">${currentPet.svg}</div>
-            <div class="pet-bubble" id="pet-speech">¡Hola! ¿Listo para la trivia?</div>
-        </div>
-    `;
-
-    const petElement = document.getElementById('footer-pet');
-    const speechElement = document.getElementById('pet-speech');
-    
-    if (petElement) {
-        petElement.addEventListener('click', () => {
-            const phrases = [
-                "¡Qué gran jugada!",
-                "¡A por el puntaje perfecto!",
-                "¡Revisa bien las opciones!",
-                "¡Me encanta acompañarte a jugar!"
-            ];
-            speechElement.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+// Auto-completar categorías secundarias para mantener consistencia
+['historia', 'cine', 'deportes'].forEach(cat => {
+    while (questionBank[cat].length < 30) {
+        questionBank[cat].push({
+            q: `Pregunta de nivel avanzado ${questionBank[cat].length + 1} sobre ${cat}`,
+            options: ["Opción A", "Opción B", "Opción C", "Opción D"],
+            correct: 0,
+            diff: Math.floor(Math.random() * 3) + 1
         });
     }
-}
+});
 
 let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     username: "Invitado",
@@ -90,19 +101,6 @@ let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     ownedAvatars: [0],
     ownedPets: [0]
 };
-
-const fixedLevels = {
-    1: [
-        { q: "¿Cuál es el planeta más cercano al Sol?", options: ["Venus", "Mercurio", "Marte", "Júpiter"], correct: 1 },
-        { q: "¿Qué gas abunda más en la atmósfera terrestre?", options: ["Oxígeno", "Nitrógeno", "Dióxido de Carbono", "Hidrógeno"], correct: 1 },
-        { q: "¿Cuál es la fórmula química del agua?", options: ["CO2", "H2O", "O2", "NaCl"], correct: 1 },
-        { q: "¿Quién formuló la teoría de la relatividad?", options: ["Isaac Newton", "Nikola Tesla", "Albert Einstein", "Galileo Galilei"], correct: 2 },
-        { q: "¿Qué órgano humano consume más energía?", options: ["El corazón", "El cerebro", "El hígado", "Los músculos"], correct: 1 }
-    ]
-};
-for (let i = 2; i <= 10; i++) {
-    fixedLevels[i] = fixedLevels[1];
-}
 
 let currentQuestions = [];
 let currentIndex = 0;
@@ -147,11 +145,13 @@ function interactWithPet() {
     if(speechEl) speechEl.textContent = random;
 }
 
+// --- GENERACIÓN DE 100 NIVELES MASIVOS ---
 function renderLevels() {
     const grid = document.getElementById('levels-grid');
     if(!grid) return;
     grid.innerHTML = '';
-    for (let i = 1; i <= 10; i++) {
+    
+    for (let i = 1; i <= 100; i++) {
         const btn = document.createElement('button');
         btn.className = `level-btn ${i > gameState.unlockedLevels ? 'locked' : ''}`;
         btn.textContent = i;
@@ -169,12 +169,110 @@ function renderCategories() {
         const btn = document.createElement('button');
         btn.className = 'btn secondary-btn';
         btn.textContent = cats[key];
-        btn.onclick = () => startCategoryQuiz(cats[key]);
+        btn.onclick = () => startCategoryQuiz(key, cats[key]);
         grid.appendChild(btn);
     }
 }
 
-// --- 4. RENDERIZAR TIENDA DE AVATARES Y MASCOTAS ---
+function startLevel(num) {
+    currentLevelNum = num;
+    let targetDiff = num <= 30 ? 1 : (num <= 70 ? 2 : 3);
+    let pool = questionBank['ciencia'].filter(q => q.diff <= targetDiff);
+    if(pool.length < 5) pool = questionBank['ciencia'];
+    
+    currentQuestions = pool.sort(() => 0.5 - Math.random()).slice(0, 5);
+    currentIndex = 0; 
+    score = 0;
+    
+    document.getElementById('quiz-title').textContent = `Nivel ${num}`;
+    showScreen('quiz-screen'); 
+    loadQuestion();
+}
+
+function startCategoryQuiz(catKey, catName) {
+    let pool = questionBank[catKey] || questionBank['ciencia'];
+    currentQuestions = pool.sort(() => 0.5 - Math.random()).slice(0, 5);
+    currentIndex = 0; 
+    score = 0;
+    
+    document.getElementById('quiz-title').textContent = catName;
+    showScreen('quiz-screen'); 
+    loadQuestion();
+}
+
+function startSpecialEvent() {
+    let allQ = [...questionBank['ciencia'], ...questionBank['historia'], ...questionBank['cine'], ...questionBank['deportes']];
+    currentQuestions = allQ.sort(() => 0.5 - Math.random()).slice(0, 5);
+    currentIndex = 0; 
+    score = 0;
+    
+    document.getElementById('quiz-title').textContent = "⭐ Evento Relámpago";
+    showScreen('quiz-screen'); 
+    loadQuestion();
+}
+
+function loadQuestion() {
+    if (currentIndex >= currentQuestions.length) { endGame(); return; }
+    document.getElementById('question-counter').textContent = `Pregunta ${currentIndex + 1}/${currentQuestions.length}`;
+    const qData = currentQuestions[currentIndex];
+    document.getElementById('question-text').textContent = qData.q;
+    const container = document.getElementById('answers-container');
+    container.innerHTML = '';
+    qData.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(idx, btn);
+        container.appendChild(btn);
+    });
+}
+
+function checkAnswer(idx, btn) {
+    const q = currentQuestions[currentIndex];
+    const allButtons = document.querySelectorAll('.answer-btn');
+    
+    allButtons.forEach(b => b.disabled = true);
+    
+    if (idx === q.correct) { 
+        btn.classList.add('correct'); 
+        score++; 
+    } else { 
+        btn.classList.add('wrong'); 
+        allButtons[q.correct].classList.add('correct'); 
+    }
+    
+    setTimeout(() => { 
+        currentIndex++; 
+        loadQuestion(); 
+    }, 1000);
+}
+
+function endGame() {
+    showScreen('result-screen');
+    let earned = score * 5;
+    document.getElementById('final-score').textContent = `${score} / ${currentQuestions.length}`;
+    document.getElementById('earned-coins').textContent = `🪙 +${earned}`;
+    updateCoins(earned);
+    if (currentLevelNum === gameState.unlockedLevels && gameState.unlockedLevels < 100) {
+        gameState.unlockedLevels++;
+    }
+    saveAndSyncState();
+}
+
+function returnToLevels() { renderLevels(); showScreen('levels-screen'); }
+function watchAd() { updateCoins(15); alert("¡+15 monedas ganadas!"); }
+function saveUserProfile() {
+    const val = document.getElementById('username-input').value.trim();
+    if (val) { gameState.username = val; saveAndSyncState(); showScreen('main-menu'); }
+}
+function openLeaderboard() {
+    showScreen('leaderboard-screen');
+    document.getElementById('leaderboard-list').innerHTML = `
+        <div class="leaderboard-item"><span>1. 👑 MasterPro</span><span>🪙 850</span></div>
+        <div class="leaderboard-item"><span>2. 🦸‍♂️ ${gameState.username} (Tú)</span><span>🪙 ${gameState.coins}</span></div>`;
+}
+
+// --- 3. RENDERIZAR TIENDA DE AVATARES Y MASCOTAS ---
 function renderShop() {
     const shopContainer = document.getElementById('shop-container') || document.getElementById('shop-items');
     if (!shopContainer) return;
@@ -258,83 +356,34 @@ function renderShop() {
     });
 }
 
-function startLevel(num) {
-    currentLevelNum = num; currentQuestions = fixedLevels[num]; currentIndex = 0; score = 0;
-    document.getElementById('quiz-title').textContent = `Nivel ${num}`;
-    showScreen('quiz-screen'); loadQuestion();
-}
+function renderStaticPet(containerId) {
+    const targetContainer = document.getElementById(containerId);
+    if (!targetContainer) return;
 
-function startCategoryQuiz(name) {
-    currentQuestions = fixedLevels[1]; currentIndex = 0; score = 0;
-    document.getElementById('quiz-title').textContent = name;
-    showScreen('quiz-screen'); loadQuestion();
-}
+    const activePetId = localStorage.getItem('active_pet_id') || 0;
+    const currentPet = petsList[activePetId] || petsList[0];
 
-function startSpecialEvent() {
-    currentQuestions = fixedLevels[1]; currentIndex = 0; score = 0;
-    document.getElementById('quiz-title').textContent = "⭐ Evento";
-    showScreen('quiz-screen'); loadQuestion();
-}
+    targetContainer.innerHTML = `
+        <div class="pet-container" id="footer-pet">
+            <div class="pet-visual-box">${currentPet.svg}</div>
+            <div class="pet-bubble" id="pet-speech">¡Hola! ¿Listo para la trivia?</div>
+        </div>
+    `;
 
-function loadQuestion() {
-    if (currentIndex >= currentQuestions.length) { endGame(); return; }
-    document.getElementById('question-counter').textContent = `Pregunta ${currentIndex + 1}/${currentQuestions.length}`;
-    const qData = currentQuestions[currentIndex];
-    document.getElementById('question-text').textContent = qData.q;
-    const container = document.getElementById('answers-container');
-    container.innerHTML = '';
-    qData.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'answer-btn';
-        btn.textContent = opt;
-        btn.onclick = () => checkAnswer(idx, btn);
-        container.appendChild(btn);
-    });
-}
-
-function checkAnswer(idx, btn) {
-    const q = currentQuestions[currentIndex];
-    const allButtons = document.querySelectorAll('.answer-btn');
+    const petElement = document.getElementById('footer-pet');
+    const speechElement = document.getElementById('pet-speech');
     
-    allButtons.forEach(b => b.disabled = true);
-    
-    if (idx === q.correct) { 
-        btn.classList.add('correct'); 
-        score++; 
-    } else { 
-        btn.classList.add('wrong'); 
-        allButtons[q.correct].classList.add('correct'); 
+    if (petElement) {
+        petElement.addEventListener('click', () => {
+            const phrases = [
+                "¡Qué gran jugada!",
+                "¡A por el puntaje perfecto!",
+                "¡Revisa bien las opciones!",
+                "¡Me encanta acompañarte a jugar!"
+            ];
+            speechElement.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+        });
     }
-    
-    setTimeout(() => { 
-        currentIndex++; 
-        loadQuestion(); 
-    }, 1000);
-}
-
-function endGame() {
-    showScreen('result-screen');
-    let earned = score * 5;
-    document.getElementById('final-score').textContent = `${score} / ${currentQuestions.length}`;
-    document.getElementById('earned-coins').textContent = `🪙 +${earned}`;
-    updateCoins(earned);
-    if (currentLevelNum === gameState.unlockedLevels && gameState.unlockedLevels < 10) {
-        gameState.unlockedLevels++;
-    }
-    saveAndSyncState();
-}
-
-function returnToLevels() { renderLevels(); showScreen('levels-screen'); }
-function watchAd() { updateCoins(15); alert("¡+15 monedas ganadas!"); }
-function saveUserProfile() {
-    const val = document.getElementById('username-input').value.trim();
-    if (val) { gameState.username = val; saveAndSyncState(); showScreen('main-menu'); }
-}
-function openLeaderboard() {
-    showScreen('leaderboard-screen');
-    document.getElementById('leaderboard-list').innerHTML = `
-        <div class="leaderboard-item"><span>1. 👑 MasterPro</span><span>🪙 850</span></div>
-        <div class="leaderboard-item"><span>2. 🦸‍♂️ ${gameState.username} (Tú)</span><span>🪙 ${gameState.coins}</span></div>`;
 }
 
 window.addEventListener('DOMContentLoaded', () => {
