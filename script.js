@@ -1,4 +1,3 @@
-// --- 1. ESTADO DEL JUEGO ---
 let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
     username: "Santiago",
     coins: 235,
@@ -59,7 +58,6 @@ function saveUserProfile() {
     }
 }
 
-// --- 2. NIVELES (100 NIVELES) ---
 function renderLevels() {
     const grid = document.getElementById('levels-grid');
     if(!grid) return;
@@ -156,7 +154,6 @@ function returnToLevels() {
     showScreen('levels-screen'); 
 }
 
-// --- 3. SECCIONES ADICIONALES (CATEGORÍAS, EVENTOS, TIENDA, RANKING) ---
 function openCategories() {
     showScreen('categories-screen');
     const grid = document.getElementById('categories-grid');
