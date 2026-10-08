@@ -1,6 +1,6 @@
 let gameState = JSON.parse(localStorage.getItem('triviaMasterState')) || {
-    username: "Santiago",
-    coins: 235,
+    username: "",
+    coins: 100,
     unlockedLevels: 1,
     ownedAvatars: [0],
     selectedAvatar: 0,
@@ -21,30 +21,51 @@ const avatarsList = [
 ];
 
 const petsList = [
-    { id: 0, name: "Gatito Feliz", price: 0 },
-    { id: 1, name: "Perrito Fiel", price: 80 }
+    { id: 0, name: "Gatito Feliz", price: 0, icon: "🐱" },
+    { id: 1, name: "Perrito Fiel", price: 80, icon: "🐶" },
+    { id: 2, name: "Oso Panda", price: 150, icon: "🐼" },
+    { id: 3, name: "Conejo Saltarín", price: 200, icon: "🐰" },
+    { id: 4, name: "Cabra Suprema", price: 500, icon: "🐐" }
 ];
 
 window.onload = function() {
+    // Verificar si es un usuario nuevo sin nombre registrado
+    if (!gameState.username || gameState.username.trim() === "") {
+        showScreen('profile-screen');
+    } else {
+        showScreen('main-menu');
+    }
     saveAndSyncState();
     renderLevels();
     renderStaticPet();
-    showScreen('main-menu');
 };
 
 function saveAndSyncState() {
     localStorage.setItem('triviaMasterState', JSON.stringify(gameState));
+    
+    // Actualizar monedas en pantalla
     const coinEl = document.getElementById('coin-count');
     if(coinEl) coinEl.textContent = gameState.coins;
+    
+    // Actualizar saludo
     const userEl = document.getElementById('welcome-msg');
-    if(userEl) userEl.textContent = `¡Hola, ${gameState.username}!`;
+    if(userEl) {
+        userEl.textContent = gameState.username ? `¡Hola, ${gameState.username}!` : "¡Hola, Jugador!";
+    }
+    
     renderHeaderAvatar();
+    renderStaticPet();
 }
 
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(screenId);
     if(target) target.classList.add('active');
+    
+    // Si abre la tienda, renderizarla inmediatamente de forma sincronizada
+    if(screenId === 'shop-screen') {
+        openShop();
+    }
 }
 
 function saveUserProfile() {
@@ -167,29 +188,40 @@ function openCategories() {
 }
 
 function startSpecialEvent() {
-    alert("¡Evento Relámpago activado! Jugarás un desafío rápido.");
-    startLevel(10);
+    alert("¡Evento Relámpago activado! Responde rápido para ganar el doble de monedas.");
+    startLevel(50);
 }
 
 function openLeaderboard() {
     showScreen('leaderboard-screen');
     const list = document.getElementById('leaderboard-list');
     if(!list) return;
-    list.innerHTML = `
-        <div class="leaderboard-item"><span>1. ProPlayer99</span><span>🌟 Nivel 100</span></div>
-        <div class="leaderboard-item"><span>2. TriviaQueen</span><span>🌟 Nivel 95</span></div>
-        <div class="leaderboard-item"><span>3. ${gameState.username} (Tú)</span><span>🌟 Nivel ${gameState.unlockedLevels}</span></div>
-    `;
+
+    // Tabla de clasificación real y dinámica basada en memoria local y niveles reales alcanzados
+    let players = [
+        { name: "ProPlayer99", level: 100 },
+        { name: "TriviaQueen", level: 95 },
+        { name: gameState.username || "Tú", level: gameState.unlockedLevels, isUser: true }
+    ];
+
+    // Ordenar de mayor a menor nivel real
+    players.sort((a, b) => b.level - a.level);
+
+    list.innerHTML = players.map((p, index) => `
+        <div class="leaderboard-item" style="${p.isUser ? 'background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8;' : ''}">
+            <span>${index + 1}. ${p.name} ${p.isUser ? '(Tú)' : ''}</span>
+            <span>🌟 Nivel ${p.level}</span>
+        </div>
+    `).join('');
 }
 
 function watchAd() {
     gameState.coins += 20;
     saveAndSyncState();
-    alert("¡Has ganado 20 monedas extra!");
+    alert("¡Has ganado 20 monedas extra por ver el anuncio!");
 }
 
 function openShop() {
-    showScreen('shop-screen');
     const container = document.getElementById('shop-container');
     if(!container) return;
     
@@ -207,17 +239,11 @@ function openShop() {
                 </div>
             `).join('')}
         </div>
-        <div class="shop-category-title" style="margin-top: 10px;">Mascotas</div>
+        <div class="shop-category-title" style="margin-top: 15px;">Mascotas</div>
         <div class="shop-items">
             ${petsList.map(pet => `
                 <div class="shop-item-card">
-                    <div class="shop-item-visual">
-                        <svg width="40" height="45" viewBox="0 0 100 100">
-                            <circle cx="50" cy="55" r="30" fill="#f59e0b"/>
-                            <circle cx="38" cy="48" r="4" fill="#000"/>
-                            <circle cx="62" cy="48" r="4" fill="#000"/>
-                        </svg>
-                    </div>
+                    <div class="shop-item-visual" style="font-size: 2rem;">${pet.icon}</div>
                     <span>${pet.name}</span>
                     <button class="btn ${gameState.ownedPets.includes(pet.id) ? 'secondary-btn' : 'shop-btn'}" 
                         onclick="buyPet(${pet.id})">
@@ -269,26 +295,59 @@ function renderHeaderAvatar() {
 function renderStaticPet() {
     const footer = document.getElementById('footer-container');
     if(!footer) return;
+    const currentPet = petsList.find(p => p.id === gameState.selectedPet) || petsList[0];
+    
     footer.innerHTML = `
-        <div class="pet-container" onclick="interactPet()">
-            <div class="pet-visual-box">
-                <svg width="35" height="40" viewBox="0 0 100 100" class="anim-tail">
-                    <circle cx="50" cy="55" r="28" fill="#f59e0b"/>
-                    <polygon points="30,35 20,15 40,28" fill="#f59e0b"/>
-                    <polygon points="70,35 80,15 60,28" fill="#f59e0b"/>
-                    <circle cx="40" cy="48" r="4" fill="#000"/>
-                    <circle cx="60" cy="48" r="4" fill="#000"/>
-                </svg>
+        <div class="pet-container" onclick="interactPet(${currentPet.id})" style="cursor: pointer; padding: 5px; display: inline-block;">
+            <div class="pet-visual-box" id="pet-box" style="font-size: 2rem; transition: transform 0.2s;">
+                ${currentPet.icon}
             </div>
-            <span class="pet-bubble" id="pet-speech">¡Hola! Juega conmigo 🐾</span>
+            <span class="pet-bubble" id="pet-speech" style="background: #1e293b; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; color: #38bdf8; display: inline-block; margin-top: 2px;">Tócame 🐾</span>
         </div>
     `;
 }
 
-function interactPet() {
-    const phrases = ["¡Hola jefe!", "¡A romper récords!", "¡Miau! 🐾", "¡Tengo hambre de preguntas!"];
+// Interacciones específicas para cada mascota elegida
+function interactPet(petId) {
     const speech = document.getElementById('pet-speech');
-    if(speech) {
-        speech.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+    const box = document.getElementById('pet-box');
+    if(!speech) return;
+
+    if (petId === 0) {
+        // Gato: Miau y ronroneo
+        speech.textContent = "¡Miau... prrr, prrr! 🐾";
+    } else if (petId === 1) {
+        // Perro: Guau
+        speech.textContent = "¡Guau, guau! 🐶";
+    } else if (petId === 2) {
+        // Oso Panda: Come bambú
+        speech.textContent = "Masticando bambú 🎋... ¡Ñam ñam!";
+    } else if (petId === 3) {
+        // Conejo: Salto
+        if (box) {
+            box.style.transform = "translateY(-15px)";
+            setTimeout(() => { box.style.transform = "translateY(0)"; }, 200);
+        }
+        speech.textContent = "¡Boing! ¡Saltando 🐰!";
+    } else if (petId === 4) {
+        // Cabra Suprema (Especial): Grito épico de letra en letra con "!!" al final
+        let textToType = "¡¡MESSI!!";
+        speech.textContent = "";
+        let i = 0;
+        
+        // Animación de salto de la cabra
+        if (box) {
+            box.style.transform = "scale(1.3)";
+            setTimeout(() => { box.style.transform = "scale(1)"; }, 300);
+        }
+
+        let interval = setInterval(() => {
+            if (i < textToType.length) {
+                speech.textContent += textToType.charAt(i);
+                i++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 100);
     }
 }
