@@ -14,24 +14,23 @@ let currentIndex = 0;
 let score = 0;
 let currentLevelNum = 1;
 
-// Datos de Avatares y Mascotas para la Tienda
 const avatarsList = [
     { id: 0, name: "Básico", price: 0, icon: "👤" },
     { id: 1, name: "Cerebrito", price: 50, icon: "🧠" },
-    { id: 2, name: "Robots", price: 100, icon: "🤖" },
+    { id: 2, name: "Robot", price: 100, icon: "🤖" },
     { id: 3, name: "Ninja", price: 150, icon: "🥷" }
 ];
 
 const petsList = [
-    { id: 0, name: "Gatito Feliz", price: 0, type: "cat" },
-    { id: 1, name: "Perrito Fiel", price: 80, type: "dog" }
+    { id: 0, name: "Gatito Feliz", price: 0 },
+    { id: 1, name: "Perrito Fiel", price: 80 }
 ];
 
 window.onload = function() {
     saveAndSyncState();
     renderLevels();
     renderStaticPet();
-    showScreen('main-menu'); // Inicia directo en el menú principal
+    showScreen('main-menu');
 };
 
 function saveAndSyncState() {
@@ -60,7 +59,7 @@ function saveUserProfile() {
     }
 }
 
-// --- 2. RENDERIZAR LOS 100 NIVELES ---
+// --- 2. NIVELES (100 NIVELES) ---
 function renderLevels() {
     const grid = document.getElementById('levels-grid');
     if(!grid) return;
@@ -157,22 +156,22 @@ function returnToLevels() {
     showScreen('levels-screen'); 
 }
 
-// --- 3. CATEGORÍAS, EVENTOS Y CLASIFICACIÓN ---
+// --- 3. SECCIONES ADICIONALES (CATEGORÍAS, EVENTOS, TIENDA, RANKING) ---
 function openCategories() {
     showScreen('categories-screen');
     const grid = document.getElementById('categories-grid');
     if(!grid) return;
     grid.innerHTML = `
         <button class="btn primary-btn" onclick="startLevel(1)">Ciencia y Tecnología</button>
-        <button class="btn primary-btn" onclick="startLevel(5)">Historia Universal</button>
-        <button class="btn primary-btn" onclick="startLevel(10)">Geografía Global</button>
-        <button class="btn primary-btn" onclick="startLevel(15)">Cultura Pop y Gaming</button>
+        <button class="btn primary-btn" onclick="startLevel(25)">Historia Universal</button>
+        <button class="btn primary-btn" onclick="startLevel(50)">Geografía Global</button>
+        <button class="btn primary-btn" onclick="startLevel(75)">Cultura Pop y Gaming</button>
     `;
 }
 
 function startSpecialEvent() {
-    alert("¡Evento Relámpago activado! Responde rápido para ganar el doble de monedas.");
-    startLevel(50);
+    alert("¡Evento Relámpago activado! Jugarás un desafío rápido.");
+    startLevel(10);
 }
 
 function openLeaderboard() {
@@ -189,10 +188,9 @@ function openLeaderboard() {
 function watchAd() {
     gameState.coins += 20;
     saveAndSyncState();
-    alert("¡Has ganado 20 monedas extra por ver el anuncio!");
+    alert("¡Has ganado 20 monedas extra!");
 }
 
-// --- 4. TIENDA Y MASCOTAS ---
 function openShop() {
     showScreen('shop-screen');
     const container = document.getElementById('shop-container');
