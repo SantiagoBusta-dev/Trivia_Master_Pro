@@ -31,6 +31,18 @@ function showScreen(screenId) {
     if(target) target.classList.add('active');
 }
 
+// --- NUEVA FUNCIÓN AÑADIDA PARA QUE EL BOTÓN "COMENZAR" FUNCIONE ---
+function saveUserProfile() {
+    const input = document.getElementById('username-input');
+    if (input && input.value.trim() !== "") {
+        gameState.username = input.value.trim();
+        saveAndSyncState();
+        showScreen('main-menu');
+    } else {
+        alert("Por favor, ingresa un nombre válido.");
+    }
+}
+
 // --- 2. RENDERIZAR LOS 100 NIVELES ---
 function renderLevels() {
     const grid = document.getElementById('levels-grid');
@@ -52,7 +64,6 @@ function renderLevels() {
 function startLevel(num) {
     currentLevelNum = num;
     
-    // Genera preguntas dinámicas para cada uno de los 100 niveles sin errores de texto
     currentQuestions = [
         { q: `Nivel ${num}: ¿Cuál es el resultado de ${num} + 5?`, options: [`${num + 5}`, `${num + 3}`, `${num + 10}`, `${num - 2}`], correct: 0 },
         { q: `Nivel ${num}: ¿Qué tipo de desafío es el nivel ${num}?`, options: ["Principiante", "Intermedio", "Avanzado", "Legendario"], correct: num > 70 ? 3 : (num > 40 ? 2 : 0) },
@@ -123,7 +134,6 @@ function endGame() {
     
     gameState.coins += earned;
     
-    // Desbloquea el siguiente nivel automáticamente
     if (currentLevelNum === gameState.unlockedLevels && gameState.unlockedLevels < 100) {
         gameState.unlockedLevels++;
     }
