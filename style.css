@@ -1,335 +1,120 @@
-/* RESET Y ESTILOS GENERALES */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Master Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-body {
-    background-color: #0f172a;
-    color: #f8fafc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
-}
+    <div class="game-container">
 
-.game-container {
-    width: 100%;
-    max-width: 480px;
-    height: 100vh;
-    max-height: 850px;
-    background: #1e293b;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid #334155;
-}
+        <!-- CABECERA -->
+        <header class="header">
+            <div class="profile-area" onclick="showScreen('profile-screen')">
+                <div class="avatar-preview-container" id="header-avatar"></div>
+                <span class="username-label" id="welcome-msg">¡Hola!</span>
+            </div>
+            <div class="coins-badge" onclick="watchAd()">
+                🪙 <span id="coin-count">0</span>
+            </div>
+        </header>
 
-/* CABECERA */
-.header {
-    background: #0f172a;
-    padding: 12px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #334155;
-}
+        <!-- CONTENIDO DINÁMICO DE PANTALLAS -->
+        <main class="main-content">
 
-.profile-area {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-}
+            <!-- MENÚ PRINCIPAL -->
+            <section id="main-menu" class="screen active">
+                <h2 class="welcome-title">Menú Principal</h2>
+                <div class="menu-buttons">
+                    <button class="btn primary-btn" onclick="showScreen('levels-screen')">🚀 Jugar 100 Niveles</button>
+                    <button class="btn secondary-btn" onclick="openCategories()">📚 Categorías</button>
+                    <button class="btn event-btn" onclick="startSpecialEvent()">⭐ Evento Relámpago</button>
+                    <button class="btn shop-btn" onclick="openShop()">🛍️ Tienda (Avatares y Mascotas)</button>
+                    <button class="btn leaderboard-btn" onclick="openLeaderboard()">🏆 Tabla de Líderes</button>
+                </div>
+            </section>
 
-.avatar-preview-container {
-    width: 35px;
-    height: 35px;
-    background: #334155;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid #38bdf8;
-}
+            <!-- PERFIL -->
+            <section id="profile-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅️ Volver</button>
+                    <h2>Configura tu Perfil</h2>
+                </div>
+                <div class="profile-form">
+                    <p style="font-size: 0.85rem; color: #9ca3af;">Ingresa tu nombre de usuario</p>
+                    <input type="text" id="username-input" placeholder="Tu nombre..." maxlength="15">
+                    <button class="btn primary-btn" onclick="saveUserProfile()">Guardar Nombre</button>
+                </div>
+            </section>
 
-.username-label {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #e2e8f0;
-}
+            <!-- NIVELES -->
+            <section id="levels-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅️ Volver</button>
+                    <h2>Selecciona un Nivel</h2>
+                </div>
+                <div id="levels-grid" class="levels-grid"></div>
+            </section>
 
-.coins-badge {
-    background: rgba(245, 158, 11, 0.15);
-    border: 1px solid #f59e0b;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-weight: bold;
-    color: #f59e0b;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
+            <!-- CATEGORÍAS -->
+            <section id="categories-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅️ Volver</button>
+                    <h2>Elige una Categoría</h2>
+                </div>
+                <div id="categories-grid" class="categories-grid" style="display: flex; flex-direction: column; gap: 8px;"></div>
+            </section>
 
-/* CONTENIDO PRINCIPAL Y PANTALLAS */
-.main-content {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
+            <!-- JUEGO (QUIZ) -->
+            <section id="quiz-screen" class="screen">
+                <div class="quiz-header">
+                    <span id="quiz-title">Nivel 1</span>
+                    <span id="question-counter">Pregunta 1/5</span>
+                </div>
+                <div class="question-box">
+                    <p id="question-text">Cargando pregunta...</p>
+                </div>
+                <div id="answers-container" class="answers-grid"></div>
+            </section>
 
-.screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #1e293b;
-    padding: 20px;
-    display: none;
-    flex-direction: column;
-    overflow-y: auto;
-}
+            <!-- RESULTADOS -->
+            <section id="result-screen" class="screen">
+                <div class="profile-form" style="text-align: center;">
+                    <h2>¡Resultado de la Partida!</h2>
+                    <p style="font-size: 0.85rem; color: #9ca3af;">Puntaje obtenido:</p>
+                    <h1 id="final-score" style="font-size: 1.8rem; color: #38bdf8;">0 / 5</h1>
+                    <div id="earned-coins" style="font-weight: bold; color: #f59e0b;">🪙 +0</div>
+                    <button class="btn primary-btn" onclick="returnToLevels()">Continuar</button>
+                </div>
+            </section>
 
-.screen.active {
-    display: flex;
-}
+            <!-- TIENDA -->
+            <section id="shop-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅️ Volver</button>
+                    <h2>Tienda de Recompensas</h2>
+                </div>
+                <div id="shop-container" class="shop-scroll-area"></div>
+            </section>
 
-/* MENÚ PRINCIPAL */
-.welcome-title {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #38bdf8;
-}
+            <!-- RANKING -->
+            <section id="leaderboard-screen" class="screen">
+                <div class="screen-header-row">
+                    <button class="btn-back" onclick="showScreen('main-menu')">⬅️ Volver</button>
+                    <h2>Tabla de Líderes</h2>
+                </div>
+                <div class="leaderboard-list" id="leaderboard-list"></div>
+            </section>
 
-.menu-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: auto;
-    margin-bottom: auto;
-}
+        </main>
 
-.btn {
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.1s, background 0.2s;
-}
+        <!-- FOOTER / MASCOTA -->
+        <footer id="footer-container" style="text-align: center; flex-shrink: 0; position: relative;"></footer>
 
-.btn:active {
-    transform: scale(0.98);
-}
+    </div>
 
-.primary-btn { background: #38bdf8; color: #0f172a; }
-.primary-btn:hover { background: #0ea5e9; }
-
-.secondary-btn { background: #334155; color: #f8fafc; }
-.secondary-btn:hover { background: #475569; }
-
-.event-btn { background: #a855f7; color: #fff; }
-.shop-btn { background: #f59e0b; color: #0f172a; }
-.leaderboard-btn { background: #10b981; color: #fff; }
-
-/* NAVEGACIÓN INTERNA */
-.screen-header-row {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.btn-back {
-    background: #334155;
-    border: none;
-    color: #f8fafc;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-/* GRILLA DE NIVELES */
-.levels-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    padding-bottom: 20px;
-}
-
-.level-btn {
-    aspect-ratio: 1;
-    background: #334155;
-    border: none;
-    border-radius: 8px;
-    color: #f8fafc;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.level-btn.locked {
-    background: #151c28;
-    color: #64748b;
-    cursor: not-allowed;
-}
-
-/* PERFIL FORM */
-.profile-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 40px;
-}
-
-.profile-form input {
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #475569;
-    background: #0f172a;
-    color: #fff;
-    font-size: 1rem;
-}
-
-/* JUEGO (QUIZ) */
-.quiz-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    color: #94a3b8;
-    margin-bottom: 15px;
-}
-
-.question-box {
-    background: #0f172a;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid #334155;
-    margin-bottom: 20px;
-    min-height: 100px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-}
-
-.question-box p {
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-.answers-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.answer-btn {
-    background: #334155;
-    border: none;
-    padding: 14px;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 1rem;
-    cursor: pointer;
-    text-align: left;
-}
-
-.answer-btn.correct { background: #10b981 !important; }
-.answer-btn.wrong { background: #ef4444 !important; }
-
-/* TIENDA */
-.shop-scroll-area {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding-bottom: 20px;
-}
-
-.shop-category-title {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #38bdf8;
-    border-bottom: 1px solid #334155;
-    padding-bottom: 5px;
-}
-
-.shop-items {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
-
-.shop-item-card {
-    background: #0f172a;
-    border: 1px solid #334155;
-    border-radius: 10px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    text-align: center;
-}
-
-.shop-item-card span {
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.shop-item-card button {
-    width: 100%;
-    padding: 8px;
-    font-size: 0.85rem;
-}
-
-/* TABLA DE LÍDERES */
-.leaderboard-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.leaderboard-item {
-    background: #0f172a;
-    padding: 12px 16px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #334155;
-    font-weight: 500;
-}
-
-/* FOOTER MASCOTA */
-footer {
-    background: #0f172a;
-    padding: 10px;
-    border-top: 1px solid #334155;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.pet-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.pet-bubble {
-    background: #334155;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    color: #38bdf8;
-}
+    <script src="script.js"></script>
+</body>
+</html>
