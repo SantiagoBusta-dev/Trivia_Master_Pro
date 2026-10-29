@@ -31,7 +31,7 @@ const Stage={cur:'av',ifr:{av:$('#fav'),pet:$('#fpet')},booted:{av:false,pet:fal
  tabs(){const t=$('#stg-tabs');t.innerHTML=cur=='home'?`<button class="stgbtn ${this.cur=='av'?'on':''}" data-a="stage" data-k="av">🧑 Avatar</button><button class="stgbtn ${this.cur=='pet'?'on':''}" data-a="stage" data-k="pet">🐾 Mascota</button>`:''},
  react(r){this.show('pet');if(this.booted.pet)setTimeout(()=>this.post('pet',{t:'react',r,q:1}),900);else this.pend=r}};
 addEventListener('message',e=>{const d=e.data||{};const k=e.source===Stage.ifr.av.contentWindow?'av':e.source===Stage.ifr.pet.contentWindow?'pet':null;if(!k)return;
- if(d.t=='boot'){Stage.booted[k]=true;Stage.post(k,{t:'cfg',files:Snd.files});if(Stage.cur==k)Stage.sync(k,Stage.over&&Stage.over[k])}
+ if(d.t=='boot'){Stage.booted[k]=true;if(k=='pet'&&Stage.pre)setTimeout(()=>Stage.post('pet',{t:'pre',keys:PETS.map(p=>p.id)}),1500);Stage.post(k,{t:'cfg',files:Snd.files});if(Stage.cur==k)Stage.sync(k,Stage.over&&Stage.over[k])}
  else if(d.t=='ready'){if(k=='av'&&S&&S.eq.av&&!Stage.over)Stage.post('av',{t:'equip',k:S.eq.av});if(k=='pet'&&Stage.pend){const r=Stage.pend;Stage.pend=null;setTimeout(()=>Stage.post('pet',{t:'react',r,q:1}),500)}}});
 
 // ---------- Navegación ----------
@@ -82,7 +82,7 @@ function finish(){const n=P.qs.length,ok=P.ok;let gain=0,pass=null;
  else if(P.mode=='cat')gain=ok*2;else if(P.mode=='evt')gain=ok*5+(ok>=8?30:0);else gain=ok*15+(ok==8?150:0);
  S.day.ans+=n;S.day.ok+=ok;if(P.mode=='lvl'&&pass)S.day.pass++;S.coins+=gain;save();
  Snd.music('');if(P.mode=='lvl')Snd.play(!pass?'nivel_no_superado':ok==5?'perfecto_5de5':'nivel_superado');else Snd.play(ok>=n/2?'nivel_superado':'nivel_no_superado');
- const res={mode:P.mode,n:P.n,c:P.c,ok,total:n,gain,pass};P=null;go('res',res);Stage.react(res.mode=='lvl'?(!pass?'s':ok==5?'x':'h'):ok>=n/2?'h':'s')}
+ const res={mode:P.mode,n:P.n,c:P.c,ok,total:n,gain,pass};lastRes=res;P=null;go('res',res);Stage.react(res.mode=='lvl'?(!pass?'s':ok==5?'x':'h'):ok>=n/2?'h':'s')}
 R.res=r=>{const star=r.mode=='lvl'?(r.ok>=5?'★★★':r.ok==4?'★★☆':r.ok==3?'★☆☆':'☆☆☆'):'';const win=r.mode=='lvl'?r.pass:r.ok>=r.total/2;
  $('#app').innerHTML=top()+`<div class="center"><h1>${r.mode=='lvl'?(r.pass?'¡Nivel superado!':'No pasaste... ¡probá de nuevo!'):win?'¡Muy bien!':'Casi...'}</h1><div class="stars">${star}</div><p>Aciertos: <b>${r.ok} de ${r.total}</b> · Ganaste <b style="color:var(--coin)">🪙 ${r.gain}</b>${r.ok==5&&r.mode=='lvl'?'<br>¡Perfecto! +20 extra':''}</p></div>
  <div class="row c">${r.mode=='lvl'?`${r.pass&&r.n<100?`<button class="pri" data-a="play" data-n="${r.n+1}">Siguiente nivel ▶</button>`:''}<button data-a="play" data-n="${r.n}">↻ Reintentar</button><button data-a="levels">Niveles</button>`:`<button data-a="home" class="pri">Menú</button>`}<button data-a="home">🏠 Inicio</button></div>`};
@@ -92,7 +92,7 @@ R.shop=()=>{const tab=SH.tab;let h=top('<button data-a="home">🏠</button>')+`<
  if(tab=='av')h+='<div class="grid">'+avatarList(S.gen).map(a=>{const own=S.own.av.includes(a.id),sel=S.av==a.id;return`<div class="card" style="border-color:${RAR[a.r]}" data-a="pv" data-t="av" data-id="${a.id}"><div class="nm">${esc(a.n)}</div><span class="tag" style="background:${RAR[a.r]}">${a.r}</span><div class="pr">${own?'Tuyo':'🪙 '+a.p}</div>${own?`<button class="chip ${sel?'gold':''}" data-a="use" data-t="av" data-id="${a.id}">${sel?'En uso':'Usar'}</button>`:`<button class="chip" data-a="buy" data-t="av" data-id="${a.id}" ${S.coins<a.p?'disabled':''}>Comprar</button>`}</div>`}).join('')+'</div>';
  else if(tab=='pet')h+='<div class="grid">'+PETS.map(p=>{const own=S.own.pet.includes(p.id),sel=S.pet==p.id;return`<div class="card" style="border-color:${RAR[p.r]}" data-a="pv" data-t="pet" data-id="${p.id}"><div class="nm">${esc(own?petName(p.id):p.n)}</div><span class="tag" style="background:${RAR[p.r]}">${p.r}</span><div class="pr">${own?'Tuya':'🪙 '+p.p}</div>${own?`<div class="row"><button class="chip ${sel?'gold':''}" data-a="use" data-t="pet" data-id="${p.id}">${sel?'En uso':'Usar'}</button>${p.fixed?'':`<button class="chip" data-a="ren" data-id="${p.id}">✏️ 50</button>`}</div>`:`<button class="chip" data-a="buy" data-t="pet" data-id="${p.id}" ${S.coins<p.p?'disabled':''}>Comprar</button>`}</div>`}).join('')+'</div>';
  else{const a=curAv(),pp=S.pet;h+=`<p class="sm">Los accesorios funcionan solo con su avatar o mascota. Los apagados no sirven para el que estás usando.</p><h2>Para tu avatar</h2><div class="grid">`+Object.entries(AV_ACC).map(([k,x])=>{const own=S.own.aacc.includes(k),fit=avAccFits(k,a);return`<div class="card ${fit?'':'dim'}" data-a="${fit?'':'nofit'}" data-k="${k}" data-t="av"><div class="nm">${x.ic} ${x.n}</div><div class="sm">Para: ${esc(avAccWho(k))}</div><div class="pr">${own?'Tuyo':'🪙 '+x.p}</div>${own?'':`<button class="chip" data-a="buy" data-t="aacc" data-id="${k}" ${S.coins<x.p?'disabled':''}>Comprar</button>`}</div>`}).join('')+`</div><h2>Para tu mascota</h2><div class="grid">`+Object.entries(PET_ACC).map(([k,x])=>{const own=ownsPacc(k),fit=x.pets.includes(pp);return`<div class="card ${fit?'':'dim'}" data-a="${fit?'':'nofit'}" data-k="${k}" data-t="pet"><div class="nm">${x.ic} ${x.n}</div><div class="sm">Para ${esc(x.who)}</div><div class="pr">${own?(x.gift&&!S.own.pacc.includes(k)?'Regalo del Goat 🎁':'Tuyo'):'🪙 '+x.p}</div>${own?'':`<button class="chip" data-a="buy" data-t="pacc" data-id="${k}" ${S.coins<x.p?'disabled':''}>Comprar</button>`}</div>`}).join('')+'</div>'}
- $('#app').innerHTML=h;if(tab=='pet')Stage.show('pet');else Stage.show('av')};
+ $('#app').innerHTML=h;if(tab=='pet')Stage.show('pet');else Stage.show('av');if(!Stage.pre){Stage.pre=1;Stage.ensure('pet');setTimeout(()=>{if(Stage.booted.pet)Stage.post('pet',{t:'pre',keys:PETS.map(p=>p.id)})},1500)}};
 function buy(t,id){let p,name;if(t=='av'){const a=avatarById(id);p=a.p;name=a.n}else if(t=='pet'){p=PET_BY[id].p;name=PET_BY[id].n}else if(t=='aacc'){p=AV_ACC[id].p;name=AV_ACC[id].n}else{p=PET_ACC[id].p;name=PET_ACC[id].n}
  if(S.coins<p){toast('Te faltan monedas 🪙');return}S.coins-=p;const rare=(t=='av'?avatarById(id).r:t=='pet'?PET_BY[id].r:'Común');
  if(t=='av')S.own.av.push(id);else if(t=='pet')S.own.pet.push(id);else if(t=='aacc')S.own.aacc.push(id);else S.own.pacc.push(id);save();
@@ -133,11 +133,24 @@ const A={
 };
 document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b||!b.dataset.a)return;if(b.tagName!='BUTTON'&&e.target.closest('button')&&b.dataset.a=='pv')return;if(b.tagName=='BUTTON'||b.classList.contains('card'))Snd.play('click');const f=A[b.dataset.a];if(f)f(b.dataset,b,e)});
 
+// ---------- Botón "atrás" del teléfono ----------
+let exitArmed=false,exitT=null,lastRes=null;
+const BACK={levels:'home',cats:'home',shop:'home',miss:'home',events:'home',sets:'home'};
+const guard=()=>{try{history.pushState({g:1},'')}catch(e){}};
+addEventListener('popstate',()=>{
+ if($('#modal').classList.contains('on')){closeModal();guard();return}
+ if(cur=='play'){guard();if(confirm('¿Salir? Perdés el progreso de esta ronda.')){clearInterval(tmr);P=null;Snd.music('musica_menu');go('home')}return}
+ const t=cur=='res'?(lastRes&&lastRes.mode=='lvl'?'levels':'home'):BACK[cur];
+ if(t){guard();if(t=='home')Snd.music('musica_menu');go(t);return}
+ if(exitArmed){clearTimeout(exitT);history.back();return}
+ exitArmed=true;toast('Tocá atrás otra vez para salir');guard();clearTimeout(exitT);exitT=setTimeout(()=>{exitArmed=false},2200)});
+try{history.replaceState({g:0},'');guard()}catch(e){}
+
 // ---------- Arranque ----------
 async function boot(){
- for(const f of QFILES)await new Promise(r=>{const s=document.createElement('script');s.src='questions/'+f;s.onload=()=>r();s.onerror=()=>r();document.head.appendChild(s)});
+ await Promise.all(QFILES.map(f=>new Promise(r=>{const s=document.createElement('script');s.src='questions/'+f;s.onload=()=>r();s.onerror=()=>r();document.head.appendChild(s)})));
  const seen=new Set();QB.forEach(b=>b.forEach(r=>{const id=hash(r[2]);if(seen.has(id))return;seen.add(id);ALLQ.push({id,c:r[0],d:r[1],q:r[2],o:r[3],a:r[4],h:r[5]||''})}));
- S=load();Snd.scan().then(()=>{Object.keys(Stage.booted).forEach(k=>Stage.booted[k]&&Stage.post(k,{t:'cfg',files:Snd.files}))});
+ S=load();setTimeout(()=>Snd.scan().then(()=>{Object.keys(Stage.booted).forEach(k=>Stage.booted[k]&&Stage.post(k,{t:'cfg',files:Snd.files}))}),3500);
  if(!S){R.welcome();return}
  Snd.set(S.sound!==false);newDay();S.coins=S.coins|0;go('home')}
 boot();
